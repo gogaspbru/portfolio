@@ -9,7 +9,7 @@
 (function () {
   "use strict";
 
-  var PAGE_SIZE = 12;
+  var PAGE_SIZE = 15;
 
   // Marquee logos. Add/remove files in assets/logos/ and list them here.
   // (window.__LOGOS__ lets the single-file build inline them as data URIs.)
