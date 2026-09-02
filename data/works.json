@@ -1,0 +1,535 @@
+[
+  {
+    "type": "photo",
+    "title": "Культура Дома",
+    "category": "Branding",
+    "year": "2024",
+    "preview": "assets/works/kultura-doma.jpg",
+    "link": "https://example.com/kultura-doma"
+  },
+  {
+    "type": "photo",
+    "title": "ТатпромХолдинг",
+    "category": "Website",
+    "year": "2023",
+    "preview": "assets/placeholders/tile-02.svg",
+    "link": "https://example.com/work-02"
+  },
+  {
+    "type": "photo",
+    "title": "Smart Open",
+    "category": "Motion",
+    "year": "2022",
+    "preview": "assets/placeholders/tile-03.svg",
+    "link": "https://example.com/work-03"
+  },
+  {
+    "type": "photo",
+    "title": "Культура Дома",
+    "category": "Photography",
+    "year": "2021",
+    "preview": "assets/placeholders/tile-04.svg",
+    "link": "https://example.com/work-04"
+  },
+  {
+    "type": "video",
+    "title": "ТатпромХолдинг",
+    "category": "Illustration",
+    "year": "2024",
+    "preview": "assets/placeholders/tile-05.svg",
+    "link": "https://example.com/work-05",
+    "video": ""
+  },
+  {
+    "type": "photo",
+    "title": "Smart Open",
+    "category": "Poster",
+    "year": "2023",
+    "preview": "assets/placeholders/tile-06.svg",
+    "link": "https://example.com/work-06"
+  },
+  {
+    "type": "photo",
+    "title": "Культура Дома",
+    "category": "Editorial",
+    "year": "2022",
+    "preview": "assets/placeholders/tile-01.svg",
+    "link": "https://example.com/work-07"
+  },
+  {
+    "type": "photo",
+    "title": "ТатпромХолдинг",
+    "category": "Identity",
+    "year": "2021",
+    "preview": "assets/placeholders/tile-02.svg",
+    "link": "https://example.com/work-08"
+  },
+  {
+    "type": "photo",
+    "title": "Smart Open",
+    "category": "Branding",
+    "year": "2024",
+    "preview": "assets/placeholders/tile-03.svg",
+    "link": "https://example.com/work-09"
+  },
+  {
+    "type": "video",
+    "title": "Культура Дома",
+    "category": "Website",
+    "year": "2023",
+    "preview": "assets/placeholders/tile-04.svg",
+    "link": "https://example.com/work-10",
+    "video": ""
+  },
+  {
+    "type": "photo",
+    "title": "ТатпромХолдинг",
+    "category": "Motion",
+    "year": "2022",
+    "preview": "assets/placeholders/tile-05.svg",
+    "link": "https://example.com/work-11"
+  },
+  {
+    "type": "photo",
+    "title": "Smart Open",
+    "category": "Photography",
+    "year": "2021",
+    "preview": "assets/placeholders/tile-06.svg",
+    "link": "https://example.com/work-12"
+  },
+  {
+    "type": "photo",
+    "title": "Культура Дома",
+    "category": "Illustration",
+    "year": "2024",
+    "preview": "assets/placeholders/tile-01.svg",
+    "link": "https://example.com/work-13"
+  },
+  {
+    "type": "photo",
+    "title": "ТатпромХолдинг",
+    "category": "Poster",
+    "year": "2023",
+    "preview": "assets/placeholders/tile-02.svg",
+    "link": "https://example.com/work-14"
+  },
+  {
+    "type": "video",
+    "title": "Smart Open",
+    "category": "Editorial",
+    "year": "2022",
+    "preview": "assets/placeholders/tile-03.svg",
+    "link": "https://example.com/work-15",
+    "video": ""
+  },
+  {
+    "type": "photo",
+    "title": "Культура Дома",
+    "category": "Identity",
+    "year": "2021",
+    "preview": "assets/placeholders/tile-04.svg",
+    "link": "https://example.com/work-16"
+  },
+  {
+    "type": "photo",
+    "title": "ТатпромХолдинг",
+    "category": "Branding",
+    "year": "2024",
+    "preview": "assets/placeholders/tile-05.svg",
+    "link": "https://example.com/work-17"
+  },
+  {
+    "type": "photo",
+    "title": "Smart Open",
+    "category": "Website",
+    "year": "2023",
+    "preview": "assets/placeholders/tile-06.svg",
+    "link": "https://example.com/work-18"
+  },
+  {
+    "type": "photo",
+    "title": "Культура Дома",
+    "category": "Motion",
+    "year": "2022",
+    "preview": "assets/placeholders/tile-01.svg",
+    "link": "https://example.com/work-19"
+  },
+  {
+    "type": "video",
+    "title": "ТатпромХолдинг",
+    "category": "Photography",
+    "year": "2021",
+    "preview": "assets/placeholders/tile-02.svg",
+    "link": "https://example.com/work-20",
+    "video": ""
+  },
+  {
+    "type": "photo",
+    "title": "Smart Open",
+    "category": "Illustration",
+    "year": "2024",
+    "preview": "assets/placeholders/tile-03.svg",
+    "link": "https://example.com/work-21"
+  },
+  {
+    "type": "photo",
+    "title": "Культура Дома",
+    "category": "Poster",
+    "year": "2023",
+    "preview": "assets/placeholders/tile-04.svg",
+    "link": "https://example.com/work-22"
+  },
+  {
+    "type": "photo",
+    "title": "ТатпромХолдинг",
+    "category": "Editorial",
+    "year": "2022",
+    "preview": "assets/placeholders/tile-05.svg",
+    "link": "https://example.com/work-23"
+  },
+  {
+    "type": "photo",
+    "title": "Smart Open",
+    "category": "Identity",
+    "year": "2021",
+    "preview": "assets/placeholders/tile-06.svg",
+    "link": "https://example.com/work-24"
+  },
+  {
+    "type": "video",
+    "title": "Культура Дома",
+    "category": "Branding",
+    "year": "2024",
+    "preview": "assets/placeholders/tile-01.svg",
+    "link": "https://example.com/work-25",
+    "video": ""
+  },
+  {
+    "type": "photo",
+    "title": "ТатпромХолдинг",
+    "category": "Website",
+    "year": "2023",
+    "preview": "assets/placeholders/tile-02.svg",
+    "link": "https://example.com/work-26"
+  },
+  {
+    "type": "photo",
+    "title": "Smart Open",
+    "category": "Motion",
+    "year": "2022",
+    "preview": "assets/placeholders/tile-03.svg",
+    "link": "https://example.com/work-27"
+  },
+  {
+    "type": "photo",
+    "title": "Культура Дома",
+    "category": "Photography",
+    "year": "2021",
+    "preview": "assets/placeholders/tile-04.svg",
+    "link": "https://example.com/work-28"
+  },
+  {
+    "type": "photo",
+    "title": "ТатпромХолдинг",
+    "category": "Illustration",
+    "year": "2024",
+    "preview": "assets/placeholders/tile-05.svg",
+    "link": "https://example.com/work-29"
+  },
+  {
+    "type": "video",
+    "title": "Smart Open",
+    "category": "Poster",
+    "year": "2023",
+    "preview": "assets/placeholders/tile-06.svg",
+    "link": "https://example.com/work-30",
+    "video": ""
+  },
+  {
+    "type": "photo",
+    "title": "Культура Дома",
+    "category": "Editorial",
+    "year": "2022",
+    "preview": "assets/placeholders/tile-01.svg",
+    "link": "https://example.com/work-31"
+  },
+  {
+    "type": "photo",
+    "title": "ТатпромХолдинг",
+    "category": "Identity",
+    "year": "2021",
+    "preview": "assets/placeholders/tile-02.svg",
+    "link": "https://example.com/work-32"
+  },
+  {
+    "type": "photo",
+    "title": "Smart Open",
+    "category": "Branding",
+    "year": "2024",
+    "preview": "assets/placeholders/tile-03.svg",
+    "link": "https://example.com/work-33"
+  },
+  {
+    "type": "photo",
+    "title": "Культура Дома",
+    "category": "Website",
+    "year": "2023",
+    "preview": "assets/placeholders/tile-04.svg",
+    "link": "https://example.com/work-34"
+  },
+  {
+    "type": "video",
+    "title": "ТатпромХолдинг",
+    "category": "Motion",
+    "year": "2022",
+    "preview": "assets/placeholders/tile-05.svg",
+    "link": "https://example.com/work-35",
+    "video": ""
+  },
+  {
+    "type": "photo",
+    "title": "Smart Open",
+    "category": "Photography",
+    "year": "2021",
+    "preview": "assets/placeholders/tile-06.svg",
+    "link": "https://example.com/work-36"
+  },
+  {
+    "type": "photo",
+    "title": "Культура Дома",
+    "category": "Illustration",
+    "year": "2024",
+    "preview": "assets/placeholders/tile-01.svg",
+    "link": "https://example.com/work-37"
+  },
+  {
+    "type": "photo",
+    "title": "ТатпромХолдинг",
+    "category": "Poster",
+    "year": "2023",
+    "preview": "assets/placeholders/tile-02.svg",
+    "link": "https://example.com/work-38"
+  },
+  {
+    "type": "photo",
+    "title": "Smart Open",
+    "category": "Editorial",
+    "year": "2022",
+    "preview": "assets/placeholders/tile-03.svg",
+    "link": "https://example.com/work-39"
+  },
+  {
+    "type": "video",
+    "title": "Культура Дома",
+    "category": "Identity",
+    "year": "2021",
+    "preview": "assets/placeholders/tile-04.svg",
+    "link": "https://example.com/work-40",
+    "video": ""
+  },
+  {
+    "type": "photo",
+    "title": "ТатпромХолдинг",
+    "category": "Branding",
+    "year": "2024",
+    "preview": "assets/placeholders/tile-05.svg",
+    "link": "https://example.com/work-41"
+  },
+  {
+    "type": "photo",
+    "title": "Smart Open",
+    "category": "Website",
+    "year": "2023",
+    "preview": "assets/placeholders/tile-06.svg",
+    "link": "https://example.com/work-42"
+  },
+  {
+    "type": "photo",
+    "title": "Культура Дома",
+    "category": "Motion",
+    "year": "2022",
+    "preview": "assets/placeholders/tile-01.svg",
+    "link": "https://example.com/work-43"
+  },
+  {
+    "type": "photo",
+    "title": "ТатпромХолдинг",
+    "category": "Photography",
+    "year": "2021",
+    "preview": "assets/placeholders/tile-02.svg",
+    "link": "https://example.com/work-44"
+  },
+  {
+    "type": "video",
+    "title": "Smart Open",
+    "category": "Illustration",
+    "year": "2024",
+    "preview": "assets/placeholders/tile-03.svg",
+    "link": "https://example.com/work-45",
+    "video": ""
+  },
+  {
+    "type": "photo",
+    "title": "Культура Дома",
+    "category": "Poster",
+    "year": "2023",
+    "preview": "assets/placeholders/tile-04.svg",
+    "link": "https://example.com/work-46"
+  },
+  {
+    "type": "photo",
+    "title": "ТатпромХолдинг",
+    "category": "Editorial",
+    "year": "2022",
+    "preview": "assets/placeholders/tile-05.svg",
+    "link": "https://example.com/work-47"
+  },
+  {
+    "type": "photo",
+    "title": "Smart Open",
+    "category": "Identity",
+    "year": "2021",
+    "preview": "assets/placeholders/tile-06.svg",
+    "link": "https://example.com/work-48"
+  },
+  {
+    "type": "photo",
+    "title": "Культура Дома",
+    "category": "Branding",
+    "year": "2024",
+    "preview": "assets/placeholders/tile-01.svg",
+    "link": "https://example.com/work-49"
+  },
+  {
+    "type": "video",
+    "title": "ТатпромХолдинг",
+    "category": "Website",
+    "year": "2023",
+    "preview": "assets/placeholders/tile-02.svg",
+    "link": "https://example.com/work-50",
+    "video": ""
+  },
+  {
+    "type": "photo",
+    "title": "Smart Open",
+    "category": "Motion",
+    "year": "2022",
+    "preview": "assets/placeholders/tile-03.svg",
+    "link": "https://example.com/work-51"
+  },
+  {
+    "type": "photo",
+    "title": "Культура Дома",
+    "category": "Photography",
+    "year": "2021",
+    "preview": "assets/placeholders/tile-04.svg",
+    "link": "https://example.com/work-52"
+  },
+  {
+    "type": "photo",
+    "title": "ТатпромХолдинг",
+    "category": "Illustration",
+    "year": "2024",
+    "preview": "assets/placeholders/tile-05.svg",
+    "link": "https://example.com/work-53"
+  },
+  {
+    "type": "photo",
+    "title": "Smart Open",
+    "category": "Poster",
+    "year": "2023",
+    "preview": "assets/placeholders/tile-06.svg",
+    "link": "https://example.com/work-54"
+  },
+  {
+    "type": "video",
+    "title": "Культура Дома",
+    "category": "Editorial",
+    "year": "2022",
+    "preview": "assets/placeholders/tile-01.svg",
+    "link": "https://example.com/work-55",
+    "video": ""
+  },
+  {
+    "type": "photo",
+    "title": "ТатпромХолдинг",
+    "category": "Identity",
+    "year": "2021",
+    "preview": "assets/placeholders/tile-02.svg",
+    "link": "https://example.com/work-56"
+  },
+  {
+    "type": "photo",
+    "title": "Smart Open",
+    "category": "Branding",
+    "year": "2024",
+    "preview": "assets/placeholders/tile-03.svg",
+    "link": "https://example.com/work-57"
+  },
+  {
+    "type": "photo",
+    "title": "Культура Дома",
+    "category": "Website",
+    "year": "2023",
+    "preview": "assets/placeholders/tile-04.svg",
+    "link": "https://example.com/work-58"
+  },
+  {
+    "type": "photo",
+    "title": "ТатпромХолдинг",
+    "category": "Motion",
+    "year": "2022",
+    "preview": "assets/placeholders/tile-05.svg",
+    "link": "https://example.com/work-59"
+  },
+  {
+    "type": "video",
+    "title": "Smart Open",
+    "category": "Photography",
+    "year": "2021",
+    "preview": "assets/placeholders/tile-06.svg",
+    "link": "https://example.com/work-60",
+    "video": ""
+  },
+  {
+    "type": "photo",
+    "title": "Культура Дома",
+    "category": "Illustration",
+    "year": "2024",
+    "preview": "assets/placeholders/tile-01.svg",
+    "link": "https://example.com/work-61"
+  },
+  {
+    "type": "photo",
+    "title": "ТатпромХолдинг",
+    "category": "Poster",
+    "year": "2023",
+    "preview": "assets/placeholders/tile-02.svg",
+    "link": "https://example.com/work-62"
+  },
+  {
+    "type": "photo",
+    "title": "Smart Open",
+    "category": "Editorial",
+    "year": "2022",
+    "preview": "assets/placeholders/tile-03.svg",
+    "link": "https://example.com/work-63"
+  },
+  {
+    "type": "photo",
+    "title": "Культура Дома",
+    "category": "Identity",
+    "year": "2021",
+    "preview": "assets/placeholders/tile-04.svg",
+    "link": "https://example.com/work-64"
+  },
+  {
+    "type": "video",
+    "title": "ТатпромХолдинг",
+    "category": "Branding",
+    "year": "2024",
+    "preview": "assets/placeholders/tile-05.svg",
+    "link": "https://example.com/work-65",
+    "video": ""
+  }
+]

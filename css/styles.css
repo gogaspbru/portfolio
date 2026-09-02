@@ -1,0 +1,444 @@
+/* ============================================================
+   Portfolio — pure HTML/CSS/JS
+   Grid layout (like the reference): light page, 3 columns of
+   16:9 tiles, a small caption under each tile.
+   Tweak these variables to restyle the whole site.
+   ============================================================ */
+
+/* ---- Suisse Int'l (licensed font — drop the .woff2 files into assets/fonts/) ----
+   Buy/obtain the licensed webfont files and name them as below; the font then
+   activates automatically. Until the files exist, the stack falls back to a
+   near-grotesque so nothing breaks. */
+@font-face {
+  font-family: "Suisse Int'l";
+  src: url("../assets/fonts/SuisseIntl-Regular.woff2") format("woff2");
+  font-weight: 400; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: "Suisse Int'l";
+  src: url("../assets/fonts/SuisseIntl-Medium.woff2") format("woff2");
+  font-weight: 500; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: "Suisse Int'l";
+  src: url("../assets/fonts/SuisseIntl-SemiBold.woff2") format("woff2");
+  font-weight: 600; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: "Suisse Int'l";
+  src: url("../assets/fonts/SuisseIntl-Bold.woff2") format("woff2");
+  font-weight: 700; font-style: normal; font-display: swap;
+}
+
+:root {
+  --bg: #ffffff;             /* white page background */
+  --fg: #26251f;
+  --muted: #a7a49b;
+  --line: #ececec;
+  --card-bg: #f8f8f8;        /* the big light tile (card) panel on white */
+  --tile-bg: #eceae4;        /* fallback bg behind the media */
+  --accent: #26251f;
+  --graphite: #1b1b19;       /* dark preloader + footer */
+  --card-radius: 12px;       /* rounded corners of the card */
+
+  --maxw: none;              /* full-bleed: content spans the whole viewport width */
+  --pad: clamp(20px, 2.2vw, 34px);   /* small side margins */
+
+  --col-gap: clamp(18px, 2vw, 32px);
+  --row-gap: clamp(18px, 2vw, 32px);
+
+  --card-hover: #333331;     /* graphite: card background on hover */
+  --card-ratio: 4 / 3;       /* big tile (card) — less tall, so smaller top/bottom gaps */
+  --card-pad-eq: 9%;         /* padding around the media: top + sides (% of card width) */
+  --card-gap: clamp(20px, 3%, 34px);  /* gap from media down to the caption */
+  --card-pad-b: clamp(12px, 1.6%, 20px);/* gap from caption to the card bottom */
+  --tile-ratio: 16 / 9;      /* media aspect ratio inside the card */
+  --media-radius: 10px;
+
+  --cols-desktop: 3;
+  --cols-tablet: 3;
+  --cols-mobile: 2;
+
+  --logo-cols: 6;            /* logo grid columns on desktop (18 shown = 3 rows) */
+}
+
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+
+body {
+  background: var(--bg);
+  color: var(--fg);
+  /* Suisse Int'l when its files are present (see @font-face above); grotesque fallback otherwise */
+  font-family: "Suisse Int'l", -apple-system, "Helvetica Neue", Helvetica, Arial, "Segoe UI", Roboto, sans-serif;
+  font-size: 15px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+a { color: inherit; text-decoration: none; }
+
+.wrap {
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding-left: var(--pad);
+  padding-right: var(--pad);
+}
+
+/* ===================== Preloader ===================== */
+.preloader {
+  position: fixed;
+  inset: 0;
+  z-index: 2000;
+}
+/* two graphite halves that split apart (up + down) to reveal the site */
+.preloader__panel {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  height: 50%;
+  background: var(--graphite);
+  transition: transform .9s cubic-bezier(.76, 0, .24, 1);
+}
+.preloader__panel--top { top: 0; }
+.preloader__panel--bottom { bottom: 0; }
+.preloader.is-hidden .preloader__panel--top { transform: translateY(-100%); }
+.preloader.is-hidden .preloader__panel--bottom { transform: translateY(100%); }
+
+/* full-width progress line on the seam, fills left → right */
+.preloader__bar {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  height: 2px;
+  background: rgba(255, 255, 255, .16);
+  overflow: hidden;
+  z-index: 1;
+}
+.preloader__fill {
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 0;
+  background: #fff;
+  animation: preloader-run 1.15s cubic-bezier(.65, 0, .35, 1) forwards;
+}
+@keyframes preloader-run { to { width: 100%; } }
+.preloader.is-hidden .preloader__bar { opacity: 0; transition: opacity .35s ease; }
+
+/* ===================== Header ===================== */
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: transparent;         /* sticky, but see-through */
+  mix-blend-mode: difference;      /* text inverts over dark objects → stays readable */
+}
+.header__inner {
+  padding-top: 14px;
+  padding-bottom: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+.logo__text { font-weight: 600; font-size: 17px; letter-spacing: .01em; color: #fff; }
+.contacts {
+  display: flex;
+  align-items: center;
+  gap: clamp(12px, 2.4vw, 34px);
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+.contacts__item {
+  color: #fff;
+  font-size: 17px;
+  font-weight: 600;
+  white-space: nowrap;
+  transition: opacity .2s ease;
+}
+.contacts__item:hover { opacity: .6; }
+.contacts__item--icon { display: inline-flex; align-items: center; }
+.contacts__item--icon svg { width: 27px; height: 27px; display: block; }
+
+/* ===================== Intro (centered, top) ===================== */
+.intro {
+  margin-top: clamp(36px, 6vw, 78px);
+  margin-bottom: clamp(28px, 4vw, 56px);
+  text-align: left;
+}
+.intro__title {
+  margin: 0;
+  max-width: 24ch;
+  font-size: clamp(45px, 6.6vw, 84px);
+  font-weight: 700;
+  line-height: 0.85;
+  letter-spacing: -0.025em;
+  color: var(--fg);
+}
+.intro__text {
+  margin: 0;
+  max-width: 52ch;
+  font-size: clamp(15px, 1.5vw, 19px);
+  line-height: 1.5;
+  color: #5a5852;
+  text-wrap: balance;
+}
+
+/* count label above the grid, like "63 Selected Projects" (serif italic) */
+.count {
+  margin-bottom: clamp(16px, 1.8vw, 26px);
+  font-family: Georgia, "Times New Roman", serif;
+  font-style: italic;
+  font-size: 14px;
+  color: var(--muted);
+}
+
+/* ===================== Work grid ===================== */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(var(--cols-desktop), 1fr);
+  column-gap: var(--col-gap);
+  row-gap: var(--row-gap);
+}
+
+.item { display: block; }
+
+/* the big light tile (card): media centered, caption pinned to the bottom */
+.item__tile {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  padding: var(--card-pad-eq);           /* top + sides frame around the media */
+  padding-bottom: var(--card-pad-b);     /* tighter under the caption */
+  background: var(--card-bg);
+  border-radius: var(--card-radius);
+  overflow: hidden;
+  transition: background .3s ease;
+}
+.item__tile:hover { background: var(--card-hover); }   /* whole card goes graphite */
+
+/* the 16:9 media — a plain white rectangle (no shadow), inset from the card edges */
+.item__media {
+  position: relative;
+  width: 100%;
+  aspect-ratio: var(--tile-ratio);
+  border-radius: var(--media-radius);
+  overflow: hidden;
+  background: #ffffff;
+}
+
+.item__img,
+.item__video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+/* slow "Ken Burns" zoom on hover — reads like a subtle video */
+.item__img { transition: transform 3.6s cubic-bezier(.2, .5, .2, 1); }
+.item__tile:hover .item__img { transform: scale(1.07); }
+.item__video { opacity: 0; transition: opacity .3s ease; }
+.item.is-video .item__tile:hover .item__video { opacity: 1; }
+
+/* play badge for video tiles */
+.item__badge {
+  position: absolute;
+  left: 10px;
+  bottom: 10px;
+  z-index: 2;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: rgba(20, 20, 15, .5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+.item__badge svg { width: 12px; height: 12px; fill: #fff; margin-left: 2px; }
+
+/* caption inside the card, pinned to the bottom: title left, arrow right */
+.item__caption {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-top: var(--card-gap);  /* smaller gap from the media to the caption */
+  padding-top: 0;
+  font-size: 15px;
+  line-height: 1.3;
+}
+.item__title { color: #9a988f; font-weight: 400; transition: color .3s ease; }
+.item__arrow { color: #9a988f; display: flex; transition: color .3s ease; }
+.item__arrow svg { width: 17px; height: 17px; display: block; }
+/* on graphite hover, make the caption legible */
+.item__tile:hover .item__title,
+.item__tile:hover .item__arrow { color: #f3f2ef; }
+
+/* ===================== Load more ===================== */
+.load-more-wrap {
+  display: flex;
+  justify-content: center;
+  margin: clamp(40px, 6vw, 72px) 0 8px;
+}
+.load-more {
+  font: inherit;
+  font-weight: 600;
+  letter-spacing: .05em;
+  text-transform: uppercase;
+  font-size: 12px;
+  padding: 13px 32px;
+  color: var(--fg);
+  background: transparent;
+  border: 1px solid var(--fg);
+  border-radius: 999px;
+  cursor: pointer;
+  transition: background .2s ease, color .2s ease;
+}
+.load-more:hover { background: var(--fg); color: var(--bg); }
+.load-more[hidden] { display: none; }
+
+/* ===================== Statement ===================== */
+.statement {
+  margin-top: clamp(64px, 10vw, 140px);
+  margin-bottom: clamp(24px, 4vw, 56px);
+}
+.statement__text {
+  margin: 0;
+  max-width: 66.666%;               /* two thirds of the screen */
+  font-size: clamp(26px, 4vw, 58px);
+  font-weight: 600;
+  line-height: 0.95;
+  letter-spacing: -0.02em;
+  color: var(--fg);
+  text-wrap: balance;
+}
+@media (max-width: 900px) {
+  .statement__text { max-width: 100%; }
+}
+
+/* ===================== Logo grid ===================== */
+.logos {
+  margin-top: clamp(56px, 9vw, 120px);
+}
+.logos__grid {
+  display: grid;
+  grid-template-columns: repeat(var(--logo-cols), 1fr);
+  gap: clamp(22px, 3.4vw, 56px) clamp(16px, 2vw, 40px);
+}
+.logos__cell {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: clamp(14px, 2vw, 26px) 12px;
+  min-height: 64px;
+}
+.logos__cell img {
+  height: clamp(21px, 2.2vw, 31px);
+  width: auto;
+  max-width: 71%;
+  object-fit: contain;
+  opacity: .78;
+  transition: opacity .55s ease, filter .55s ease;   /* blur swap + hover */
+}
+.logos__cell:hover img { opacity: 1; }
+
+/* ===================== Footer (compact) ===================== */
+.footer { margin-top: clamp(44px, 7vw, 88px); }
+.footer__inner {
+  padding-top: 26px;
+  padding-bottom: 34px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;   /* copyright left, email right */
+  gap: 12px;
+  flex-wrap: wrap;
+  color: var(--muted);
+  font-size: 12px;
+}
+.footer__mail:hover { color: var(--fg); }
+
+/* ===================== Responsive ===================== */
+@media (max-width: 1024px) {
+  .grid { grid-template-columns: repeat(var(--cols-tablet), 1fr); }
+  :root { --logo-cols: 3; }
+}
+@media (max-width: 640px) {
+  .grid { grid-template-columns: repeat(var(--cols-mobile), 1fr); }
+  :root { --logo-cols: 3; }
+  .header__inner { flex-wrap: wrap; }
+  .contacts { gap: 12px; }
+  .contacts__item { font-size: 12px; }
+  .item__caption { font-size: 13px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .preloader__fill { animation-duration: .4s; }
+}
+
+/* ===================== Custom cursor (desktop only) ===================== */
+.cursor-dot,
+.cursor-ring {
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 3000;
+  pointer-events: none;
+  border-radius: 50%;
+  opacity: 0;
+  mix-blend-mode: difference;   /* stays visible on light and dark backgrounds */
+  will-change: transform;
+}
+.cursor-ready .cursor-dot { opacity: .65; }   /* brighter centre */
+.cursor-ready .cursor-ring { opacity: .16; }  /* lighter halo */
+
+.cursor-dot {
+  width: 7px;
+  height: 7px;
+  margin: -3.5px 0 0 -3.5px;
+  background: #fff;
+}
+.cursor-ring {
+  width: 40px;
+  height: 40px;
+  margin: -20px 0 0 -20px;
+  border: 1.5px solid #fff;
+  transition: width .28s ease, height .28s ease, margin .28s ease,
+              background-color .28s ease, opacity .3s ease;
+}
+/* grow the trailing ring over interactive elements */
+.cursor-hover .cursor-ring {
+  width: 64px;
+  height: 64px;
+  margin: -32px 0 0 -32px;
+  background: rgba(255, 255, 255, .14);
+}
+
+/* hide the native cursor only when the custom one is active on a fine pointer */
+@media (hover: hover) and (pointer: fine) {
+  html.cursor-on,
+  html.cursor-on * { cursor: none; }
+}
+
+/* ===================== Custom scrollbar (desktop only) ===================== */
+html.scrollbar-on { scrollbar-width: none; }              /* Firefox */
+html.scrollbar-on::-webkit-scrollbar { width: 0; height: 0; }  /* WebKit */
+.scrollbar__thumb {
+  position: fixed;
+  top: 0;
+  right: 7px;
+  width: 4px;
+  border-radius: 4px;
+  background: #fff;
+  opacity: .5;
+  mix-blend-mode: difference;   /* visible on light and dark sections */
+  z-index: 2500;
+  pointer-events: none;
+  transition: opacity .3s ease;
+  will-change: transform, height;
+}
+
