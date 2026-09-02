@@ -1,51 +1,67 @@
 [
   {
     "type": "photo",
+    "title": "Дом в лесу",
+    "category": "Архитектура",
+    "year": "2024",
+    "preview": "assets/works/001.jpg",
+    "link": "https://example.com/001"
+  },
+  {
+    "type": "photo",
+    "title": "LINDERA",
+    "category": "Веб-сайт",
+    "year": "2024",
+    "preview": "assets/works/002.jpg",
+    "link": "https://example.com/002"
+  },
+  {
+    "type": "photo",
+    "title": "Культура Дома",
+    "category": "Брендинг",
+    "year": "2024",
+    "preview": "assets/works/003.jpg",
+    "link": "https://example.com/003"
+  },
+  {
+    "type": "photo",
     "title": "Branding",
     "category": "Брендинг",
     "year": "2024",
-    "preview": "assets/works/work-01-branding.jpg",
-    "link": "https://example.com/branding"
+    "preview": "assets/works/004.jpg",
+    "link": "https://example.com/004"
   },
   {
     "type": "photo",
     "title": "Испытательная лаборатория",
     "category": "Веб-сайт",
     "year": "2024",
-    "preview": "assets/works/work-02-lab.jpg",
-    "link": "https://example.com/lab"
+    "preview": "assets/works/005.jpg",
+    "link": "https://example.com/005"
   },
   {
     "type": "photo",
     "title": "Smart Open",
     "category": "Веб-сайт",
     "year": "2024",
-    "preview": "assets/works/work-03-smart-open.jpg",
-    "link": "https://example.com/smart-open"
+    "preview": "assets/works/006.jpg",
+    "link": "https://example.com/006"
   },
   {
     "type": "photo",
     "title": "ОБИТ",
     "category": "Веб-сайт",
     "year": "2024",
-    "preview": "assets/works/work-04-obit.jpg",
-    "link": "https://example.com/obit"
+    "preview": "assets/works/007.jpg",
+    "link": "https://example.com/007"
   },
   {
     "type": "photo",
     "title": "SVAM Group",
     "category": "Веб-сайт",
     "year": "2024",
-    "preview": "assets/works/work-05-svam.jpg",
-    "link": "https://example.com/svam"
-  },
-  {
-    "type": "photo",
-    "title": "Культура Дома",
-    "category": "Branding",
-    "year": "2024",
-    "preview": "assets/works/kultura-doma.jpg",
-    "link": "https://example.com/kultura-doma"
+    "preview": "assets/works/008.jpg",
+    "link": "https://example.com/008"
   },
   {
     "type": "photo",
