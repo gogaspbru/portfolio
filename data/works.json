@@ -1,6 +1,46 @@
 [
   {
     "type": "photo",
+    "title": "Branding",
+    "category": "Брендинг",
+    "year": "2024",
+    "preview": "assets/works/work-01-branding.jpg",
+    "link": "https://example.com/branding"
+  },
+  {
+    "type": "photo",
+    "title": "Испытательная лаборатория",
+    "category": "Веб-сайт",
+    "year": "2024",
+    "preview": "assets/works/work-02-lab.jpg",
+    "link": "https://example.com/lab"
+  },
+  {
+    "type": "photo",
+    "title": "Smart Open",
+    "category": "Веб-сайт",
+    "year": "2024",
+    "preview": "assets/works/work-03-smart-open.jpg",
+    "link": "https://example.com/smart-open"
+  },
+  {
+    "type": "photo",
+    "title": "ОБИТ",
+    "category": "Веб-сайт",
+    "year": "2024",
+    "preview": "assets/works/work-04-obit.jpg",
+    "link": "https://example.com/obit"
+  },
+  {
+    "type": "photo",
+    "title": "SVAM Group",
+    "category": "Веб-сайт",
+    "year": "2024",
+    "preview": "assets/works/work-05-svam.jpg",
+    "link": "https://example.com/svam"
+  },
+  {
+    "type": "photo",
     "title": "Культура Дома",
     "category": "Branding",
     "year": "2024",
