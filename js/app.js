@@ -149,9 +149,9 @@
         img.src = LOGOS[next];
         img.style.opacity = "";                       // sharpen + fade back in
         img.style.filter = "";
-      }, 550);
+      }, 300);
     }
-    setInterval(swapOne, 1900);
+    setInterval(swapOne, 900);
   }
 
   // ---------- Custom cursor (desktop only) ----------
