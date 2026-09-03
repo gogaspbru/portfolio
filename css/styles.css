@@ -51,7 +51,7 @@
   --card-ratio: 4 / 3;       /* big tile (card) — less tall, so smaller top/bottom gaps */
   --card-pad-eq: 9%;         /* padding around the media: top + sides (% of card width) */
   --card-gap: clamp(26px, 4.2%, 48px);  /* gap from media down to the caption */
-  --card-pad-b: clamp(12px, 1.6%, 20px);/* gap from caption to the card bottom */
+  --card-pad-b: clamp(44px, 5.5%, 64px);/* gap from caption to the card bottom */
   --tile-ratio: 16 / 9;      /* media aspect ratio inside the card */
   --media-radius: 10px;
 
