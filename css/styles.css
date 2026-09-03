@@ -373,7 +373,7 @@ a { color: inherit; text-decoration: none; }
   .grid { grid-template-columns: repeat(var(--cols-mobile), 1fr); }
   :root { --logo-cols: 3; }
   .header__inner { flex-wrap: wrap; }
-  .contacts { gap: 12px; }
+  .contacts { gap: 22px; }
   .contacts__item { font-size: 12px; }
   /* Mobile: the phone number collapses to a handset icon */
   .contacts__item--phone { display: inline-flex; align-items: center; }
