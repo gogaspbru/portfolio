@@ -286,6 +286,12 @@ a { color: inherit; text-decoration: none; }
 .item__tile:hover .item__video { transform: scale(1.07); }
 /* the video sits over the poster image and is the visible layer when present */
 .item__video { z-index: 1; }
+/* hover-play tiles: image by default, video fades in on hover */
+.item--video-hover .item__video {
+  opacity: 0;
+  transition: transform 3.6s cubic-bezier(.2, .5, .2, 1), opacity .4s ease;
+}
+.item--video-hover .item__tile:hover .item__video { opacity: 1; }
 
 /* play badge for video tiles */
 .item__badge {

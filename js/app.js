@@ -113,26 +113,44 @@
     img.src = item.preview || "";
     media.appendChild(img);
 
-    // Video tiles: the clip replaces the image and autoplays (muted loop).
-    // On mobile/touch we don't create the video at all — the poster image
-    // stays. The image remains underneath as a fallback either way.
+    // Video tiles (desktop only — on mobile/touch we never create the video,
+    // the poster image stays). Two modes:
+    //   default  — autoplays (muted loop), the clip replaces the image;
+    //   hover:true — image by default, the clip plays on hover.
     if (item.type === "video" && item.video && IS_DESKTOP) {
+      var hoverMode = item.hover === true;
+      cell.className += hoverMode ? " item--video-hover" : " item--video-autoplay";
       var video = document.createElement("video");
       video.className = "item__video";
       video.muted = true;
       video.loop = true;
-      video.autoplay = true;
       video.playsInline = true;
       video.setAttribute("muted", "");
       video.setAttribute("playsinline", "");
-      video.setAttribute("autoplay", "");
       video.setAttribute("loop", "");
-      video.preload = "auto";
       video.poster = item.preview || "";
-      video.src = item.video;
-      media.appendChild(video);
-      var pr = video.play();
-      if (pr && pr.catch) pr.catch(function () {});
+      if (hoverMode) {
+        video.preload = "none";               // don't fetch until hovered
+        video.src = item.video;
+        media.appendChild(video);
+        a.addEventListener("mouseenter", function () {
+          if (video.preload === "none") video.preload = "auto";
+          var pr = video.play();
+          if (pr && pr.catch) pr.catch(function () {});
+        });
+        a.addEventListener("mouseleave", function () {
+          video.pause();
+          try { video.currentTime = 0; } catch (e) {}
+        });
+      } else {
+        video.autoplay = true;
+        video.setAttribute("autoplay", "");
+        video.preload = "auto";
+        video.src = item.video;
+        media.appendChild(video);
+        var pr = video.play();
+        if (pr && pr.catch) pr.catch(function () {});
+      }
     }
 
     a.appendChild(media);
