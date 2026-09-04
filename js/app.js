@@ -38,6 +38,30 @@
   var rendered = 0;
   var refreshScrollbar = null;   // set by initScrollbar()
 
+  // ---------- Card reveal: blocks open top→bottom as they scroll in ----------
+  var cardObserver = null;
+  var cardsArmed = false;
+  var cardQueue = [];
+  function revealCard(el) { el.classList.add("card-in"); }
+  function armCards() {
+    if (cardsArmed) return;
+    cardsArmed = true;
+    cardQueue.forEach(revealCard);
+    cardQueue = [];
+  }
+  function setupCardReveal() {
+    var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (reduce || !("IntersectionObserver" in window)) { cardsArmed = true; return; }
+    list.classList.add("reveal-cards");   // enables the clipped initial state
+    cardObserver = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (!e.isIntersecting) return;
+        cardObserver.unobserve(e.target);
+        if (cardsArmed) revealCard(e.target); else cardQueue.push(e.target);
+      });
+    }, { threshold: 0.12, rootMargin: "0px 0px -6% 0px" });
+  }
+
   function esc(s) {
     return String(s == null ? "" : s).replace(/[&<>"]/g, function (c) {
       return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c];
@@ -130,12 +154,17 @@
     var step = gridCols() * ROWS_PER_LOAD;
     var end = Math.min(rendered + step, works.length);
     var frag = document.createDocumentFragment();
+    var fresh = [];
     for (var i = rendered; i < end; i++) {
-      frag.appendChild(buildItem(works[i]));
+      var cell = buildItem(works[i]);
+      fresh.push(cell);
+      frag.appendChild(cell);
     }
     list.appendChild(frag);
     rendered = end;
     loadMoreBtn.hidden = rendered >= works.length;
+    // watch the new cards so they open top→bottom when scrolled into view
+    if (cardObserver) fresh.forEach(function (c) { cardObserver.observe(c); });
     if (refreshScrollbar) refreshScrollbar();
   }
 
@@ -306,7 +335,7 @@
   function hidePreloader() {
     if (!preloader || preloader.classList.contains("is-hidden")) return;
     preloader.classList.add("is-hidden");                 // panels split up + down
-    setTimeout(function () { armReveal(); }, 180);         // headings float in as the site appears
+    setTimeout(function () { armReveal(); armCards(); }, 180);   // headings + cards animate in as the site appears
     setTimeout(function () { preloader.style.display = "none"; }, 1000);
   }
 
@@ -406,6 +435,7 @@
 
   function init(data) {
     works = Array.isArray(data) ? data : [];
+    setupCardReveal();
     renderNext();
     buildLogoGrid();
     loadMoreBtn.addEventListener("click", renderNext);
