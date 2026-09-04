@@ -44,9 +44,11 @@
     // the 16:9 tile (clickable, opens link in a new tab)
     var a = document.createElement("a");
     a.className = "item__tile";
-    a.href = item.link || "#";
-    a.target = "_blank";
-    a.rel = "noopener";
+    if (item.link) {                 // only clickable when a real link is given
+      a.href = item.link;
+      a.target = "_blank";
+      a.rel = "noopener";
+    }
     a.setAttribute("aria-label", item.title || "Работа");
 
     // 16:9 media wrapper (centered inside the card, with shadow)
@@ -57,6 +59,10 @@
     img.className = "item__img";
     img.loading = "lazy";
     img.decoding = "async";
+    // Retina: previews are 2x (1400×788) shown in a ≤700px slot, so they stay
+    // crisp on high-DPI screens. Intrinsic size keeps the 16:9 box stable.
+    img.width = 1400;
+    img.height = 788;
     img.alt = item.title || "";
     img.src = item.preview || "";
     media.appendChild(img);
