@@ -160,10 +160,15 @@
     var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     if (LOGOS.length < 2 || reduce) return;
 
+    var uniquePossible = LOGOS.length > VISIBLE;   // enough logos to avoid on-screen repeats
     function swapOne() {
       var cell = Math.floor(Math.random() * VISIBLE);
-      var next = shown[cell];
-      while (next === shown[cell]) next = Math.floor(Math.random() * LOGOS.length);
+      // pick a logo that isn't currently shown in ANY cell, so no duplicates on screen
+      var next;
+      do {
+        next = Math.floor(Math.random() * LOGOS.length);
+      } while (next === shown[cell] ||
+               (uniquePossible && shown.indexOf(next) !== -1));
       var img = imgs[cell];
       var pre = new Image(); pre.src = LOGOS[next];   // preload to avoid a flash
       img.style.opacity = "0";                        // blur + fade out
