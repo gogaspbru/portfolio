@@ -402,6 +402,9 @@ a { color: inherit; text-decoration: none; }
   .contacts__phone-text { display: none; }
   .contacts__phone-icon { display: block; }
   .item__caption { font-size: 13px; }
+  /* Mobile: tighter rows in the logo grid (desktop untouched) */
+  .logos__grid { row-gap: 11px; }
+  .logos__cell { padding-top: 9px; padding-bottom: 9px; min-height: 58px; }
   /* Mobile: no card frame — drop the grey panel and all padding so the
      work image sits edge-to-edge, caption just below it */
   .item__tile {
