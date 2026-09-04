@@ -13,13 +13,21 @@
 
   // Marquee logos. Add/remove files in assets/logos/ and list them here.
   // (window.__LOGOS__ lets the single-file build inline them as data URIs.)
+  // The first 18 (01–18) render as the initial grid, in this order; the rest
+  // (19–36) get shuffled in by the blur-swap rotation.
   var LOGOS = window.__LOGOS__ || [
-    "assets/logos/logo-01.svg", "assets/logos/logo-02.svg", "assets/logos/logo-03.svg",
-    "assets/logos/logo-04.svg", "assets/logos/logo-05.svg", "assets/logos/logo-06.svg",
-    "assets/logos/logo-07.svg", "assets/logos/logo-08.svg", "assets/logos/logo-09.svg",
-    "assets/logos/logo-10.svg", "assets/logos/logo-11.svg", "assets/logos/logo-12.svg",
-    "assets/logos/logo-13.svg", "assets/logos/logo-14.svg", "assets/logos/logo-15.svg",
-    "assets/logos/logo-16.svg", "assets/logos/logo-17.svg", "assets/logos/logo-18.svg"
+    "assets/logos/01_panasonic.svg", "assets/logos/02_mariott.svg", "assets/logos/03_obit.svg",
+    "assets/logos/04_black_star.svg", "assets/logos/05_rpk_nord.svg", "assets/logos/06_svam.svg",
+    "assets/logos/07_ptk.svg", "assets/logos/08_surgutneftregaz.svg", "assets/logos/09_bank_russia.svg",
+    "assets/logos/10_585gold.svg", "assets/logos/11_olmio.svg", "assets/logos/12_spbgut.svg",
+    "assets/logos/13_fujitsy.svg", "assets/logos/14_azottech.svg", "assets/logos/15_vas_pivo.svg",
+    "assets/logos/16_aquafor.svg", "assets/logos/17_tatprom.svg", "assets/logos/18_dpd.svg",
+    "assets/logos/19_amrest.svg", "assets/logos/20_banda.svg", "assets/logos/21_crafter.svg",
+    "assets/logos/22_gaga.svg", "assets/logos/23_gaide.svg", "assets/logos/24_imaika.svg",
+    "assets/logos/25_itaka.svg", "assets/logos/26_key.svg", "assets/logos/27_komfortel.svg",
+    "assets/logos/28_kultura_doma.svg", "assets/logos/29_limak.svg", "assets/logos/30_nienshanc.svg",
+    "assets/logos/31_osc.svg", "assets/logos/32_pulsar.svg", "assets/logos/33_texet.svg",
+    "assets/logos/34_tiret.svg", "assets/logos/35_trinity.svg", "assets/logos/36_umi.svg"
   ];
 
   var list = document.getElementById("grid");
@@ -167,7 +175,8 @@
         img.style.filter = "";
       }, 300);
     }
-    setInterval(swapOne, 900);
+    // show the reference order first, then start shuffling in the rest
+    setTimeout(function () { setInterval(swapOne, 900); }, 3500);
   }
 
   // ---------- Custom cursor (desktop only) ----------
