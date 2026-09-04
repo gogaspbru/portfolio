@@ -37,8 +37,27 @@
   var works = [];
   var rendered = 0;
   var refreshScrollbar = null;   // set by initScrollbar()
-  // desktop = has a real pointer; used to gate autoplaying video tiles (off on mobile)
+  // desktop = has a real pointer; used to gate video tiles (off on mobile)
   var IS_DESKTOP = !!(window.matchMedia && window.matchMedia("(hover: hover) and (pointer: fine)").matches);
+
+  // Preload hover-video clips a bit before they're on screen, so the clip
+  // starts instantly on hover (no fetch-on-hover lag), while still not
+  // downloading anything until you scroll near it.
+  var videoPreloadObserver = ("IntersectionObserver" in window)
+    ? new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) {
+          if (!e.isIntersecting) return;
+          videoPreloadObserver.unobserve(e.target);
+          var v = e.target.__video;
+          if (v && v.preload !== "auto") { v.preload = "auto"; try { v.load(); } catch (_) {} }
+        });
+      }, { rootMargin: "400px 0px 400px 0px" })
+    : null;
+  function preloadVideoInView(video, cell) {
+    if (!videoPreloadObserver) { video.preload = "metadata"; return; }
+    cell.__video = video;
+    videoPreloadObserver.observe(cell);
+  }
 
   // ---------- Card reveal: blocks open top→bottom as they scroll in ----------
   var cardObserver = null;
@@ -118,7 +137,7 @@
     //   default  — autoplays (muted loop), the clip replaces the image;
     //   hover:true — image by default, the clip plays on hover.
     if (item.type === "video" && item.video && IS_DESKTOP) {
-      var hoverMode = item.hover === true;
+      var hoverMode = item.autoplay !== true;   // hover-play is the default; opt in to autoplay
       cell.className += hoverMode ? " item--video-hover" : " item--video-autoplay";
       var video = document.createElement("video");
       video.className = "item__video";
@@ -130,11 +149,12 @@
       video.setAttribute("loop", "");
       video.poster = item.preview || "";
       if (hoverMode) {
-        video.preload = "none";               // don't fetch until hovered
+        video.preload = "none";               // buffered on approach (see below)
         video.src = item.video;
         media.appendChild(video);
+        preloadVideoInView(video, cell);      // preload before hover → instant start
         a.addEventListener("mouseenter", function () {
-          if (video.preload === "none") video.preload = "auto";
+          if (video.preload !== "auto") video.preload = "auto";
           var pr = video.play();
           if (pr && pr.catch) pr.catch(function () {});
         });
