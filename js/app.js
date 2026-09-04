@@ -42,11 +42,20 @@
   var cardObserver = null;
   var cardsArmed = false;
   var cardQueue = [];
-  function revealCard(el) { el.classList.add("card-in"); }
+  var CARD_STAGGER = 0.1;   // seconds between cards that reveal in the same batch
+  function revealCard(el, i) {
+    var tile = el.querySelector(".item__tile");
+    if (tile && i) {
+      tile.style.transitionDelay = (i * CARD_STAGGER) + "s";
+      // clear the delay once revealed so it doesn't slow the hover transition
+      setTimeout(function () { tile.style.transitionDelay = ""; }, 1000 + i * CARD_STAGGER * 1000);
+    }
+    el.classList.add("card-in");
+  }
   function armCards() {
     if (cardsArmed) return;
     cardsArmed = true;
-    cardQueue.forEach(revealCard);
+    cardQueue.forEach(function (el, i) { revealCard(el, i); });
     cardQueue = [];
   }
   function setupCardReveal() {
@@ -54,12 +63,15 @@
     if (reduce || !("IntersectionObserver" in window)) { cardsArmed = true; return; }
     list.classList.add("reveal-cards");   // enables the clipped initial state
     cardObserver = new IntersectionObserver(function (entries) {
+      // reveal only when a block has risen into view; stagger a row so the
+      // opening is visible instead of a whole row popping at once
+      var batch = 0;
       entries.forEach(function (e) {
         if (!e.isIntersecting) return;
         cardObserver.unobserve(e.target);
-        if (cardsArmed) revealCard(e.target); else cardQueue.push(e.target);
+        if (cardsArmed) revealCard(e.target, batch++); else cardQueue.push(e.target);
       });
-    }, { threshold: 0.12, rootMargin: "0px 0px -6% 0px" });
+    }, { threshold: 0, rootMargin: "0px 0px -18% 0px" });
   }
 
   function esc(s) {
