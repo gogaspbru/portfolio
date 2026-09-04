@@ -194,7 +194,7 @@ a { color: inherit; text-decoration: none; }
   max-width: 24ch;
   font-size: clamp(45px, 6.6vw, 84px);
   font-weight: 700;
-  line-height: 0.85;
+  line-height: 0.8;
   letter-spacing: -0.025em;
   color: var(--fg);
 }
