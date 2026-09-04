@@ -42,7 +42,7 @@
   var cardObserver = null;
   var cardsArmed = false;
   var cardQueue = [];
-  var CARD_STAGGER = 0.1;   // seconds between cards that reveal in the same batch
+  var CARD_STAGGER = 0.09;   // seconds between cards that reveal in the same batch
   function revealCard(el, i) {
     var tile = el.querySelector(".item__tile");
     if (tile && i) {
@@ -71,7 +71,7 @@
         cardObserver.unobserve(e.target);
         if (cardsArmed) revealCard(e.target, batch++); else cardQueue.push(e.target);
       });
-    }, { threshold: 0, rootMargin: "0px 0px -18% 0px" });
+    }, { threshold: 0.2, rootMargin: "0px 0px -8% 0px" });
   }
 
   function esc(s) {
@@ -143,8 +143,9 @@
       '<div class="item__caption">' +
       '<span class="item__title">' + esc(item.title || "") + "</span>" +
       '<span class="item__arrow" aria-hidden="true">' +
-      '<svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.4">' +
-      '<path d="M6 14 14 6"/><path d="M8 6H14V12"/></svg></span>' +
+      '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" ' +
+      'stroke-linecap="round" stroke-linejoin="round">' +
+      '<path d="M7 17 17 7"/><path d="M8.5 7H17v8.5"/></svg></span>' +
       "</div>";
 
     a.insertAdjacentHTML("beforeend", caption);
