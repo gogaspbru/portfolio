@@ -333,7 +333,7 @@ a { color: inherit; text-decoration: none; }
   max-width: 66.666%;               /* two thirds of the screen */
   font-size: clamp(26px, 4vw, 58px);
   font-weight: 600;
-  line-height: 0.95;
+  line-height: 0.63;
   letter-spacing: -0.02em;
   color: var(--fg);
   text-wrap: balance;
