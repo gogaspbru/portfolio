@@ -292,7 +292,102 @@
   function hidePreloader() {
     if (!preloader || preloader.classList.contains("is-hidden")) return;
     preloader.classList.add("is-hidden");                 // panels split up + down
+    setTimeout(function () { armReveal(); }, 180);         // headings float in as the site appears
     setTimeout(function () { preloader.style.display = "none"; }, 1000);
+  }
+
+  // ---------- Scroll reveal (each line floats up from behind a clip) ----------
+  var armReveal = function () {};   // replaced by initReveal(); called when preloader lifts
+  function initReveal() {
+    var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    var els = [].slice.call(document.querySelectorAll("[data-reveal]"));
+    if (!els.length || reduce) return;
+    var STAGGER = 0.09;            // seconds between consecutive lines
+    var armed = false, queued = [];
+
+    function splitLines(el) {
+      var text = el._revealText;
+      // lay the words out to measure where the browser wraps them
+      el.textContent = "";
+      var words = text.split(/\s+/).filter(Boolean);
+      var spans = words.map(function (w) {
+        var s = document.createElement("span");
+        s.style.display = "inline-block";
+        s.textContent = w;
+        return s;
+      });
+      spans.forEach(function (s, i) {
+        el.appendChild(s);
+        if (i < spans.length - 1) el.appendChild(document.createTextNode(" "));
+      });
+      var lines = [], cur = [], top = null;
+      spans.forEach(function (s) {
+        var t = s.offsetTop;
+        if (top === null) top = t;
+        if (t - top > 2) { lines.push(cur); cur = []; top = t; }
+        cur.push(s.textContent);
+      });
+      if (cur.length) lines.push(cur);
+      // rebuild as masked lines
+      el.textContent = "";
+      el._inners = [];
+      lines.forEach(function (lineWords, i) {
+        var line = document.createElement("span");
+        line.className = "reveal-line";
+        var inner = document.createElement("span");
+        inner.className = "reveal-line__inner";
+        inner.style.transitionDelay = (i * STAGGER) + "s";
+        inner.textContent = lineWords.join(" ");
+        line.appendChild(inner);
+        el.appendChild(line);
+        el._inners.push(inner);
+      });
+    }
+
+    function fire(el) { el.classList.add("is-in"); el._revealed = true; }
+
+    els.forEach(function (el) {
+      el._revealText = el.textContent.trim();
+      splitLines(el);
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) {
+          if (!e.isIntersecting) return;
+          io.unobserve(el);
+          if (armed) fire(el); else queued.push(el);   // hold above-the-fold until preloader lifts
+        });
+      }, { threshold: 0.2, rootMargin: "0px 0px -8% 0px" });
+      io.observe(el);
+    });
+
+    armReveal = function () {
+      if (armed) return;
+      armed = true;
+      queued.forEach(fire);
+      queued = [];
+    };
+
+    // re-measure lines on resize; keep already-revealed text visible without re-animating
+    var t;
+    window.addEventListener("resize", function () {
+      clearTimeout(t);
+      t = setTimeout(function () {
+        els.forEach(function (el) {
+          if (!el._inners) return;
+          var wasRevealed = el._revealed;
+          splitLines(el);
+          if (wasRevealed) {
+            el.classList.add("is-in");
+            el._inners.forEach(function (inner) {
+              inner.classList.add("reveal-line--noanim");
+            });
+            void el.offsetWidth;
+            el._inners.forEach(function (inner) {
+              inner.classList.remove("reveal-line--noanim");
+            });
+          }
+        });
+      }, 200);
+    });
   }
 
   function init(data) {
@@ -302,6 +397,7 @@
     loadMoreBtn.addEventListener("click", renderNext);
     var yearEl = document.getElementById("year");
     if (yearEl) yearEl.textContent = new Date().getFullYear();
+    initReveal();
   }
 
   initCursor();

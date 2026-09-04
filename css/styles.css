@@ -170,6 +170,25 @@ a { color: inherit; text-decoration: none; }
   margin-bottom: clamp(28px, 4vw, 56px);
   text-align: left;
 }
+
+/* ===== Scroll reveal: each line slides up from behind a clip (studio style) ===== */
+.reveal-line {
+  display: block;
+  overflow: hidden;
+  padding: 0.14em 0.03em;      /* room so ascenders/descenders aren't clipped at rest */
+  margin: -0.14em -0.03em;     /* ...compensated so layout position is unchanged */
+}
+.reveal-line__inner {
+  display: block;
+  transform: translateY(120%);
+  transition: transform 0.95s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: transform;
+}
+[data-reveal].is-in .reveal-line__inner { transform: translateY(0); }
+.reveal-line__inner.reveal-line--noanim { transition: none; }
+@media (prefers-reduced-motion: reduce) {
+  .reveal-line__inner { transform: none; transition: none; }
+}
 .intro__title {
   margin: 0;
   max-width: 24ch;
