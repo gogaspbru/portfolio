@@ -278,11 +278,14 @@ a { color: inherit; text-decoration: none; }
   object-fit: cover;
   display: block;
 }
-/* slow "Ken Burns" zoom on hover — reads like a subtle video */
-.item__img { transition: transform 3.6s cubic-bezier(.2, .5, .2, 1); }
-.item__tile:hover .item__img { transform: scale(1.07); }
-.item__video { opacity: 0; transition: opacity .3s ease; }
-.item.is-video .item__tile:hover .item__video { opacity: 1; }
+/* slow "Ken Burns" zoom on hover — applied to photo AND video alike, so any
+   hover effects read the same on both kinds of tile */
+.item__img,
+.item__video { transition: transform 3.6s cubic-bezier(.2, .5, .2, 1); }
+.item__tile:hover .item__img,
+.item__tile:hover .item__video { transform: scale(1.07); }
+/* the video sits over the poster image and is the visible layer when present */
+.item__video { z-index: 1; }
 
 /* play badge for video tiles */
 .item__badge {

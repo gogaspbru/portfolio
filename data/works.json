@@ -6,10 +6,11 @@
     "link": "https://kultura-doma.ru/"
   },
   {
-    "type": "photo",
+    "type": "video",
     "title": "LINDERA",
     "preview": "assets/works/02_lindera.webp",
-    "link": "https://lindera.ru/"
+    "link": "https://lindera.ru/",
+    "video": "assets/works/02_lindera.webm"
   },
   {
     "type": "photo",

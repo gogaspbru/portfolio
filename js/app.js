@@ -37,6 +37,8 @@
   var works = [];
   var rendered = 0;
   var refreshScrollbar = null;   // set by initScrollbar()
+  // desktop = has a real pointer; used to gate autoplaying video tiles (off on mobile)
+  var IS_DESKTOP = !!(window.matchMedia && window.matchMedia("(hover: hover) and (pointer: fine)").matches);
 
   // ---------- Card reveal: blocks open top→bottom as they scroll in ----------
   var cardObserver = null;
@@ -111,29 +113,26 @@
     img.src = item.preview || "";
     media.appendChild(img);
 
-    if (item.type === "video") {
-      if (item.video) {
-        var video = document.createElement("video");
-        video.className = "item__video";
-        video.muted = true;
-        video.loop = true;
-        video.playsInline = true;
-        video.setAttribute("playsinline", "");
-        video.preload = "none";
-        video.poster = item.preview || "";
-        video.src = item.video;
-        media.appendChild(video);
-
-        a.addEventListener("mouseenter", function () {
-          if (video.preload === "none") video.preload = "auto";
-          var p = video.play();
-          if (p && p.catch) p.catch(function () {});
-        });
-        a.addEventListener("mouseleave", function () {
-          video.pause();
-          video.currentTime = 0;
-        });
-      }
+    // Video tiles: the clip replaces the image and autoplays (muted loop).
+    // On mobile/touch we don't create the video at all — the poster image
+    // stays. The image remains underneath as a fallback either way.
+    if (item.type === "video" && item.video && IS_DESKTOP) {
+      var video = document.createElement("video");
+      video.className = "item__video";
+      video.muted = true;
+      video.loop = true;
+      video.autoplay = true;
+      video.playsInline = true;
+      video.setAttribute("muted", "");
+      video.setAttribute("playsinline", "");
+      video.setAttribute("autoplay", "");
+      video.setAttribute("loop", "");
+      video.preload = "auto";
+      video.poster = item.preview || "";
+      video.src = item.video;
+      media.appendChild(video);
+      var pr = video.play();
+      if (pr && pr.catch) pr.catch(function () {});
     }
 
     a.appendChild(media);
