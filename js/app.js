@@ -9,7 +9,7 @@
 (function () {
   "use strict";
 
-  var ROWS_PER_LOAD = 5;   // load 5 full rows at a time (15 on 3 cols, 10 on 2 cols)
+  var ROWS_PER_LOAD = 6;   // load 6 full rows at a time (18 on 3 cols, 12 on 2 cols)
 
   // Marquee logos. Add/remove files in assets/logos/ and list them here.
   // (window.__LOGOS__ lets the single-file build inline them as data URIs.)
