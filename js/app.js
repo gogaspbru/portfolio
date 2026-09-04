@@ -9,7 +9,7 @@
 (function () {
   "use strict";
 
-  var PAGE_SIZE = 15;
+  var ROWS_PER_LOAD = 5;   // load 5 full rows at a time (15 on 3 cols, 10 on 2 cols)
 
   // Marquee logos. Add/remove files in assets/logos/ and list them here.
   // (window.__LOGOS__ lets the single-file build inline them as data URIs.)
@@ -108,9 +108,19 @@
     return cell;
   }
 
+  // current number of grid columns (3 desktop / 3 tablet / 2 mobile)
+  function gridCols() {
+    var t = getComputedStyle(list).gridTemplateColumns;
+    var n = t ? t.split(" ").filter(Boolean).length : 1;
+    return n > 0 ? n : 1;
+  }
+
   // ---------- Rendering ----------
   function renderNext() {
-    var end = Math.min(rendered + PAGE_SIZE, works.length);
+    // load whole rows so the last row is always full — no empty cell before
+    // the "Load more" button, whatever the column count
+    var step = gridCols() * ROWS_PER_LOAD;
+    var end = Math.min(rendered + step, works.length);
     var frag = document.createDocumentFragment();
     for (var i = rendered; i < end; i++) {
       frag.appendChild(buildItem(works[i]));
