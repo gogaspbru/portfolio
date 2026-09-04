@@ -292,6 +292,9 @@ a { color: inherit; text-decoration: none; }
   transition: transform 3.6s cubic-bezier(.2, .5, .2, 1), opacity .4s ease;
 }
 .item--video-hover .item__tile:hover .item__video { opacity: 1; }
+/* no zoom on hover-video tiles — just fade the clip in */
+.item--video-hover .item__tile:hover .item__img,
+.item--video-hover .item__tile:hover .item__video { transform: none; }
 
 /* play badge for video tiles */
 .item__badge {

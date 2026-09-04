@@ -10,7 +10,8 @@
     "title": "LINDERA",
     "preview": "assets/works/02_lindera.webp",
     "link": "https://lindera.ru/",
-    "video": "assets/works/02_lindera.webm"
+    "video": "assets/works/02_lindera.webm",
+    "hover": true
   },
   {
     "type": "video",
