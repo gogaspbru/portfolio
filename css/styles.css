@@ -349,14 +349,14 @@ a { color: inherit; text-decoration: none; }
 .logos__grid {
   display: grid;
   grid-template-columns: repeat(var(--logo-cols), 1fr);
-  gap: clamp(14px, 2.16vw, 34px) clamp(16px, 2vw, 40px);   /* row spacing */
+  gap: clamp(17px, 2.6vw, 41px) clamp(16px, 2vw, 40px);   /* row spacing */
 }
 .logos__cell {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: clamp(11px, 1.56vw, 19px) 12px;
-  min-height: 62px;
+  padding: clamp(13px, 1.87vw, 23px) 12px;
+  min-height: 74px;
 }
 .logos__cell img {
   /* balance by visual weight: fit inside a box (contain), so wide wordmarks
