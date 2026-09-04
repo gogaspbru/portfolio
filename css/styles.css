@@ -312,7 +312,7 @@ a { color: inherit; text-decoration: none; }
   font-size: 15px;
   line-height: 1.3;
 }
-.item__title { color: var(--fg); font-weight: 600; transition: color .3s ease; }
+.item__title { color: var(--fg); font-weight: 500; transition: color .3s ease; }
 .item__arrow { color: var(--fg); display: flex; transition: color .3s ease, transform .35s cubic-bezier(.22,1,.36,1); }
 .item__arrow svg { width: 18px; height: 18px; display: block; }
 .item__tile:hover .item__arrow { transform: translate(2px, -2px); }   /* subtle lift on hover */
