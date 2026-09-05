@@ -1,9 +1,10 @@
 [
   {
-    "type": "photo",
+    "type": "video",
     "title": "Культура Дома",
     "preview": "assets/works/01_kultura_doma.webp",
-    "link": "https://kultura-doma.ru/"
+    "link": "https://kultura-doma.ru/",
+    "video": "assets/works/01_kultura_doma.webm"
   },
   {
     "type": "video",
