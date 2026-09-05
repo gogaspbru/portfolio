@@ -28,10 +28,11 @@
     "video": "assets/works/04_svam.webm"
   },
   {
-    "type": "photo",
+    "type": "video",
     "title": "ОБИТ",
     "preview": "assets/works/05_obit.webp",
-    "link": "https://obit.ru/"
+    "link": "https://obit.ru/",
+    "video": "assets/works/05_obit.webm"
   },
   {
     "type": "photo",
