@@ -8,7 +8,7 @@
   },
   {
     "type": "video",
-    "title": "LINDERA",
+    "title": "Lindera",
     "preview": "assets/works/02_lindera.webp",
     "link": "https://lindera.ru/",
     "video": "assets/works/02_lindera.webm"
@@ -48,19 +48,19 @@
   },
   {
     "type": "photo",
-    "title": "Branding",
+    "title": "Branding.GE",
     "preview": "assets/works/08_branding.webp",
     "link": "https://branding.ge/"
   },
   {
     "type": "photo",
-    "title": "UUT Telecom",
+    "title": "Уют Телеком",
     "preview": "assets/works/09_uut_telecom.webp",
     "link": "https://uut-telecom.ru/"
   },
   {
     "type": "photo",
-    "title": "Dipro",
+    "title": "Цифровой прогресс",
     "preview": "assets/works/010_dipro.webp",
     "link": "https://dipro.ru/"
   },
@@ -78,7 +78,7 @@
   },
   {
     "type": "photo",
-    "title": "Eneva",
+    "title": "Енева",
     "preview": "assets/works/013_eneva.webp",
     "link": "https://eneva.ru/"
   },
@@ -114,13 +114,13 @@
   },
   {
     "type": "photo",
-    "title": "UNET",
+    "title": "Юнет",
     "preview": "assets/works/019_unet.webp",
     "link": "https://www.unetcom.ru/"
   },
   {
     "type": "photo",
-    "title": "iMaika",
+    "title": "Ямайка",
     "preview": "assets/works/020_imaika.webp",
     "link": "http://www.i-maika.ru/"
   },
@@ -150,19 +150,19 @@
   },
   {
     "type": "photo",
-    "title": "Black Star",
+    "title": "Black Star Fitness",
     "preview": "assets/works/025_black_star.webp",
     "link": "https://blackstar.potok4.ru/"
   },
   {
     "type": "photo",
-    "title": "DC1",
+    "title": "Дата-Центр N1",
     "preview": "assets/works/026_dc1.webp",
     "link": "https://dc1.ru/"
   },
   {
     "type": "photo",
-    "title": "teXet",
+    "title": "Texet",
     "preview": "assets/works/027_texet.webp",
     "link": "https://www.texet.ru/"
   },
@@ -180,13 +180,13 @@
   },
   {
     "type": "photo",
-    "title": "Vitaliqua",
+    "title": "ВитаЛиква",
     "preview": "assets/works/030_vitaliqua.webp",
     "link": "https://vitaliqua.ru/"
   },
   {
     "type": "photo",
-    "title": "Leaders",
+    "title": "Фонд Будущие Лидеры",
     "preview": "assets/works/031_leaders.webp"
   },
   {
@@ -197,13 +197,13 @@
   },
   {
     "type": "photo",
-    "title": "Turul",
+    "title": "Турул",
     "preview": "assets/works/033_turul.webp",
     "link": "https://turul-group.ru/"
   },
   {
     "type": "photo",
-    "title": "GeoSplit",
+    "title": "ГеоСплит",
     "preview": "assets/works/034_geosplit.webp",
     "link": "https://geosplit.ru/"
   },
@@ -215,7 +215,7 @@
   },
   {
     "type": "photo",
-    "title": "Trinity",
+    "title": "Тринити",
     "preview": "assets/works/036_trinity.webp",
     "link": "https://www.trinitygroup.ru/"
   }
