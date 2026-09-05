@@ -56,10 +56,11 @@
     "video": "assets/works/08_branding.webm"
   },
   {
-    "type": "photo",
+    "type": "video",
     "title": "Уют Телеком",
     "preview": "assets/works/09_uut_telecom.webp",
-    "link": "https://uut-telecom.ru/"
+    "link": "https://uut-telecom.ru/",
+    "video": "assets/works/09_uut_telecom.webm"
   },
   {
     "type": "photo",
