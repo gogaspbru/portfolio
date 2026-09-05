@@ -492,6 +492,18 @@
     });
   }
 
+  // Dark tail: after the logos, the statement + footer go dark as you scroll in
+  function initTailDark() {
+    var st = document.querySelector(".statement");
+    if (!st || !("IntersectionObserver" in window)) return;
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        document.body.classList.toggle("tail-dark", e.isIntersecting);
+      });
+    }, { rootMargin: "0px 0px -35% 0px", threshold: 0 });
+    io.observe(st);
+  }
+
   function init(data) {
     works = Array.isArray(data) ? data : [];
     setupCardReveal();
@@ -501,6 +513,7 @@
     var yearEl = document.getElementById("year");
     if (yearEl) yearEl.textContent = new Date().getFullYear();
     initReveal();
+    initTailDark();
   }
 
   initCursor();

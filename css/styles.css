@@ -368,7 +368,10 @@ a { color: inherit; text-decoration: none; }
 /* ===================== Statement ===================== */
 .statement {
   margin-top: clamp(64px, 10vw, 140px);
-  margin-bottom: clamp(24px, 4vw, 56px);
+  margin-bottom: 0;
+  padding-top: clamp(40px, 6vw, 90px);
+  padding-bottom: clamp(40px, 6vw, 90px);
+  transition: background-color .6s ease;
 }
 .statement__text {
   margin: 0;
@@ -379,7 +382,15 @@ a { color: inherit; text-decoration: none; }
   letter-spacing: -0.02em;
   color: var(--fg);
   text-wrap: balance;
+  transition: color .6s ease;
 }
+
+/* ===== Dark tail (experiment): statement + footer go dark on scroll-in ===== */
+body.tail-dark .statement { background: #0f1013; }
+body.tail-dark .statement__text { color: #f3f2ef; }
+body.tail-dark .footer { background: #0f1013; }
+body.tail-dark .footer__inner { color: #8b8a83; }
+body.tail-dark .footer__mail { color: #f3f2ef; }
 @media (max-width: 900px) {
   .statement__text { max-width: 100%; }
 }
@@ -414,10 +425,10 @@ a { color: inherit; text-decoration: none; }
 .logos__cell:hover img { opacity: 1; }
 
 /* ===================== Footer (compact) ===================== */
-.footer { margin-top: clamp(44px, 7vw, 88px); }
+.footer { margin-top: 0; transition: background-color .6s ease; }
 .footer__inner {
-  padding-top: 26px;
-  padding-bottom: 34px;
+  padding-top: clamp(30px, 4vw, 52px);
+  padding-bottom: clamp(30px, 4vw, 48px);
   display: flex;
   align-items: center;
   justify-content: space-between;   /* copyright left, email right */
@@ -425,8 +436,13 @@ a { color: inherit; text-decoration: none; }
   flex-wrap: wrap;
   color: var(--muted);
   font-size: 15px;   /* same as the case captions */
+  transition: color .6s ease;
 }
+.footer__inner,
+.footer__copy,
+.footer__mail { transition: color .6s ease; }
 .footer__mail:hover { color: var(--fg); }
+body.tail-dark .footer__mail:hover { color: #fff; }
 
 /* ===================== Responsive ===================== */
 @media (max-width: 1024px) {
