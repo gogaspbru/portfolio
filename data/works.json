@@ -21,10 +21,11 @@
     "video": "assets/works/03_krotex.webm"
   },
   {
-    "type": "photo",
+    "type": "video",
     "title": "SVAM Group",
     "preview": "assets/works/04_svam.webp",
-    "link": "https://svamgroup.ru/"
+    "link": "https://svamgroup.ru/",
+    "video": "assets/works/04_svam.webm"
   },
   {
     "type": "photo",
