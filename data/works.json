@@ -35,10 +35,11 @@
     "video": "assets/works/05_obit.webm"
   },
   {
-    "type": "photo",
+    "type": "video",
     "title": "Smart Open",
     "preview": "assets/works/06_smart_open.webp",
-    "link": "https://smartopen.pro/"
+    "link": "https://smartopen.pro/",
+    "video": "assets/works/06_smart_open.webm"
   },
   {
     "type": "photo",
