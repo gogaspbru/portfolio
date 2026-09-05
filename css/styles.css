@@ -47,7 +47,7 @@
   --col-gap: clamp(18px, 2vw, 32px);
   --row-gap: clamp(18px, 2vw, 32px);
 
-  --card-hover: #333331;     /* graphite: card background on hover */
+  --card-hover: #2c2d33;     /* card background on hover */
   --card-ratio: 4 / 3;       /* big tile (card) — less tall, so smaller top/bottom gaps */
   --card-pad-eq: 9%;         /* padding around the media: top + sides (% of card width) */
   --card-gap: clamp(26px, 4.2%, 48px);  /* gap from media down to the caption */
