@@ -42,16 +42,18 @@
     "video": "assets/works/06_smart_open.webm"
   },
   {
-    "type": "photo",
+    "type": "video",
     "title": "ТатпромХолдинг",
     "preview": "assets/works/07_tatprom.webp",
-    "link": "https://gk-tph.ru/"
+    "link": "https://gk-tph.ru/",
+    "video": "assets/works/07_tatprom.webm"
   },
   {
-    "type": "photo",
+    "type": "video",
     "title": "Branding.GE",
     "preview": "assets/works/08_branding.webp",
-    "link": "https://branding.ge/"
+    "link": "https://branding.ge/",
+    "video": "assets/works/08_branding.webm"
   },
   {
     "type": "photo",
