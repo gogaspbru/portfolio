@@ -439,9 +439,15 @@
 
     function fire(el) { el.classList.add("is-in"); el._revealed = true; }
 
+    // On mobile the per-line mask is fragile (line measurement can freeze at the
+    // wrong width and mangle wrapping), so reveal the whole block instead —
+    // the text then wraps natively and always correctly.
+    var lineMode = !(window.matchMedia && window.matchMedia("(max-width: 640px)").matches);
+
     els.forEach(function (el) {
       el._revealText = el.textContent.trim();
-      splitLines(el);
+      if (lineMode) splitLines(el);
+      else el.classList.add("reveal-simple");
       var io = new IntersectionObserver(function (entries) {
         entries.forEach(function (e) {
           if (!e.isIntersecting) return;
@@ -462,6 +468,7 @@
     // re-measure lines on resize; keep already-revealed text visible without re-animating
     var t;
     window.addEventListener("resize", function () {
+      if (!lineMode) return;   // whole-block reveal needs no re-measuring
       clearTimeout(t);
       t = setTimeout(function () {
         els.forEach(function (el) {
