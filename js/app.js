@@ -201,7 +201,9 @@
   function renderNext() {
     // load whole rows so the last row is always full — no empty cell before
     // the "Load more" button, whatever the column count
-    var step = gridCols() * ROWS_PER_LOAD;
+    var cols = gridCols();
+    // mobile (2 cols): 16 per load (8 full rows); desktop/tablet: 6 full rows
+    var step = (cols === 2) ? 16 : cols * ROWS_PER_LOAD;
     var end = Math.min(rendered + step, works.length);
     var frag = document.createDocumentFragment();
     var fresh = [];
