@@ -420,6 +420,7 @@ body.tail-dark .footer__mail { color: #f3f2ef; }
   max-width: clamp(88px, 8.6vw, 130px);
   object-fit: contain;
   opacity: .78;
+  filter: brightness(0.82);   /* logos ~18% darker */
   transition: opacity .3s ease, filter .3s ease;   /* blur swap + hover */
 }
 .logos__cell:hover img { opacity: 1; }
@@ -456,7 +457,7 @@ body.tail-dark .footer__mail:hover { color: #fff; }
   .contacts { gap: 22px; }
   .contacts__item { font-size: 12px; }
   /* Mobile: the phone number collapses to a handset icon */
-  .contacts__item--phone { display: inline-flex; align-items: center; }
+  .contacts__item--phone { display: inline-flex; align-items: center; margin-right: 8px; }
   .contacts__phone-text { display: none; }
   .contacts__phone-icon { display: block; }
   .item__caption { font-size: 13px; }
@@ -466,8 +467,10 @@ body.tail-dark .footer__mail:hover { color: #fff; }
   .logos__grid { row-gap: 11px; column-gap: clamp(6px, 2.5vw, 16px); }
   .logos__cell { padding: 9px 4px; min-height: 54px; }
   .logos__cell img { max-width: clamp(46px, 17vw, 78px); max-height: clamp(18px, 6vw, 28px); }
-  /* Mobile: main phrase a touch smaller */
-  .intro__title { font-size: clamp(34px, 9.4vw, 44px); }
+  /* Mobile: main phrase a touch smaller, with more line spacing */
+  .intro__title { font-size: clamp(34px, 9.4vw, 44px); line-height: 0.9; }
+  /* Mobile: looser line spacing in the bottom statement (tight desktop value overlaps here) */
+  .statement__text { line-height: 0.95; }
   /* Mobile: no card frame — drop the grey panel and all padding so the
      work image sits edge-to-edge, caption just below it */
   .item__tile {
