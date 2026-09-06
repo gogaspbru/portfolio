@@ -38,7 +38,7 @@
   --card-bg: #f8f8f8;        /* the big light tile (card) panel on white */
   --tile-bg: #eceae4;        /* fallback bg behind the media */
   --accent: #26251f;
-  --graphite: #2C2D33;       /* preloader background */
+  --graphite: #111215;       /* preloader background */
   --card-radius: 8px;        /* rounded corners of the card */
 
   --maxw: none;              /* full-bleed: content spans the whole viewport width */
@@ -47,7 +47,7 @@
   --col-gap: clamp(18px, 2vw, 32px);
   --row-gap: clamp(18px, 2vw, 32px);
 
-  --card-hover: #2c2d33;     /* card background on hover */
+  --card-hover: #111215;     /* card background on hover */
   --card-ratio: 4 / 3;       /* big tile (card) — less tall, so smaller top/bottom gaps */
   --card-pad-eq: 9%;         /* padding around the media: top + sides (% of card width) */
   --card-gap: clamp(26px, 4.2%, 48px);  /* gap from media down to the caption */
@@ -162,7 +162,7 @@ a { color: inherit; text-decoration: none; }
 .contacts__item:hover { opacity: .6; }
 .contacts__item--icon { display: inline-flex; align-items: center; }
 /* new icon set: sized by width, aspect preserved (matches the mockup) */
-.contacts__item--icon svg { width: 24px; height: auto; display: block; }
+.contacts__item--icon svg { width: 19px; height: auto; display: block; }   /* mail/tg, ~20% smaller */
 .contacts__phone-icon { display: none; width: 21px; height: auto; }   /* slightly smaller, per the mockup */
 
 /* ===================== Intro (centered, top) ===================== */
@@ -354,7 +354,7 @@ a { color: inherit; text-decoration: none; }
   letter-spacing: .05em;
   text-transform: uppercase;
   font-size: 12px;
-  padding: 13px 32px;
+  padding: 15px 72px;
   color: var(--fg);
   background: transparent;
   border: 1px solid rgba(38, 37, 31, .22);   /* very faint outline */
@@ -377,7 +377,7 @@ a { color: inherit; text-decoration: none; }
   position: fixed;
   left: 0; right: 0; bottom: 0;
   z-index: 0;                       /* sits behind .page, revealed as it scrolls away */
-  background: #0f1013;
+  background: #111215;
   color: #f3f2ef;
 }
 .site-footer__inner {
@@ -390,6 +390,11 @@ a { color: inherit; text-decoration: none; }
 .statement {
   padding-top: clamp(48px, 6vw, 96px);
   padding-bottom: clamp(40px, 6vw, 90px);
+  /* it's a flex item; kill the .wrap auto-margins so it stretches full-width
+     instead of shrink-wrapping to the (percentage-capped) text */
+  align-self: stretch;
+  margin-left: 0;
+  margin-right: 0;
 }
 .statement__text {
   margin: 0;
@@ -399,7 +404,6 @@ a { color: inherit; text-decoration: none; }
   line-height: 0.98;
   letter-spacing: -0.02em;
   color: #f3f2ef;
-  text-wrap: balance;
 }
 @media (max-width: 900px) {
   .statement__text { max-width: 100%; }
@@ -429,25 +433,75 @@ a { color: inherit; text-decoration: none; }
   max-height: clamp(24px, 2.5vw, 38px);
   max-width: clamp(88px, 8.6vw, 130px);
   object-fit: contain;
-  opacity: .96;   /* a touch less transparent — logos read a bit darker */
+  opacity: 1;
+  filter: brightness(0.55);   /* darker logos (keeps hue, just deeper tone) */
   transition: opacity .3s ease, filter .3s ease;   /* blur swap + hover */
 }
-.logos__cell:hover img { opacity: 1; }
+.logos__cell:hover img { filter: brightness(0.4); }
 
 /* ===================== Footer (inside the dark reveal footer) ===================== */
-.footer__inner {
-  padding-top: clamp(24px, 3vw, 40px);
+.footer__bottom {
   padding-bottom: clamp(40px, 5vw, 72px);
+}
+.footer__copy {
+  margin: 0 0 clamp(26px, 4vw, 54px);
+  color: #8b8a83;
+  font-size: 15px;
+}
+.contact {
   display: flex;
   align-items: center;
-  justify-content: space-between;   /* copyright left, email right */
-  gap: 12px;
+  justify-content: space-between;
+  gap: clamp(24px, 4vw, 64px);
   flex-wrap: wrap;
-  color: #8b8a83;
-  font-size: 15px;   /* same as the case captions */
 }
-.footer__mail { color: #f3f2ef; }
-.footer__mail:hover { color: #fff; }
+.contact__title {
+  margin: 0;
+  font-size: clamp(48px, 9vw, 132px);
+  font-weight: 700;
+  line-height: 0.9;
+  letter-spacing: -0.03em;
+  text-transform: uppercase;
+  color: #f3f2ef;
+}
+.contact__socials {
+  display: flex;
+  gap: clamp(12px, 1.4vw, 22px);
+}
+.social {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: clamp(58px, 6vw, 92px);
+  height: clamp(58px, 6vw, 92px);
+  border-radius: 50%;
+  background: #24252b;
+  color: #f3f2ef;
+  overflow: hidden;
+  will-change: transform;
+  transition: transform .6s cubic-bezier(.34,1.56,.64,1), background .3s ease;   /* springy return */
+}
+/* expanding fill ring on hover (GSAP-style) */
+.social__ring {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: #f3f2ef;
+  transform: scale(0);
+  transition: transform .5s cubic-bezier(.22,1,.36,1);
+  z-index: 0;
+}
+.social:hover .social__ring { transform: scale(1); }
+.social:hover { color: #111215; }
+.social__icon {
+  position: relative;
+  z-index: 1;
+  width: 38%;
+  height: auto;
+  will-change: transform;
+  transition: transform .6s cubic-bezier(.34,1.56,.64,1);
+}
 
 /* ===================== Responsive ===================== */
 @media (max-width: 1024px) {
@@ -465,7 +519,20 @@ a { color: inherit; text-decoration: none; }
   .contacts__phone-text { display: none; }
   .contacts__phone-icon { display: block; }
   .item__caption { font-size: 13px; }
-  .footer__inner { font-size: 13px; }   /* keep footer matched to captions */
+  .footer__copy { font-size: 13px; }   /* keep footer matched to captions */
+  /* Mobile: nudge the envelope icon a touch left */
+  .contacts__item--mail { transform: translateX(-4px); }
+  /* Mobile: hide the "opens in new tab" arrows on case cards */
+  .item__arrow { display: none; }
+  /* Mobile: less white space before the dark footer reveal */
+  .page { padding-bottom: 90px; }
+  /* Mobile: full-width "show more" button */
+  .load-more-wrap { display: block; }
+  .load-more { width: 100%; padding: 16px; }
+  /* Mobile: stack the contact block — heading over the social circles */
+  .contact { flex-direction: column; align-items: flex-start; gap: clamp(22px, 6vw, 32px); }
+  .contact__title { font-size: clamp(30px, 11.5vw, 56px); }
+  .social { width: 56px; height: 56px; }
   /* Mobile: keep the logo grid at 3 columns that always fit — smaller logos,
      tighter gaps/padding so nothing overflows and side margins stay equal */
   .logos__grid { row-gap: 11px; column-gap: clamp(6px, 2.5vw, 16px); }

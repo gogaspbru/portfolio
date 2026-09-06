@@ -446,10 +446,36 @@
     // the text then wraps natively and always correctly.
     var lineMode = !(window.matchMedia && window.matchMedia("(max-width: 640px)").matches);
 
+    // The dark-footer statement lives in a fixed element, so a viewport
+    // IntersectionObserver would treat it as visible from the start (it's just
+    // covered by the white page). Drive it from scroll instead: fire once the
+    // white page has scrolled up far enough to uncover it.
+    function watchFooterReveal(el) {
+      var page = document.querySelector(".page");
+      if (!page) { queued.push(el); return; }
+      function doReveal() {
+        // Re-measure lines now that the footer is at its final width (the boot-time
+        // split can happen before fonts/layout settle and wrap too narrow).
+        if (lineMode && el._inners) splitLines(el);
+        if (armed) fire(el); else queued.push(el);
+      }
+      function check() {
+        var pageBottom = page.getBoundingClientRect().bottom;
+        var r = el.getBoundingClientRect();
+        if (pageBottom <= r.top + r.height * 0.5) {   // ~half of the statement uncovered
+          window.removeEventListener("scroll", check);
+          doReveal();
+        }
+      }
+      window.addEventListener("scroll", check, { passive: true });
+      check();
+    }
+
     els.forEach(function (el) {
       el._revealText = el.textContent.trim();
       if (lineMode) splitLines(el);
       else el.classList.add("reveal-simple");
+      if (el.closest && el.closest(".site-footer")) { watchFooterReveal(el); return; }
       var io = new IntersectionObserver(function (entries) {
         entries.forEach(function (e) {
           if (!e.isIntersecting) return;
@@ -510,6 +536,33 @@
     setTimeout(sync, 1200);   // re-sync once layout/fonts settle
   }
 
+  // Magnetic social circles (desktop): the button springs toward the cursor and
+  // elastically settles back — mirrors the GreenSock demo behaviour.
+  function initMagnetic() {
+    if (!IS_DESKTOP) return;
+    var els = [].slice.call(document.querySelectorAll(".social"));
+    els.forEach(function (el) {
+      var icon = el.querySelector(".social__icon");
+      var PULL = 0.35, ICON_PULL = 0.18;
+      el.addEventListener("mousemove", function (e) {
+        var r = el.getBoundingClientRect();
+        var mx = e.clientX - (r.left + r.width / 2);
+        var my = e.clientY - (r.top + r.height / 2);
+        el.style.transition = "transform .18s ease-out, background .3s ease";
+        el.style.transform = "translate(" + (mx * PULL) + "px," + (my * PULL) + "px)";
+        if (icon) {
+          icon.style.transition = "transform .18s ease-out";
+          icon.style.transform = "translate(" + (mx * ICON_PULL) + "px," + (my * ICON_PULL) + "px)";
+        }
+      });
+      el.addEventListener("mouseleave", function () {
+        el.style.transition = "";   // fall back to the springy CSS curve for the return
+        el.style.transform = "";
+        if (icon) { icon.style.transition = ""; icon.style.transform = ""; }
+      });
+    });
+  }
+
   function init(data) {
     works = Array.isArray(data) ? data : [];
     setupCardReveal();
@@ -520,6 +573,7 @@
     if (yearEl) yearEl.textContent = new Date().getFullYear();
     initReveal();
     initRevealFooter();
+    initMagnetic();
   }
 
   initCursor();

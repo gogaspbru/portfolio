@@ -77,10 +77,11 @@
     "video": "assets/works/011_neptun.webm"
   },
   {
-    "type": "photo",
+    "type": "video",
     "title": "Kogio",
     "preview": "assets/works/012_kogio.webp",
-    "link": "https://kogio.ru/"
+    "link": "https://kogio.ru/",
+    "video": "assets/works/012_kogio.webm"
   },
   {
     "type": "photo",
