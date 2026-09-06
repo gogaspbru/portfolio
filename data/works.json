@@ -63,10 +63,11 @@
     "video": "assets/works/09_uut_telecom.webm"
   },
   {
-    "type": "photo",
+    "type": "video",
     "title": "Цифровой прогресс",
     "preview": "assets/works/010_dipro.webp",
-    "link": "https://dipro.ru/"
+    "link": "https://dipro.ru/",
+    "video": "assets/works/010_dipro.webm"
   },
   {
     "type": "photo",
