@@ -366,12 +366,29 @@ a { color: inherit; text-decoration: none; }
 .load-more[hidden] { display: none; }
 
 /* ===================== Statement ===================== */
+/* ===== Reveal footer: the white page scrolls up and uncovers a dark footer ===== */
+.page {
+  position: relative;
+  z-index: 1;
+  background: var(--bg);           /* opaque — covers the fixed footer above it */
+}
+.site-footer {
+  position: fixed;
+  left: 0; right: 0; bottom: 0;
+  z-index: 0;                       /* sits behind .page, revealed as it scrolls away */
+  background: #0f1013;
+  color: #f3f2ef;
+}
+.site-footer__inner {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: 100svh;              /* fill the screen when fully revealed */
+}
+
 .statement {
-  margin-top: clamp(64px, 10vw, 140px);
-  margin-bottom: 0;
-  padding-top: clamp(80px, 12vw, 180px);
-  padding-bottom: clamp(80px, 12vw, 180px);   /* tall dark tail — room for more content later */
-  transition: background-color .6s ease;
+  padding-top: clamp(70px, 11vw, 170px);
+  padding-bottom: clamp(40px, 6vw, 90px);
 }
 .statement__text {
   margin: 0;
@@ -380,17 +397,9 @@ a { color: inherit; text-decoration: none; }
   font-weight: 600;
   line-height: 0.61;
   letter-spacing: -0.02em;
-  color: var(--fg);
+  color: #f3f2ef;
   text-wrap: balance;
-  transition: color .6s ease;
 }
-
-/* ===== Dark tail (experiment): statement + footer go dark on scroll-in ===== */
-body.tail-dark .statement { background: #0f1013; }
-body.tail-dark .statement__text { color: #f3f2ef; }
-body.tail-dark .footer { background: #0f1013; }
-body.tail-dark .footer__inner { color: #8b8a83; }
-body.tail-dark .footer__mail { color: #f3f2ef; }
 @media (max-width: 900px) {
   .statement__text { max-width: 100%; }
 }
@@ -419,31 +428,25 @@ body.tail-dark .footer__mail { color: #f3f2ef; }
   max-height: clamp(24px, 2.5vw, 38px);
   max-width: clamp(88px, 8.6vw, 130px);
   object-fit: contain;
-  opacity: .78;
-  filter: brightness(0.82);   /* logos ~18% darker */
+  opacity: .9;   /* a touch less transparent (original colour) */
   transition: opacity .3s ease, filter .3s ease;   /* blur swap + hover */
 }
 .logos__cell:hover img { opacity: 1; }
 
-/* ===================== Footer (compact) ===================== */
-.footer { margin-top: 0; transition: background-color .6s ease; }
+/* ===================== Footer (inside the dark reveal footer) ===================== */
 .footer__inner {
-  padding-top: clamp(56px, 7vw, 100px);
-  padding-bottom: clamp(56px, 7vw, 96px);
+  padding-top: clamp(24px, 3vw, 40px);
+  padding-bottom: clamp(40px, 5vw, 72px);
   display: flex;
   align-items: center;
   justify-content: space-between;   /* copyright left, email right */
   gap: 12px;
   flex-wrap: wrap;
-  color: var(--muted);
+  color: #8b8a83;
   font-size: 15px;   /* same as the case captions */
-  transition: color .6s ease;
 }
-.footer__inner,
-.footer__copy,
-.footer__mail { transition: color .6s ease; }
-.footer__mail:hover { color: var(--fg); }
-body.tail-dark .footer__mail:hover { color: #fff; }
+.footer__mail { color: #f3f2ef; }
+.footer__mail:hover { color: #fff; }
 
 /* ===================== Responsive ===================== */
 @media (max-width: 1024px) {

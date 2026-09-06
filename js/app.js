@@ -492,16 +492,22 @@
     });
   }
 
-  // Dark tail: after the logos, the statement + footer go dark as you scroll in
-  function initTailDark() {
-    var st = document.querySelector(".statement");
-    if (!st || !("IntersectionObserver" in window)) return;
-    var io = new IntersectionObserver(function (entries) {
-      entries.forEach(function (e) {
-        document.body.classList.toggle("tail-dark", e.isIntersecting);
-      });
-    }, { rootMargin: "0px 0px -35% 0px", threshold: 0 });
-    io.observe(st);
+  // Reveal footer: the dark footer is fixed at the bottom; reserve scroll space
+  // (page margin-bottom = footer height) so the white page scrolls up and
+  // uncovers it — the page "pages over" to black.
+  function initRevealFooter() {
+    var page = document.querySelector(".page");
+    var footer = document.querySelector(".site-footer");
+    if (!page || !footer) return;
+    function sync() {
+      page.style.marginBottom = footer.offsetHeight + "px";
+      if (refreshScrollbar) refreshScrollbar();
+    }
+    sync();
+    window.addEventListener("resize", sync);
+    window.addEventListener("load", sync);
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(sync);
+    setTimeout(sync, 1200);   // re-sync once layout/fonts settle
   }
 
   function init(data) {
@@ -513,7 +519,7 @@
     var yearEl = document.getElementById("year");
     if (yearEl) yearEl.textContent = new Date().getFullYear();
     initReveal();
-    initTailDark();
+    initRevealFooter();
   }
 
   initCursor();
