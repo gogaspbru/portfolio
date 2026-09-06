@@ -70,10 +70,11 @@
     "video": "assets/works/010_dipro.webm"
   },
   {
-    "type": "photo",
+    "type": "video",
     "title": "Нептун",
     "preview": "assets/works/011_neptun.webp",
-    "link": "https://drycleaning.ru/"
+    "link": "https://drycleaning.ru/",
+    "video": "assets/works/011_neptun.webm"
   },
   {
     "type": "photo",
