@@ -563,6 +563,27 @@
     });
   }
 
+  // Electric-discharge outline: while a social circle is hovered, jitter the
+  // shared feTurbulence so the stroked ring crackles like an electric arc.
+  function initElectric() {
+    if (!IS_DESKTOP) return;
+    if (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    var turb = document.querySelector("#electricFx feTurbulence");
+    if (!turb) return;
+    var hovering = 0, raf = null, t = 0;
+    function frame() {
+      t += 1;
+      turb.setAttribute("seed", (t * 4) % 120);
+      turb.setAttribute("baseFrequency", (0.05 + Math.sin(t * 0.35) * 0.022).toFixed(4));
+      if (hovering > 0) raf = requestAnimationFrame(frame);
+      else raf = null;
+    }
+    [].forEach.call(document.querySelectorAll(".social"), function (el) {
+      el.addEventListener("mouseenter", function () { hovering++; if (!raf) raf = requestAnimationFrame(frame); });
+      el.addEventListener("mouseleave", function () { hovering = Math.max(0, hovering - 1); });
+    });
+  }
+
   function init(data) {
     works = Array.isArray(data) ? data : [];
     setupCardReveal();
@@ -574,6 +595,7 @@
     initReveal();
     initRevealFooter();
     initMagnetic();
+    initElectric();
   }
 
   initCursor();
