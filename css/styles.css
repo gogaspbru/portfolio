@@ -369,8 +369,8 @@ a { color: inherit; text-decoration: none; }
 .statement {
   margin-top: clamp(64px, 10vw, 140px);
   margin-bottom: 0;
-  padding-top: clamp(40px, 6vw, 90px);
-  padding-bottom: clamp(40px, 6vw, 90px);
+  padding-top: clamp(80px, 12vw, 180px);
+  padding-bottom: clamp(80px, 12vw, 180px);   /* tall dark tail — room for more content later */
   transition: background-color .6s ease;
 }
 .statement__text {
@@ -428,8 +428,8 @@ body.tail-dark .footer__mail { color: #f3f2ef; }
 /* ===================== Footer (compact) ===================== */
 .footer { margin-top: 0; transition: background-color .6s ease; }
 .footer__inner {
-  padding-top: clamp(30px, 4vw, 52px);
-  padding-bottom: clamp(30px, 4vw, 48px);
+  padding-top: clamp(56px, 7vw, 100px);
+  padding-bottom: clamp(56px, 7vw, 96px);
   display: flex;
   align-items: center;
   justify-content: space-between;   /* copyright left, email right */
