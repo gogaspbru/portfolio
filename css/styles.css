@@ -442,6 +442,11 @@ a { color: inherit; text-decoration: none; }
 /* ===================== Footer (inside the dark reveal footer) ===================== */
 .footer__bottom {
   padding-bottom: clamp(40px, 5vw, 72px);
+  /* flex item: kill the .wrap auto-margins so it stretches full-width instead of
+     shrink-wrapping and centering (which indented "Свяжитесь" on wide screens) */
+  align-self: stretch;
+  margin-left: 0;
+  margin-right: 0;
 }
 .footer__copy {
   margin: 0 0 clamp(26px, 4vw, 54px);
