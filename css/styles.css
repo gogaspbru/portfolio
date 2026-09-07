@@ -507,7 +507,7 @@ a { color: inherit; text-decoration: none; }
 }
 .social__spark .spark-glow { stroke: url(#sparkGrad); stroke-width: 3; opacity: .95; }   /* multi-colour bloom */
 .social__spark .spark-core { stroke: #ffffff; stroke-width: 1; }                          /* white-hot core */
-.social:hover .social__spark { opacity: 1; animation: sparkHue 1.5s linear infinite; }    /* colours cycle */
+.social:hover .social__spark { opacity: 1; animation: sparkHue 4s linear infinite; }    /* colours cycle (slow) */
 @keyframes sparkHue { to { filter: hue-rotate(360deg); } }
 .social__icon {
   position: relative;

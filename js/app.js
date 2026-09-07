@@ -586,8 +586,10 @@
     var hovering = 0, raf = null, t = 0;
     function frame() {
       t += 1;
-      turb.setAttribute("seed", (t * 7) % 211);
-      turb.setAttribute("baseFrequency", (0.075 + Math.sin(t * 0.55) * 0.04).toFixed(4));
+      if (t % 4 === 0) {   // ~15fps — slower, calmer crackle
+        turb.setAttribute("seed", ((t / 4) * 2) % 211);
+        turb.setAttribute("baseFrequency", (0.06 + Math.sin(t * 0.09) * 0.03).toFixed(4));
+      }
       if (hovering > 0) raf = requestAnimationFrame(frame);
       else raf = null;
     }
