@@ -119,10 +119,11 @@
     "video": "assets/works/017_technology_comfort.webm"
   },
   {
-    "type": "photo",
+    "type": "video",
     "title": "СПбГУТ",
     "preview": "assets/works/018_spbgut.webp",
-    "link": "https://www.sut.ru/"
+    "link": "https://www.sut.ru/",
+    "video": "assets/works/018_spbgut.webm"
   },
   {
     "type": "photo",
