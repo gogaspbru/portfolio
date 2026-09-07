@@ -453,7 +453,7 @@ a { color: inherit; text-decoration: none; }
 }
 .contact {
   display: flex;
-  align-items: center;
+  align-items: flex-end;   /* circles sit on the same baseline as "Свяжитесь" */
   justify-content: space-between;
   gap: clamp(20px, 2.6vw, 44px);
   flex-wrap: wrap;
@@ -501,9 +501,10 @@ a { color: inherit; text-decoration: none; }
   fill: none;
   filter: url(#electricFx);
 }
-.social__spark .spark-glow { stroke: #35bdf7; stroke-width: 2.8; opacity: .95; }   /* cyan bloom */
-.social__spark .spark-core { stroke: #eaf7ff; stroke-width: 1; }                    /* white-hot core */
-.social:hover .social__spark { opacity: 1; }
+.social__spark .spark-glow { stroke: url(#sparkGrad); stroke-width: 3; opacity: .95; }   /* multi-colour bloom */
+.social__spark .spark-core { stroke: #ffffff; stroke-width: 1; }                          /* white-hot core */
+.social:hover .social__spark { opacity: 1; animation: sparkHue 1.5s linear infinite; }    /* colours cycle */
+@keyframes sparkHue { to { filter: hue-rotate(360deg); } }
 .social__icon {
   position: relative;
   z-index: 1;
