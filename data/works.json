@@ -84,10 +84,11 @@
     "video": "assets/works/012_kogio.webm"
   },
   {
-    "type": "photo",
+    "type": "video",
     "title": "Енева",
     "preview": "assets/works/013_eneva.webp",
-    "link": "https://eneva.ru/"
+    "link": "https://eneva.ru/",
+    "video": "assets/works/013_eneva.webm"
   },
   {
     "type": "video",
