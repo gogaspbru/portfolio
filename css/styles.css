@@ -383,8 +383,8 @@ a { color: inherit; text-decoration: none; }
 .site-footer__inner {
   display: flex;
   flex-direction: column;
-  justify-content: space-between;  /* statement up top, contact pinned to the bottom */
-  min-height: 80svh;               /* ~20% shorter dark block */
+  justify-content: flex-end;       /* fills the screen (full flip-to-black), content grouped low */
+  min-height: 100svh;
 }
 
 .statement {
