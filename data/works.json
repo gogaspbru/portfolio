@@ -111,10 +111,11 @@
     "link": "https://b2b.cis.panasonic.com/"
   },
   {
-    "type": "photo",
+    "type": "video",
     "title": "Technology Comfort",
     "preview": "assets/works/017_technology_comfort.webp",
-    "link": "https://technology-comfort.ru/"
+    "link": "https://technology-comfort.ru/",
+    "video": "assets/works/017_technology_comfort.webm"
   },
   {
     "type": "photo",

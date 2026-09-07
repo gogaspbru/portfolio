@@ -190,11 +190,13 @@
     return cell;
   }
 
-  // current number of grid columns (3 desktop / 3 tablet / 2 mobile)
+  // Current number of grid columns — read deterministically from the same
+  // breakpoint the CSS uses (default/tablet = 3, mobile ≤640 = 2). Reading
+  // getComputedStyle(grid).gridTemplateColumns is unreliable before layout:
+  // browsers may return the unresolved "repeat(3, 1fr)" (2 tokens), which made
+  // the load step miscount and left a ragged last row.
   function gridCols() {
-    var t = getComputedStyle(list).gridTemplateColumns;
-    var n = t ? t.split(" ").filter(Boolean).length : 1;
-    return n > 0 ? n : 1;
+    return (window.matchMedia && window.matchMedia("(max-width: 640px)").matches) ? 2 : 3;
   }
 
   // ---------- Rendering ----------
@@ -216,6 +218,28 @@
     rendered = end;
     loadMoreBtn.hidden = rendered >= works.length;
     // watch the new cards so they open top→bottom when scrolled into view
+    if (cardObserver) fresh.forEach(function (c) { cardObserver.observe(c); });
+    if (refreshScrollbar) refreshScrollbar();
+  }
+
+  // If the column count changes (e.g. orientation change from 2→3 cols), the
+  // last row can become ragged. Top it up to a full row so the grid stays even.
+  function fillLastRow() {
+    if (rendered >= works.length) return;      // nothing left / all shown, button handles it
+    var cols = gridCols();
+    var rem = rendered % cols;
+    if (rem === 0) return;                      // already a full last row
+    var need = Math.min(cols - rem, works.length - rendered);
+    var frag = document.createDocumentFragment();
+    var fresh = [];
+    for (var i = rendered; i < rendered + need; i++) {
+      var cell = buildItem(works[i]);
+      fresh.push(cell);
+      frag.appendChild(cell);
+    }
+    list.appendChild(frag);
+    rendered += need;
+    loadMoreBtn.hidden = rendered >= works.length;
     if (cardObserver) fresh.forEach(function (c) { cardObserver.observe(c); });
     if (refreshScrollbar) refreshScrollbar();
   }
@@ -605,6 +629,12 @@
     renderNext();
     buildLogoGrid();
     loadMoreBtn.addEventListener("click", renderNext);
+    // keep the last row full if the column count changes (orientation/resize)
+    var rt;
+    window.addEventListener("resize", function () {
+      clearTimeout(rt);
+      rt = setTimeout(fillLastRow, 200);
+    });
     var yearEl = document.getElementById("year");
     if (yearEl) yearEl.textContent = new Date().getFullYear();
     initReveal();
