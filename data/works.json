@@ -90,10 +90,11 @@
     "link": "https://eneva.ru/"
   },
   {
-    "type": "photo",
+    "type": "video",
     "title": "Miridium",
     "preview": "assets/works/015_miridium.webp",
-    "link": "https://miridium.ru/"
+    "link": "https://miridium.ru/",
+    "video": "assets/works/015_miridium.webm"
   },
   {
     "type": "video",
