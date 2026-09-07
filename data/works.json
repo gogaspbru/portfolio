@@ -105,10 +105,11 @@
     "video": "assets/works/014_full_comfort.webm"
   },
   {
-    "type": "photo",
+    "type": "video",
     "title": "Panasonic",
     "preview": "assets/works/016_panasonic.webp",
-    "link": "https://b2b.cis.panasonic.com/"
+    "link": "https://b2b.cis.panasonic.com/",
+    "video": "assets/works/016_panasonic.webm"
   },
   {
     "type": "video",
