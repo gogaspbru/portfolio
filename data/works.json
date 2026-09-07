@@ -90,10 +90,11 @@
     "link": "https://eneva.ru/"
   },
   {
-    "type": "photo",
+    "type": "video",
     "title": "Full Comfort",
     "preview": "assets/works/014_full_comfort.webp",
-    "link": "https://fullcomfort.ru/"
+    "link": "https://fullcomfort.ru/",
+    "video": "assets/works/014_full_comfort.webm"
   },
   {
     "type": "photo",
