@@ -534,6 +534,19 @@
     window.addEventListener("load", sync);
     if (document.fonts && document.fonts.ready) document.fonts.ready.then(sync);
     setTimeout(sync, 1200);   // re-sync once layout/fonts settle
+
+    // The footer is a fixed, full-viewport dark layer sitting behind the white
+    // page. On iOS Safari it can flash above the fold while the layout/address
+    // bar settle on load. It's only ever seen after scrolling to the very
+    // bottom, so keep it hidden until the user has scrolled away from the top
+    // (with a timed fallback so it never stays hidden).
+    function showFooter() {
+      footer.classList.add("is-visible");
+      window.removeEventListener("scroll", onScroll);
+    }
+    function onScroll() { if (window.pageYOffset > 60) showFooter(); }
+    window.addEventListener("scroll", onScroll, { passive: true });
+    setTimeout(showFooter, 1800);   // fallback: reveal once load has settled
   }
 
   // Magnetic social circles (desktop): the button springs toward the cursor and

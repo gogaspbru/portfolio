@@ -379,7 +379,11 @@ a { color: inherit; text-decoration: none; }
   z-index: 0;                       /* sits behind .page, revealed as it scrolls away */
   background: #111215;
   color: #f3f2ef;
+  /* hidden until the page settles / the user scrolls — prevents an iOS load-time
+     flash of this fixed layer above the fold (revealed via JS) */
+  visibility: hidden;
 }
+.site-footer.is-visible { visibility: visible; }
 .site-footer__inner {
   display: flex;
   flex-direction: column;
