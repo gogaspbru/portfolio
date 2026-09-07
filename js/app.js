@@ -573,8 +573,8 @@
     var hovering = 0, raf = null, t = 0;
     function frame() {
       t += 1;
-      turb.setAttribute("seed", (t * 4) % 120);
-      turb.setAttribute("baseFrequency", (0.05 + Math.sin(t * 0.35) * 0.022).toFixed(4));
+      turb.setAttribute("seed", (t * 7) % 211);
+      turb.setAttribute("baseFrequency", (0.075 + Math.sin(t * 0.55) * 0.04).toFixed(4));
       if (hovering > 0) raf = requestAnimationFrame(frame);
       else raf = null;
     }

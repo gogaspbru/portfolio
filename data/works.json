@@ -90,17 +90,17 @@
     "link": "https://eneva.ru/"
   },
   {
+    "type": "photo",
+    "title": "Miridium",
+    "preview": "assets/works/015_miridium.webp",
+    "link": "https://miridium.ru/"
+  },
+  {
     "type": "video",
     "title": "Full Comfort",
     "preview": "assets/works/014_full_comfort.webp",
     "link": "https://fullcomfort.ru/",
     "video": "assets/works/014_full_comfort.webm"
-  },
-  {
-    "type": "photo",
-    "title": "Miridium",
-    "preview": "assets/works/015_miridium.webp",
-    "link": "https://miridium.ru/"
   },
   {
     "type": "photo",
