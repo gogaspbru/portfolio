@@ -40,6 +40,20 @@
   // desktop = has a real pointer; used to gate video tiles (off on mobile)
   var IS_DESKTOP = !!(window.matchMedia && window.matchMedia("(hover: hover) and (pointer: fine)").matches);
 
+  // Low-power / weak-machine heuristic. Used to drop the costlier effects
+  // (custom smooth-scroll, animated SVG turbulence) so nothing janks on old
+  // computers. Conservative: only flags clearly modest hardware or reduced-motion.
+  var REDUCE_MOTION = !!(window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches);
+  var LOW_POWER = (function () {
+    if (REDUCE_MOTION) return true;
+    var cores = navigator.hardwareConcurrency;
+    if (typeof cores === "number" && cores > 0 && cores <= 2) return true;
+    var mem = navigator.deviceMemory;
+    if (typeof mem === "number" && mem > 0 && mem <= 2) return true;
+    return false;
+  })();
+  if (LOW_POWER) { try { document.documentElement.classList.add("low-power"); } catch (e) {} }
+
   // Preload hover-video clips a bit before they're on screen, so the clip
   // starts instantly on hover (no fetch-on-hover lag), while still not
   // downloading anything until you scroll near it.
@@ -293,6 +307,7 @@
   function initCursor() {
     if (!window.matchMedia ||
         !window.matchMedia("(hover: hover) and (pointer: fine)").matches) return;
+    if (LOW_POWER) return;   // skip the always-on rAF + blend-mode repaint on weak machines
 
     var root = document.documentElement;
     var ring = document.createElement("div");
@@ -307,18 +322,21 @@
     var rx = mx, ry = my, shown = false;
     var hoverSel = "a, button, .item__tile, .load-more, .contacts__item, .footer__cta, .logos__cell";
 
+    var raf = null;
+    function loop() {
+      rx += (mx - rx) * 0.18;
+      ry += (my - ry) * 0.18;
+      ring.style.transform = "translate(" + rx + "px," + ry + "px)";
+      // stop the rAF once the ring has caught up — restart on the next move
+      if (Math.abs(mx - rx) < 0.1 && Math.abs(my - ry) < 0.1) { raf = null; return; }
+      raf = requestAnimationFrame(loop);
+    }
     document.addEventListener("mousemove", function (e) {
       mx = e.clientX; my = e.clientY;
       dot.style.transform = "translate(" + mx + "px," + my + "px)";
       if (!shown) { shown = true; root.classList.add("cursor-ready"); }
+      if (!raf) raf = requestAnimationFrame(loop);   // wake the easing loop only while moving
     });
-    // ring eases toward the pointer → it "rides" behind the cursor
-    (function loop() {
-      rx += (mx - rx) * 0.18;
-      ry += (my - ry) * 0.18;
-      ring.style.transform = "translate(" + rx + "px," + ry + "px)";
-      requestAnimationFrame(loop);
-    })();
 
     document.addEventListener("mouseover", function (e) {
       if (e.target.closest && e.target.closest(hoverSel)) root.classList.add("cursor-hover");
@@ -334,7 +352,7 @@
   function initSmoothScroll() {
     if (!window.matchMedia ||
         !window.matchMedia("(hover: hover) and (pointer: fine)").matches) return;
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    if (LOW_POWER) return;   // native scroll is smoother than hijacked scroll on weak machines
 
     var current = window.pageYOffset;
     var target = current;
@@ -604,7 +622,7 @@
   // shared feTurbulence so the stroked ring crackles like an electric arc.
   function initElectric() {
     if (!IS_DESKTOP) return;
-    if (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    if (LOW_POWER) return;   // animated SVG turbulence is GPU-heavy; skip on weak machines
     var turb = document.querySelector("#electricFx feTurbulence");
     if (!turb) return;
     var hovering = 0, raf = null, t = 0;
@@ -621,119 +639,6 @@
       el.addEventListener("mouseenter", function () { hovering++; if (!raf) raf = requestAnimationFrame(frame); });
       el.addEventListener("mouseleave", function () { hovering = Math.max(0, hovering - 1); });
     });
-  }
-
-  // SDF lens-blur ring for the dark footer (desktop only). Faithful raw-WebGL
-  // port of Guillaume Lanier's codrops "SDF Lens Blur" shader (variation 2):
-  // a thin circle outline whose stroke blooms/blurs where the cursor is near.
-  function initFooterOrb() {
-    if (!IS_DESKTOP) return;
-    if (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-    var canvas = document.getElementById("footerOrb");
-    if (!canvas) return;
-    var gl = canvas.getContext("webgl", { alpha: true, premultipliedAlpha: false, antialias: true });
-    if (!gl) return;
-    var ext = gl.getExtension("OES_standard_derivatives");
-    if (!ext) return;
-
-    var vsrc = "attribute vec2 p; void main(){ gl_Position = vec4(p,0.0,1.0); }";
-    var fsrc = [
-      "#extension GL_OES_standard_derivatives : enable",
-      "precision highp float;",
-      "uniform vec2 u_mouse; uniform vec2 u_resolution; uniform float u_pixelRatio;",
-      "#define PI 3.14159265359",
-      "vec2 coord(in vec2 p){",
-      "  p = p / u_resolution.xy;",
-      "  if (u_resolution.x > u_resolution.y){",
-      "    p.x *= u_resolution.x / u_resolution.y;",
-      "    p.x += (u_resolution.y - u_resolution.x) / u_resolution.y / 2.0;",
-      "  } else {",
-      "    p.y *= u_resolution.y / u_resolution.x;",
-      "    p.y += (u_resolution.x - u_resolution.y) / u_resolution.x / 2.0;",
-      "  }",
-      "  p -= 0.5; p *= vec2(-1.0, 1.0); return p;",
-      "}",
-      "#define st0 coord(gl_FragCoord.xy)",
-      "#define mx coord(u_mouse * u_pixelRatio)",
-      "float sdCircle(in vec2 st, in vec2 center){ return length(st - center) * 2.0; }",
-      "float aastep(float threshold, float value){",
-      "  float afwidth = length(vec2(dFdx(value), dFdy(value))) * 0.70710678;",
-      "  return smoothstep(threshold - afwidth, threshold + afwidth, value);",
-      "}",
-      "float fill(float x, float size, float edge){ return 1.0 - smoothstep(size - edge, size + edge, x); }",
-      "float stroke(float x, float size, float w, float edge){",
-      "  float d = smoothstep(size - edge, size + edge, x + w * 0.5) - smoothstep(size - edge, size + edge, x - w * 0.5);",
-      "  return clamp(d, 0.0, 1.0);",
-      "}",
-      "void main(){",
-      "  vec2 st = st0 + 0.5;",
-      "  vec2 posMouse = mx * vec2(1., -1.) + 0.5;",
-      "  float circleSize = 0.3; float circleEdge = 0.5;",
-      "  float sdfCircle = fill(sdCircle(st, posMouse), circleSize, circleEdge);",
-      "  float sdf = sdCircle(st, vec2(0.5));",
-      "  sdf = stroke(sdf, 0.58, 0.02, sdfCircle) * 4.0;",
-      "  float a = clamp(sdf, 0.0, 1.0);",
-      "  gl_FragColor = vec4(vec3(1.0), a);",
-      "}"
-    ].join("\n");
-
-    function sh(type, src) {
-      var s = gl.createShader(type); gl.shaderSource(s, src); gl.compileShader(s);
-      if (!gl.getShaderParameter(s, gl.COMPILE_STATUS)) return null;
-      return s;
-    }
-    var vs = sh(gl.VERTEX_SHADER, vsrc), fs = sh(gl.FRAGMENT_SHADER, fsrc);
-    if (!vs || !fs) return;
-    var prog = gl.createProgram();
-    gl.attachShader(prog, vs); gl.attachShader(prog, fs); gl.linkProgram(prog);
-    if (!gl.getProgramParameter(prog, gl.LINK_STATUS)) return;
-    gl.useProgram(prog);
-    var buf = gl.createBuffer();
-    gl.bindBuffer(gl.ARRAY_BUFFER, buf);
-    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1,-1, 3,-1, -1,3]), gl.STATIC_DRAW);
-    var loc = gl.getAttribLocation(prog, "p");
-    gl.enableVertexAttribArray(loc); gl.vertexAttribPointer(loc, 2, gl.FLOAT, false, 0, 0);
-    var uMouse = gl.getUniformLocation(prog, "u_mouse");
-    var uRes = gl.getUniformLocation(prog, "u_resolution");
-    var uPR = gl.getUniformLocation(prog, "u_pixelRatio");
-    gl.enable(gl.BLEND); gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
-    gl.clearColor(0, 0, 0, 0);
-
-    // mouse (canvas-local CSS px), eased toward the target — matches the demo's damping.
-    // start near the top of the ring so there's a soft bloom at rest.
-    var rect = canvas.getBoundingClientRect();
-    var target = { x: rect.width * 0.5, y: rect.height * 0.18 };
-    var damp = { x: target.x, y: target.y };
-    function onMove(e) {
-      var r = canvas.getBoundingClientRect();
-      target.x = e.clientX - r.left;
-      target.y = e.clientY - r.top;
-    }
-    window.addEventListener("pointermove", onMove, { passive: true });
-
-    var dpr = 1;
-    function resize() {
-      dpr = Math.min(window.devicePixelRatio || 1, 2);
-      var w = Math.max(1, Math.round(canvas.clientWidth * dpr));
-      var h = Math.max(1, Math.round(canvas.clientHeight * dpr));
-      if (canvas.width !== w || canvas.height !== h) { canvas.width = w; canvas.height = h; }
-      gl.viewport(0, 0, canvas.width, canvas.height);
-    }
-    var last = performance.now();
-    function frame(now) {
-      var dt = Math.min((now - last) / 1000, 0.05); last = now;
-      var k = 1 - Math.exp(-8 * dt);   // THREE.MathUtils.damp(lambda=8)
-      damp.x += (target.x - damp.x) * k;
-      damp.y += (target.y - damp.y) * k;
-      resize();
-      gl.uniform2f(uRes, canvas.width, canvas.height);
-      gl.uniform1f(uPR, dpr);
-      gl.uniform2f(uMouse, damp.x, damp.y);
-      gl.clear(gl.COLOR_BUFFER_BIT);
-      gl.drawArrays(gl.TRIANGLES, 0, 3);
-      requestAnimationFrame(frame);
-    }
-    requestAnimationFrame(frame);
   }
 
   function init(data) {
@@ -754,7 +659,6 @@
     initRevealFooter();
     initMagnetic();
     initElectric();
-    initFooterOrb();
   }
 
   initCursor();
