@@ -299,7 +299,7 @@ a { color: inherit; text-decoration: none; }
 /* hover-play tiles: image by default, video fades in on hover */
 .item--video-hover .item__video {
   opacity: 0;
-  transition: transform 3.6s cubic-bezier(.2, .5, .2, 1), opacity .4s ease;
+  transition: transform 3.6s cubic-bezier(.2, .5, .2, 1), opacity .12s ease;   /* snappy reveal */
 }
 .item--video-hover .item__tile:hover .item__video { opacity: 1; }
 /* no zoom on any video tile (autoplay or hover) */

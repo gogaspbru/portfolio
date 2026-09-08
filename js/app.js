@@ -65,7 +65,7 @@
           var v = e.target.__video;
           if (v && v.preload !== "auto") { v.preload = "auto"; try { v.load(); } catch (_) {} }
         });
-      }, { rootMargin: "400px 0px 400px 0px" })
+      }, { rootMargin: "800px 0px 800px 0px" })
     : null;
   function preloadVideoInView(video, cell) {
     if (!videoPreloadObserver) { video.preload = "metadata"; return; }
@@ -173,8 +173,7 @@
           if (pr && pr.catch) pr.catch(function () {});
         });
         a.addEventListener("mouseleave", function () {
-          video.pause();
-          try { video.currentTime = 0; } catch (e) {}
+          video.pause();   // keep the decoded position so re-hover resumes instantly (no seek/re-buffer)
         });
       } else {
         video.autoplay = true;
