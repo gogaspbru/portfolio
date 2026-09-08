@@ -623,9 +623,9 @@
     });
   }
 
-  // WebGL glossy-orb backdrop for the dark footer (desktop only). A raymarch-free
-  // analytic sphere shaded as a dark, backlit glass/metal ball — the visible part
-  // of an SDF lens over a solid-black background.
+  // SDF lens-blur ring for the dark footer (desktop only). Faithful raw-WebGL
+  // port of Guillaume Lanier's codrops "SDF Lens Blur" shader (variation 2):
+  // a thin circle outline whose stroke blooms/blurs where the cursor is near.
   function initFooterOrb() {
     if (!IS_DESKTOP) return;
     if (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
@@ -633,31 +633,47 @@
     if (!canvas) return;
     var gl = canvas.getContext("webgl", { alpha: true, premultipliedAlpha: false, antialias: true });
     if (!gl) return;
+    var ext = gl.getExtension("OES_standard_derivatives");
+    if (!ext) return;
 
     var vsrc = "attribute vec2 p; void main(){ gl_Position = vec4(p,0.0,1.0); }";
     var fsrc = [
+      "#extension GL_OES_standard_derivatives : enable",
       "precision highp float;",
-      "uniform vec2 u_res; uniform float u_time;",
+      "uniform vec2 u_mouse; uniform vec2 u_resolution; uniform float u_pixelRatio;",
+      "#define PI 3.14159265359",
+      "vec2 coord(in vec2 p){",
+      "  p = p / u_resolution.xy;",
+      "  if (u_resolution.x > u_resolution.y){",
+      "    p.x *= u_resolution.x / u_resolution.y;",
+      "    p.x += (u_resolution.y - u_resolution.x) / u_resolution.y / 2.0;",
+      "  } else {",
+      "    p.y *= u_resolution.y / u_resolution.x;",
+      "    p.y += (u_resolution.x - u_resolution.y) / u_resolution.x / 2.0;",
+      "  }",
+      "  p -= 0.5; p *= vec2(-1.0, 1.0); return p;",
+      "}",
+      "#define st0 coord(gl_FragCoord.xy)",
+      "#define mx coord(u_mouse * u_pixelRatio)",
+      "float sdCircle(in vec2 st, in vec2 center){ return length(st - center) * 2.0; }",
+      "float aastep(float threshold, float value){",
+      "  float afwidth = length(vec2(dFdx(value), dFdy(value))) * 0.70710678;",
+      "  return smoothstep(threshold - afwidth, threshold + afwidth, value);",
+      "}",
+      "float fill(float x, float size, float edge){ return 1.0 - smoothstep(size - edge, size + edge, x); }",
+      "float stroke(float x, float size, float w, float edge){",
+      "  float d = smoothstep(size - edge, size + edge, x + w * 0.5) - smoothstep(size - edge, size + edge, x - w * 0.5);",
+      "  return clamp(d, 0.0, 1.0);",
+      "}",
       "void main(){",
-      "  vec2 uv = (gl_FragCoord.xy - 0.5*u_res) / (0.5*u_res.y);",
-      "  float R = 0.94; vec2 p = uv / R; float r2 = dot(p,p);",
-      "  float edge = smoothstep(1.0, 0.972, r2);",
-      "  if(edge <= 0.001){ gl_FragColor = vec4(0.0); return; }",
-      "  float z = sqrt(max(0.0, 1.0 - r2));",
-      "  vec3 n = normalize(vec3(p, z));",
-      "  float t = u_time*0.2;",
-      "  vec3 L = normalize(vec3(-0.55 + 0.28*cos(t), 0.58 + 0.16*sin(t*0.9), 0.5));",
-      "  vec3 V = vec3(0.0,0.0,1.0); vec3 H = normalize(L+V);",
-      "  float diff = max(dot(n,L),0.0);",
-      "  float specDot = pow(max(dot(n,H),0.0), 80.0);",
-      "  float fres = pow(1.0 - max(n.z,0.0), 2.4);",
-      "  float spec = specDot * (0.35 + 0.65*fres);",   // bias the highlight toward the rim → crescent
-      "  vec3 base = vec3(0.055,0.06,0.07);",
-      "  vec3 col = base + diff*vec3(0.09,0.10,0.12) + fres*vec3(0.50,0.53,0.58) + spec*vec3(1.7);",
-      "  vec3 L2 = normalize(vec3(0.5,-0.72,0.42));",   // bottom-right backlight crescent
-      "  float rim2 = pow(max(dot(n,L2),0.0), 2.6)*fres;",
-      "  col += rim2*vec3(0.7,0.72,0.78);",
-      "  gl_FragColor = vec4(col, edge);",
+      "  vec2 st = st0 + 0.5;",
+      "  vec2 posMouse = mx * vec2(1., -1.) + 0.5;",
+      "  float circleSize = 0.3; float circleEdge = 0.5;",
+      "  float sdfCircle = fill(sdCircle(st, posMouse), circleSize, circleEdge);",
+      "  float sdf = sdCircle(st, vec2(0.5));",
+      "  sdf = stroke(sdf, 0.58, 0.02, sdfCircle) * 4.0;",
+      "  float a = clamp(sdf, 0.0, 1.0);",
+      "  gl_FragColor = vec4(vec3(1.0), a);",
       "}"
     ].join("\n");
 
@@ -677,21 +693,43 @@
     gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1,-1, 3,-1, -1,3]), gl.STATIC_DRAW);
     var loc = gl.getAttribLocation(prog, "p");
     gl.enableVertexAttribArray(loc); gl.vertexAttribPointer(loc, 2, gl.FLOAT, false, 0, 0);
-    var uRes = gl.getUniformLocation(prog, "u_res"), uTime = gl.getUniformLocation(prog, "u_time");
+    var uMouse = gl.getUniformLocation(prog, "u_mouse");
+    var uRes = gl.getUniformLocation(prog, "u_resolution");
+    var uPR = gl.getUniformLocation(prog, "u_pixelRatio");
     gl.enable(gl.BLEND); gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
+    gl.clearColor(0, 0, 0, 0);
 
+    // mouse (canvas-local CSS px), eased toward the target — matches the demo's damping.
+    // start near the top of the ring so there's a soft bloom at rest.
+    var rect = canvas.getBoundingClientRect();
+    var target = { x: rect.width * 0.5, y: rect.height * 0.18 };
+    var damp = { x: target.x, y: target.y };
+    function onMove(e) {
+      var r = canvas.getBoundingClientRect();
+      target.x = e.clientX - r.left;
+      target.y = e.clientY - r.top;
+    }
+    window.addEventListener("pointermove", onMove, { passive: true });
+
+    var dpr = 1;
     function resize() {
-      var dpr = Math.min(window.devicePixelRatio || 1, 2);
+      dpr = Math.min(window.devicePixelRatio || 1, 2);
       var w = Math.max(1, Math.round(canvas.clientWidth * dpr));
       var h = Math.max(1, Math.round(canvas.clientHeight * dpr));
       if (canvas.width !== w || canvas.height !== h) { canvas.width = w; canvas.height = h; }
       gl.viewport(0, 0, canvas.width, canvas.height);
     }
-    var start = performance.now();
-    function frame() {
+    var last = performance.now();
+    function frame(now) {
+      var dt = Math.min((now - last) / 1000, 0.05); last = now;
+      var k = 1 - Math.exp(-8 * dt);   // THREE.MathUtils.damp(lambda=8)
+      damp.x += (target.x - damp.x) * k;
+      damp.y += (target.y - damp.y) * k;
       resize();
       gl.uniform2f(uRes, canvas.width, canvas.height);
-      gl.uniform1f(uTime, (performance.now() - start) / 1000);
+      gl.uniform1f(uPR, dpr);
+      gl.uniform2f(uMouse, damp.x, damp.y);
+      gl.clear(gl.COLOR_BUFFER_BIT);
       gl.drawArrays(gl.TRIANGLES, 0, 3);
       requestAnimationFrame(frame);
     }
