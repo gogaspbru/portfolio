@@ -146,11 +146,35 @@
     img.src = item.preview || "";
     media.appendChild(img);
 
+    // Plate-reveal tile (Культура Дома): a round video sits centered under the
+    // plate poster; on hover the plate fades out to uncover the round clip.
+    if (item.variant === "plate" && item.video && IS_DESKTOP) {
+      cell.className += " item--plate";
+      img.className += " item__img--plate";
+      var round = document.createElement("div");
+      round.className = "item__round";
+      var rvid = document.createElement("video");
+      rvid.className = "item__video";
+      rvid.muted = true; rvid.loop = true; rvid.playsInline = true;
+      rvid.setAttribute("muted", ""); rvid.setAttribute("playsinline", ""); rvid.setAttribute("loop", "");
+      rvid.preload = "none";
+      rvid.src = item.video;
+      round.appendChild(rvid);
+      media.appendChild(round);
+      preloadVideoInView(rvid, cell);
+      a.addEventListener("mouseenter", function () {
+        if (rvid.preload !== "auto") rvid.preload = "auto";
+        var pr = rvid.play(); if (pr && pr.catch) pr.catch(function () {});
+      });
+      a.addEventListener("mouseleave", function () {
+        rvid.pause(); try { rvid.currentTime = 0; } catch (e) {}
+      });
+    }
     // Video tiles (desktop only — on mobile/touch we never create the video,
     // the poster image stays). Two modes:
     //   default  — autoplays (muted loop), the clip replaces the image;
     //   hover:true — image by default, the clip plays on hover.
-    if (item.type === "video" && item.video && IS_DESKTOP) {
+    else if (item.type === "video" && item.video && IS_DESKTOP) {
       var hoverMode = item.autoplay !== true;   // hover-play is the default; opt in to autoplay
       cell.className += hoverMode ? " item--video-hover" : " item--video-autoplay";
       var video = document.createElement("video");
