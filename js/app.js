@@ -173,7 +173,10 @@
           if (pr && pr.catch) pr.catch(function () {});
         });
         a.addEventListener("mouseleave", function () {
-          video.pause();   // keep the decoded position so re-hover resumes instantly (no seek/re-buffer)
+          video.pause();
+          // back to frame 0 so every hover starts on the poster frame (no visual jump);
+          // the clip is already buffered, so the seek is instant
+          try { video.currentTime = 0; } catch (e) {}
         });
       } else {
         video.autoplay = true;
