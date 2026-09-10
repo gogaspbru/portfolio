@@ -308,14 +308,14 @@ a { color: inherit; text-decoration: none; }
 
 /* Plate-reveal tile: round video centered under the plate poster; the plate
    fades out on hover to uncover the round clip (Культура Дома) */
-.item--plate .item__media { background: #314049; }   /* teal, matches the poster */
+.item--plate .item__media { background: #31414c; }   /* teal, matches the cover */
 .item__img--plate { z-index: 2; transition: opacity .4s ease; }
 .item--plate .item__tile:hover .item__img--plate { opacity: 0; }
 .item__round {
   position: absolute;
   left: 50%; top: 50%;
   transform: translate(-50%, -50%);
-  width: 25.43%;              /* 356 / 1400 — same ratio as the mockup */
+  width: 50%;                /* matches the plate's diameter (≈702/1400) */
   aspect-ratio: 1 / 1;
   border-radius: 50%;
   overflow: hidden;
