@@ -316,7 +316,7 @@ a { color: inherit; text-decoration: none; }
   position: absolute;
   left: 51.5%; top: 51.5%;   /* nudged down + right so it overlaps the plate's rim */
   transform: translate(-50%, -50%);
-  width: 55%;                /* a bit larger than the plate so its border is covered */
+  width: 52%;                /* a touch larger than the plate so its border is covered */
   aspect-ratio: 1 / 1;
   border-radius: 50%;
   overflow: hidden;
