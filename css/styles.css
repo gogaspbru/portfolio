@@ -309,8 +309,9 @@ a { color: inherit; text-decoration: none; }
 /* Plate-reveal tile: round video centered under the plate poster; the plate
    fades out on hover to uncover the round clip (Культура Дома) */
 .item--plate .item__media { background: #31414c; }   /* teal, matches the cover */
-.item__img--plate { z-index: 2; transition: opacity .4s ease; }
-.item--plate .item__tile:hover .item__img--plate { opacity: 0; }
+/* the cover (plate + copper ornament) stays; only the round video fades in over
+   the plate on hover, so the ornament to the sides remains visible */
+.item__img--plate { z-index: 1; }
 .item__round {
   position: absolute;
   left: 50%; top: 50%;
@@ -319,8 +320,11 @@ a { color: inherit; text-decoration: none; }
   aspect-ratio: 1 / 1;
   border-radius: 50%;
   overflow: hidden;
-  z-index: 1;
+  z-index: 2;
+  opacity: 0;
+  transition: opacity .4s ease;
 }
+.item--plate .item__tile:hover .item__round { opacity: 1; }
 .item__round .item__video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 1; }
 
 /* play badge for video tiles */
