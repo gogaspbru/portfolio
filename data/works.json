@@ -139,10 +139,11 @@
     "link": "http://www.i-maika.ru/"
   },
   {
-    "type": "photo",
+    "type": "video",
     "title": "Olmio",
     "preview": "assets/works/021_olmio.webp",
-    "link": "https://olmio.com/"
+    "link": "https://olmio.com/",
+    "video": "assets/works/021_olmio.webm"
   },
   {
     "type": "photo",
