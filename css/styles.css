@@ -65,6 +65,8 @@
 * { box-sizing: border-box; }
 html, body { margin: 0; padding: 0; }
 body { overflow-x: clip; }   /* guard against any stray horizontal scroll (clip keeps sticky working) */
+/* While the preloader is up, lock the page so no scrollbar shows before load */
+html.preloading, html.preloading body { overflow: hidden; }
 
 body {
   background: var(--bg);
@@ -314,7 +316,7 @@ a { color: inherit; text-decoration: none; }
 .item__img--plate { z-index: 1; }
 .item__round {
   position: absolute;
-  left: 50%; top: 50.9%;     /* nudged down + right so it overlaps the plate's rim */
+  left: 50%; top: 50.7%;     /* nudged down + right so it overlaps the plate's rim */
   transform: translate(-50%, -50%);
   width: 50.4%;              /* sits inside the plate */
   aspect-ratio: 1 / 1;
@@ -356,14 +358,16 @@ a { color: inherit; text-decoration: none; }
   line-height: 1.3;
 }
 .item__title { color: var(--fg); font-weight: 500; transition: color .3s ease; }
-.item__arrow { color: rgba(38, 37, 31, .3); display: flex; transition: color .3s ease, transform .35s cubic-bezier(.22,1,.36,1); }
+.item__arrow { color: rgba(38, 37, 31, .3); display: flex; transition: color .3s ease, opacity .3s ease, transform .35s cubic-bezier(.22,1,.36,1); }
 .item__arrow svg { width: 18px; height: 18px; display: block; }
 .item__tile:hover .item__arrow { transform: translate(2px, -2px); }   /* subtle lift on hover */
 /* on graphite hover, make the caption legible — hover-capable devices only, so
    a tap on mobile (where the tile has no graphite panel) never greys the title */
 @media (hover: hover) and (pointer: fine) {
-  .item__tile:hover .item__title,
-  .item__tile:hover .item__arrow { color: #f3f2ef; }
+  /* Desktop: the diagonal arrow is hidden until the tile is hovered */
+  .item__arrow { opacity: 0; }
+  .item__tile:hover .item__arrow { opacity: 1; color: #f3f2ef; }
+  .item__tile:hover .item__title { color: #f3f2ef; }
 }
 
 /* ===================== Load more ===================== */

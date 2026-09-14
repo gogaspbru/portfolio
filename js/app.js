@@ -33,6 +33,13 @@
   var list = document.getElementById("grid");
   var loadMoreBtn = document.getElementById("loadMore");
   var preloader = document.getElementById("preloader");
+  // Lock scrolling while the preloader is up (fallback for contexts where the
+  // <html class="preloading"> markup isn't present, e.g. the embedded artifact).
+  try {
+    if (preloader && !preloader.classList.contains("is-hidden")) {
+      document.documentElement.classList.add("preloading");
+    }
+  } catch (e) {}
 
   var works = [];
   var rendered = 0;
@@ -455,6 +462,8 @@
   function hidePreloader() {
     if (!preloader || preloader.classList.contains("is-hidden")) return;
     preloader.classList.add("is-hidden");                 // panels split up + down
+    try { document.documentElement.classList.remove("preloading"); } catch (e) {}   // release scroll lock
+
     setTimeout(function () { armReveal(); armCards(); }, 180);   // headings + cards animate in as the site appears
     setTimeout(function () { preloader.style.display = "none"; }, 1000);
   }
