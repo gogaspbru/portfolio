@@ -197,10 +197,11 @@
     "video": "assets/works/028_hikmicro.webm"
   },
   {
-    "type": "photo",
+    "type": "video",
     "title": "4Rooms",
     "preview": "assets/works/029_4rooms.webp",
-    "link": "https://4rooms-spb.ru/"
+    "link": "https://4rooms-spb.ru/",
+    "video": "assets/works/029_4rooms.webm"
   },
   {
     "type": "video",
