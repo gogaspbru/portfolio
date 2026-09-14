@@ -211,10 +211,11 @@
     "video": "assets/works/030_vitaliqua.webm"
   },
   {
-    "type": "photo",
+    "type": "video",
     "title": "Фонд Будущие Лидеры",
     "preview": "assets/works/031_leaders.webp",
-    "link": "https://russianleaders.org/"
+    "link": "https://russianleaders.org/",
+    "video": "assets/works/031_leaders.webm"
   },
   {
     "type": "photo",
