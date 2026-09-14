@@ -148,10 +148,11 @@
     "video": "assets/works/021_olmio.webm"
   },
   {
-    "type": "photo",
+    "type": "video",
     "title": "Key Account",
     "preview": "assets/works/022_key_account.webp",
-    "link": "https://keyaccount.ru/"
+    "link": "https://keyaccount.ru/",
+    "video": "assets/works/022_key_account.webm"
   },
   {
     "type": "video",
