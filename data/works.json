@@ -134,10 +134,11 @@
     "video": "assets/works/019_unet.webm"
   },
   {
-    "type": "photo",
+    "type": "video",
     "title": "Ямайка",
     "preview": "assets/works/020_imaika.webp",
-    "link": "http://www.i-maika.ru/"
+    "link": "http://www.i-maika.ru/",
+    "video": "assets/works/020_imaika.webm"
   },
   {
     "type": "video",
