@@ -127,10 +127,11 @@
     "video": "assets/works/018_spbgut.webm"
   },
   {
-    "type": "photo",
+    "type": "video",
     "title": "Юнет",
     "preview": "assets/works/019_unet.webp",
-    "link": "https://www.unetcom.ru/"
+    "link": "https://www.unetcom.ru/",
+    "video": "assets/works/019_unet.webm"
   },
   {
     "type": "photo",
