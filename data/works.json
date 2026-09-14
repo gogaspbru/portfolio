@@ -171,10 +171,11 @@
     "link": "https://blackstar.potok4.ru/"
   },
   {
-    "type": "photo",
+    "type": "video",
     "title": "Дата-Центр N1",
     "preview": "assets/works/026_dc1.webp",
-    "link": "https://dc1.ru/"
+    "link": "https://dc1.ru/",
+    "video": "assets/works/026_dc1.webm"
   },
   {
     "type": "photo",
