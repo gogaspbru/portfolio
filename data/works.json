@@ -159,10 +159,11 @@
     "video": "assets/works/023_technoflot.webm"
   },
   {
-    "type": "photo",
+    "type": "video",
     "title": "Talvi",
     "preview": "assets/works/024_talvi.webp",
-    "link": "https://talvi.spb.ru/"
+    "link": "https://talvi.spb.ru/",
+    "video": "assets/works/024_talvi.webm"
   },
   {
     "type": "photo",
