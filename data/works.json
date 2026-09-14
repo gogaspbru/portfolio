@@ -183,10 +183,11 @@
     "video": "assets/works/026_dc1.webm"
   },
   {
-    "type": "photo",
+    "type": "video",
     "title": "Texet",
     "preview": "assets/works/027_texet.webp",
-    "link": "https://www.texet.ru/"
+    "link": "https://www.texet.ru/",
+    "video": "assets/works/027_texet.webm"
   },
   {
     "type": "video",
