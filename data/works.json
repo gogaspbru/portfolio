@@ -182,10 +182,11 @@
     "link": "https://www.texet.ru/"
   },
   {
-    "type": "photo",
+    "type": "video",
     "title": "HIKMICRO",
     "preview": "assets/works/028_hikmicro.webp",
-    "link": "https://hikmicro2.ru/"
+    "link": "https://hikmicro2.ru/",
+    "video": "assets/works/028_hikmicro.webm"
   },
   {
     "type": "photo",
