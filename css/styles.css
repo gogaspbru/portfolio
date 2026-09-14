@@ -314,7 +314,7 @@ a { color: inherit; text-decoration: none; }
 .item__img--plate { z-index: 1; }
 .item__round {
   position: absolute;
-  left: 50%; top: 51.3%;     /* nudged down + right so it overlaps the plate's rim */
+  left: 50%; top: 50.9%;     /* nudged down + right so it overlaps the plate's rim */
   transform: translate(-50%, -50%);
   width: 49.4%;              /* sits inside the plate */
   aspect-ratio: 1 / 1;
