@@ -198,10 +198,11 @@
     "link": "https://4rooms-spb.ru/"
   },
   {
-    "type": "photo",
+    "type": "video",
     "title": "ВитаЛиква",
     "preview": "assets/works/030_vitaliqua.webp",
-    "link": "https://vitaliqua.ru/"
+    "link": "https://vitaliqua.ru/",
+    "video": "assets/works/030_vitaliqua.webm"
   },
   {
     "type": "photo",
