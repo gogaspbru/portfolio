@@ -212,7 +212,8 @@
   {
     "type": "photo",
     "title": "Фонд Будущие Лидеры",
-    "preview": "assets/works/031_leaders.webp"
+    "preview": "assets/works/031_leaders.webp",
+    "link": "https://russianleaders.org/"
   },
   {
     "type": "photo",
