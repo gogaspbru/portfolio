@@ -169,10 +169,11 @@
     "video": "assets/works/024_talvi.webm"
   },
   {
-    "type": "photo",
+    "type": "video",
     "title": "Black Star Fitness",
     "preview": "assets/works/025_black_star.webp",
-    "link": "https://blackstar.potok4.ru/"
+    "link": "https://blackstar.potok4.ru/",
+    "video": "assets/works/025_black_star.webm"
   },
   {
     "type": "video",
