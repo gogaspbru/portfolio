@@ -216,10 +216,11 @@
     "link": "https://lms-gc.com/"
   },
   {
-    "type": "photo",
+    "type": "video",
     "title": "Турул",
     "preview": "assets/works/033_turul.webp",
-    "link": "https://turul-group.ru/"
+    "link": "https://turul-group.ru/",
+    "video": "assets/works/033_turul.webm"
   },
   {
     "type": "video",
