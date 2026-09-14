@@ -222,10 +222,11 @@
     "link": "https://turul-group.ru/"
   },
   {
-    "type": "photo",
+    "type": "video",
     "title": "ГеоСплит",
     "preview": "assets/works/034_geosplit.webp",
-    "link": "https://geosplit.ru/"
+    "link": "https://geosplit.ru/",
+    "video": "assets/works/034_geosplit.webm"
   },
   {
     "type": "photo",
