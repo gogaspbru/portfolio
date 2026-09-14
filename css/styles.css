@@ -673,4 +673,6 @@ html.scrollbar-on::-webkit-scrollbar { width: 0; height: 0; }  /* WebKit */
   transition: opacity .3s ease;
   will-change: transform, height;
 }
+/* keep the custom scrollbar hidden until the preloader lifts (site loaded) */
+html.preloading .scrollbar__thumb { opacity: 0 !important; }
 
