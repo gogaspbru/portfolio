@@ -152,10 +152,11 @@
     "link": "https://keyaccount.ru/"
   },
   {
-    "type": "photo",
+    "type": "video",
     "title": "Technoflot",
     "preview": "assets/works/023_technoflot.webp",
-    "link": "http://tfdecor.ru/"
+    "link": "http://tfdecor.ru/",
+    "video": "assets/works/023_technoflot.webm"
   },
   {
     "type": "photo",
