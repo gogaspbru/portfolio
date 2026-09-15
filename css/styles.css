@@ -269,7 +269,9 @@ a { color: inherit; text-decoration: none; }
   overflow: hidden;
   transition: background .3s ease;
 }
-.item__tile:hover { background: var(--card-hover); }   /* whole card goes graphite */
+@media (hover: hover) and (pointer: fine) {
+  .item__tile:hover { background: var(--card-hover); }   /* whole card goes graphite (mouse only) */
+}
 
 /* the 16:9 media — a plain white rectangle (no shadow), inset from the card edges */
 .item__media {
@@ -294,8 +296,10 @@ a { color: inherit; text-decoration: none; }
    hover effects read the same on both kinds of tile */
 .item__img,
 .item__video { transition: transform 3.6s cubic-bezier(.2, .5, .2, 1); }
-.item__tile:hover .item__img,
-.item__tile:hover .item__video { transform: scale(1.07); }
+@media (hover: hover) and (pointer: fine) {
+  .item__tile:hover .item__img,
+  .item__tile:hover .item__video { transform: scale(1.07); }   /* mouse only — no zoom on tap */
+}
 /* the video sits over the poster image and is the visible layer when present */
 .item__video { z-index: 1; }
 /* hover-play tiles: image by default, video fades in on hover */
@@ -361,13 +365,12 @@ a { color: inherit; text-decoration: none; }
 .item__title { color: var(--fg); font-weight: 500; transition: color .3s ease; }
 .item__arrow { color: rgba(38, 37, 31, .3); display: flex; transition: color .3s ease, opacity .3s ease, transform .35s cubic-bezier(.22,1,.36,1); }
 .item__arrow svg { width: 18px; height: 18px; display: block; }
-.item__tile:hover .item__arrow { transform: translate(2px, -2px); }   /* subtle lift on hover */
 /* on graphite hover, make the caption legible — hover-capable devices only, so
    a tap on mobile (where the tile has no graphite panel) never greys the title */
 @media (hover: hover) and (pointer: fine) {
   /* Desktop: the diagonal arrow is hidden until the tile is hovered */
   .item__arrow { opacity: 0; }
-  .item__tile:hover .item__arrow { opacity: 1; color: #f3f2ef; }
+  .item__tile:hover .item__arrow { opacity: 1; color: #f3f2ef; transform: translate(2px, -2px); }
   .item__tile:hover .item__title { color: #f3f2ef; }
 }
 
@@ -617,6 +620,13 @@ a { color: inherit; text-decoration: none; }
   }
   .item__tile:hover { background: transparent; }
   .item__caption { margin-top: 8px; padding-bottom: 4px; }
+}
+
+/* Touch devices: grow the small header contact icons into a proper tap target
+   (≥44px tall) without widening the row enough to overflow narrow screens */
+@media (pointer: coarse) {
+  .contacts__item { min-height: 44px; padding-block: 8px; display: inline-flex; align-items: center; }
+  .contacts__item--icon, .contacts__item--phone { padding-inline: 8px; }
 }
 
 @media (prefers-reduced-motion: reduce) {
