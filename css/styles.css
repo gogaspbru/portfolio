@@ -594,6 +594,15 @@ a { color: inherit; text-decoration: none; }
   .contacts__item--icon, .contacts__item--phone { padding-inline: 8px; }
 }
 
+/* Phone landscape (short height): the width is >640 so it uses the desktop
+   layout — but the display heading is too tightly leaded and the footer icons
+   sit right on the bottom edge. Loosen the leading and lift the footer content. */
+@media (orientation: landscape) and (max-height: 500px) {
+  .intro__title { line-height: 0.9; }
+  .site-footer__inner { padding-bottom: clamp(16px, 6vh, 34px); }
+  .contact__socials { transform: none; }   /* drop the desktop +20px nudge here */
+}
+
 @media (prefers-reduced-motion: reduce) {
   .preloader__fill { animation-duration: .4s; }
 }
