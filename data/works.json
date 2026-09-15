@@ -239,10 +239,11 @@
     "video": "assets/works/034_geosplit.webm"
   },
   {
-    "type": "photo",
+    "type": "video",
     "title": "Idealist",
     "preview": "assets/works/035_idealist.webp",
-    "link": "https://idea-list.ru/"
+    "link": "https://idea-list.ru/",
+    "video": "assets/works/035_idealist.webm"
   },
   {
     "type": "photo",
