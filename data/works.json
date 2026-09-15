@@ -246,9 +246,10 @@
     "video": "assets/works/035_idealist.webm"
   },
   {
-    "type": "photo",
+    "type": "video",
     "title": "Тринити",
-    "preview": "assets/works/036_trinity.webp",
-    "link": "https://www.trinitygroup.ru/"
+    "preview": "assets/works/036_trinity_v2.webp",
+    "link": "https://www.trinitygroup.ru/",
+    "video": "assets/works/036_trinity.webm"
   }
 ]
