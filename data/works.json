@@ -218,10 +218,11 @@
     "video": "assets/works/031_leaders.webm"
   },
   {
-    "type": "photo",
+    "type": "video",
     "title": "Limak Marash",
-    "preview": "assets/works/032_limakmarash.webp",
-    "link": "https://lms-gc.com/"
+    "preview": "assets/works/032_limakmarash_v2.webp",
+    "link": "https://lms-gc.com/",
+    "video": "assets/works/032_limakmarash.webm"
   },
   {
     "type": "video",
