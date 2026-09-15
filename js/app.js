@@ -150,7 +150,14 @@
     img.width = 1400;
     img.height = 788;
     img.alt = item.title || "";
-    img.src = item.preview || "";
+    if (item.preview) {
+      img.src = item.preview;                       // large / fallback (no-srcset browsers)
+      // responsive: a light 480-wide variant for phones/tablets, full poster for
+      // retina desktop. sizes ≈ tile width (46vw at 2 cols, 31vw at 3 cols).
+      img.srcset = item.preview.replace(/\.webp$/, "-480.webp") + " 480w, " +
+                   item.preview + " 1400w";
+      img.sizes = "(max-width: 640px) 46vw, 31vw";
+    }
     media.appendChild(img);
 
     // Plate-reveal tile (Культура Дома): a round video sits centered under the
