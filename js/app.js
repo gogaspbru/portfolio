@@ -67,6 +67,13 @@
   })();
   if (LOW_POWER) { try { document.documentElement.classList.add("low-power"); } catch (e) {} }
 
+  // Footer year — set immediately and unconditionally, so "© 2002 – YYYY" is
+  // always complete even if the works fetch (below) fails.
+  (function () {
+    var y = document.getElementById("year");
+    if (y) y.textContent = new Date().getFullYear();
+  })();
+
   // Preload hover-video clips a bit before they're on screen, so the clip
   // starts instantly on hover (no fetch-on-hover lag), while still not
   // downloading anything until you scroll near it.
@@ -195,7 +202,9 @@
     // crisp on high-DPI screens. Intrinsic size keeps the 16:9 box stable.
     img.width = 1400;
     img.height = 788;
-    img.alt = item.title || "";
+    // decorative: the title is conveyed by the link's aria-label + the visible
+    // caption, so an alt here would be redundant (a11y: image-redundant-alt)
+    img.alt = "";
     if (item.preview) {
       img.src = item.preview;                       // large / fallback (no-srcset browsers)
       // responsive: a light 480-wide variant for phones/tablets, full poster for
@@ -363,7 +372,7 @@
     for (var i = 0; i < VISIBLE; i++) {
       var idx = i % LOGOS.length;
       shown[i] = idx;
-      html += '<div class="logos__cell"><img src="' + LOGOS[idx] + '" alt="" decoding="async"></div>';
+      html += '<div class="logos__cell"><img src="' + LOGOS[idx] + '" alt="" decoding="async" width="120" height="40"></div>';
     }
     grid.innerHTML = html;
     var imgs = grid.querySelectorAll(".logos__cell img");
@@ -760,8 +769,6 @@
       clearTimeout(rt);
       rt = setTimeout(fillLastRow, 200);
     });
-    var yearEl = document.getElementById("year");
-    if (yearEl) yearEl.textContent = new Date().getFullYear();
     initReveal();
     initRevealFooter();
     initMagnetic();
@@ -785,6 +792,9 @@
       lineDone = true;
     }
     window.addEventListener("load", function () { loaded = true; go(); });
+    // Hard fail-safe: never let the preloader hang or block the page if some
+    // resource (font, image, third-party script) stalls or fails to load.
+    setTimeout(function () { if (!done) { done = true; hidePreloader(); } }, 5000);
     go();
   })();
 

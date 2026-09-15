@@ -1,0 +1,12 @@
+{
+  "name": "portfolio",
+  "private": true,
+  "description": "goga.spb.ru — vanilla HTML/CSS/JS portfolio",
+  "scripts": {
+    "build": "node scripts/minify.mjs"
+  },
+  "devDependencies": {
+    "clean-css": "^5.3.3",
+    "terser": "^5.31.0"
+  }
+}
