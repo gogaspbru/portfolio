@@ -46,6 +46,12 @@
   var refreshScrollbar = null;   // set by initScrollbar()
   // desktop = has a real pointer; used to gate video tiles (off on mobile)
   var IS_DESKTOP = !!(window.matchMedia && window.matchMedia("(hover: hover) and (pointer: fine)").matches);
+  // Touch/mobile: no hover OR a coarse pointer. On these devices we never build a
+  // <video> and never set a src, so no mp4/webm is ever requested — poster only.
+  var IS_TOUCH = !!(window.matchMedia && (
+    window.matchMedia("(hover: none)").matches ||
+    window.matchMedia("(pointer: coarse)").matches));
+  var VIDEO_OK = IS_DESKTOP && !IS_TOUCH;   // create hover-video only on true mouse desktops
 
   // Low-power / weak-machine heuristic. Used to drop the costlier effects
   // (custom smooth-scroll, animated SVG turbulence) so nothing janks on old
@@ -64,20 +70,60 @@
   // Preload hover-video clips a bit before they're on screen, so the clip
   // starts instantly on hover (no fetch-on-hover lag), while still not
   // downloading anything until you scroll near it.
+  // Videos are created with preload="none" (no fetch at all). As a tile nears the
+  // viewport it's queued to buffer only its METADATA (light — headers, not the
+  // whole clip), and only a few at a time, so scrolling never triggers a storm of
+  // full mp4/webm downloads. The full clip is fetched only when the user hovers.
+  var MAX_LOADS = 3;            // concurrent metadata fetches
+  var activeLoads = 0;
+  var loadQueue = [];
+  function pumpLoads() {
+    while (activeLoads < MAX_LOADS && loadQueue.length) {
+      var v = loadQueue.shift();
+      if (!v || v.preload !== "none" || v.__hovered) continue;   // hover already took over
+      activeLoads++;
+      v.preload = "metadata";
+      var done = function () {
+        v.removeEventListener("loadedmetadata", done);
+        v.removeEventListener("error", done);
+        activeLoads = Math.max(0, activeLoads - 1);
+        pumpLoads();
+      };
+      v.addEventListener("loadedmetadata", done);
+      v.addEventListener("error", done);
+      try { v.load(); } catch (_) { done(); }
+    }
+  }
   var videoPreloadObserver = ("IntersectionObserver" in window)
     ? new IntersectionObserver(function (entries) {
         entries.forEach(function (e) {
           if (!e.isIntersecting) return;
           videoPreloadObserver.unobserve(e.target);
           var v = e.target.__video;
-          if (v && v.preload !== "auto") { v.preload = "auto"; try { v.load(); } catch (_) {} }
+          if (v && v.preload === "none") { loadQueue.push(v); pumpLoads(); }
         });
-      }, { rootMargin: "800px 0px 800px 0px" })
+      }, { rootMargin: "300px 0px 300px 0px" })   // buffer just ahead of the viewport
     : null;
   function preloadVideoInView(video, cell) {
-    if (!videoPreloadObserver) { video.preload = "metadata"; return; }
+    if (!videoPreloadObserver) { video.preload = "none"; return; }
     cell.__video = video;
     videoPreloadObserver.observe(cell);
+  }
+
+  // Cap how many clips play at once. Hover is normally one at a time, but this
+  // guards fast fly-overs from leaving several clips decoding in the background.
+  var MAX_PLAYING = 2;
+  var playingList = [];
+  function registerPlay(v) {
+    if (playingList.indexOf(v) === -1) playingList.push(v);
+    while (playingList.length > MAX_PLAYING) {
+      var old = playingList.shift();
+      if (old !== v) { try { old.pause(); old.currentTime = 0; } catch (_) {} }
+    }
+  }
+  function unregisterPlay(v) {
+    var i = playingList.indexOf(v);
+    if (i > -1) playingList.splice(i, 1);
   }
 
   // ---------- Card reveal: blocks open top→bottom as they scroll in ----------
@@ -162,7 +208,7 @@
 
     // Plate-reveal tile (Культура Дома): a round video sits centered under the
     // plate poster; on hover the plate fades out to uncover the round clip.
-    if (item.variant === "plate" && item.video && IS_DESKTOP) {
+    if (item.variant === "plate" && item.video && VIDEO_OK) {
       cell.className += " item--plate";
       img.className += " item__img--plate";
       var round = document.createElement("div");
@@ -177,10 +223,13 @@
       media.appendChild(round);
       preloadVideoInView(rvid, cell);
       a.addEventListener("mouseenter", function () {
-        if (rvid.preload !== "auto") rvid.preload = "auto";
+        rvid.__hovered = true;
+        if (rvid.preload !== "auto") rvid.preload = "auto";   // hover → fetch the full clip
+        registerPlay(rvid);
         var pr = rvid.play(); if (pr && pr.catch) pr.catch(function () {});
       });
       a.addEventListener("mouseleave", function () {
+        unregisterPlay(rvid);
         rvid.pause(); try { rvid.currentTime = 0; } catch (e) {}
       });
     }
@@ -188,7 +237,7 @@
     // the poster image stays). Two modes:
     //   default  — autoplays (muted loop), the clip replaces the image;
     //   hover:true — image by default, the clip plays on hover.
-    else if (item.type === "video" && item.video && IS_DESKTOP) {
+    else if (item.type === "video" && item.video && VIDEO_OK) {
       var hoverMode = item.autoplay !== true;   // hover-play is the default; opt in to autoplay
       cell.className += hoverMode ? " item--video-hover" : " item--video-autoplay";
       var video = document.createElement("video");
@@ -206,11 +255,14 @@
         media.appendChild(video);
         preloadVideoInView(video, cell);      // preload before hover → instant start
         a.addEventListener("mouseenter", function () {
-          if (video.preload !== "auto") video.preload = "auto";
+          video.__hovered = true;
+          if (video.preload !== "auto") video.preload = "auto";   // hover → fetch the full clip
+          registerPlay(video);
           var pr = video.play();
           if (pr && pr.catch) pr.catch(function () {});
         });
         a.addEventListener("mouseleave", function () {
+          unregisterPlay(video);
           video.pause();
           // back to frame 0 so every hover starts on the poster frame (no visual jump);
           // the clip is already buffered, so the seek is instant
@@ -376,7 +428,7 @@
       dot.style.transform = "translate(" + mx + "px," + my + "px)";
       if (!shown) { shown = true; root.classList.add("cursor-ready"); }
       if (!raf) raf = requestAnimationFrame(loop);   // wake the easing loop only while moving
-    });
+    }, { passive: true });
 
     document.addEventListener("mouseover", function (e) {
       if (e.target.closest && e.target.closest(hoverSel)) root.classList.add("cursor-hover");
@@ -459,7 +511,13 @@
       thumb.style.transform = "translateY(" + y + "px)";
     }
 
-    window.addEventListener("scroll", update, { passive: true });
+    var ticking = false;
+    function onScroll() {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(function () { update(); ticking = false; });
+    }
+    window.addEventListener("scroll", onScroll, { passive: true });
     window.addEventListener("resize", update);
     refreshScrollbar = update;   // called after "Load more" grows the page
     update();
@@ -543,13 +601,20 @@
         if (lineMode && el._inners) splitLines(el);
         if (armed) fire(el); else queued.push(el);
       }
-      function check() {
+      var ticking = false;
+      function measure() {
+        ticking = false;
         var pageBottom = page.getBoundingClientRect().bottom;
         var r = el.getBoundingClientRect();
         if (pageBottom <= r.top + r.height * 0.5) {   // ~half of the statement uncovered
           window.removeEventListener("scroll", check);
           doReveal();
         }
+      }
+      function check() {
+        if (ticking) return;
+        ticking = true;
+        requestAnimationFrame(measure);
       }
       window.addEventListener("scroll", check, { passive: true });
       check();
