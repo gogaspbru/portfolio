@@ -1,4 +1,4 @@
-/* TWINS 1 — поведение главной: меню, появление при прокрутке, изогнутая лента, счётчики, вопросы. */
+/* TWINS 1 — поведение главной: появление при прокрутке, изогнутая лента, счётчики. */
 (function () {
   'use strict';
   var root = document.documentElement;
@@ -17,18 +17,20 @@
     burger.setAttribute('aria-expanded', String(open));
     menu.setAttribute('aria-hidden', String(!open));
   }
-  burger.addEventListener('click', function () { setMenu(!root.classList.contains('menu-open')); });
+  // Меню пока выключено — бургер ничего не открывает. Включить: MENU_ENABLED = true
+  var MENU_ENABLED = false;
+  if (MENU_ENABLED) burger.addEventListener('click', function () { setMenu(!root.classList.contains('menu-open')); });
   menu.addEventListener('click', function (e) { if (e.target.closest('a')) setMenu(false); });
   document.addEventListener('keydown', function (e) { if (e.key === 'Escape') setMenu(false); });
 
   // ---------- появление при прокрутке ----------
-  var textTargets = '.projects__title, .statement__text, .press, .about__text, .stats li, .why__title, .why__list li, .faq__title, .faq__list details, .footer__top > *';
-  var imageTargets = '.card, .why__media, .band .ph';
+  var textTargets = '.projects__title, .statement__text, .press, .about__text, .stats li, .footer__top > *';
+  var imageTargets = '.card';
   document.querySelectorAll(textTargets).forEach(function (el) { el.setAttribute('data-reveal', ''); });
   document.querySelectorAll(imageTargets).forEach(function (el) { el.setAttribute('data-reveal', 'img'); });
 
   // соседние элементы в одном ряду появляются лесенкой
-  document.querySelectorAll('.row, .stats, .why__list, .faq__list, .footer__top').forEach(function (group) {
+  document.querySelectorAll('.row, .stats, .press, .footer__top').forEach(function (group) {
     Array.prototype.forEach.call(group.children, function (el, i) { el.style.transitionDelay = (i * 0.09) + 's'; });
   });
 
@@ -86,8 +88,8 @@
     var p = total > 0 ? Math.min(1, Math.max(0, -r.top / total)) : 0;
     // лента въезжает справа и уезжает влево
     var span = (cards.length - 1) * geo.step;
-    var from = 58;
-    var to = -span - 58;
+    var from = geo.step * 0.9;       // первая карточка видна сразу, без пустого экрана
+    var to = -span - geo.step * 0.9;
     var rot = from + (to - from) * p;
     cards.forEach(function (card, i) {
       var a = rot + i * geo.step;
@@ -106,25 +108,6 @@
   renderRing();
   window.addEventListener('scroll', onScroll, { passive: true });
   window.addEventListener('resize', function () { measure(); renderRing(); });
-
-  // ---------- вопросы: плавное раскрытие ----------
-  document.querySelectorAll('.faq__list details').forEach(function (d) {
-    var summary = d.querySelector('summary');
-    var body = d.querySelector('p');
-    summary.addEventListener('click', function (e) {
-      if (reduce || !body.animate) return;
-      e.preventDefault();
-      if (d.open) {
-        var h = body.offsetHeight;
-        body.animate([{ height: h + 'px', opacity: 1 }, { height: '0px', opacity: 0 }], { duration: 400, easing: 'cubic-bezier(.22,1,.36,1)' })
-          .onfinish = function () { d.open = false; };
-      } else {
-        d.open = true;
-        var full = body.offsetHeight;
-        body.animate([{ height: '0px', opacity: 0 }, { height: full + 'px', opacity: 1 }], { duration: 500, easing: 'cubic-bezier(.22,1,.36,1)' });
-      }
-    });
-  });
 
   // ---------- год в подвале ----------
   var year = document.getElementById('year');
