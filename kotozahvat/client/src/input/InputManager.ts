@@ -4,8 +4,11 @@ import { emptyCommands, type Commands, type Vec } from './commands';
 /** Что вводу нужно знать об игре */
 export interface InputHost {
   toWorld(sx: number, sy: number): Vec;
-  catCenter(): Vec;
   isBlock(p: Vec): boolean;
+  /** Достаёт ли лапа/когти до точки без ходьбы */
+  inStrikeRange(p: Vec): boolean;
+  /** Тап по блоку: рядом — ударить, далеко — подойти и ударить */
+  tapBlock(p: Vec): void;
   navigateTo(p: Vec): void;
   cancelNavigation(): void;
   isNavigating(): boolean;
@@ -176,13 +179,8 @@ export class InputManager {
     }
     // тап
     const w = this.host.toWorld(this.touchStart.x, this.touchStart.y);
-    const c = this.host.catCenter();
-    if (this.host.isBlock(w) && Math.hypot(w.x - c.x, w.y - c.y) <= CONFIG.touch.attackReach) {
-      this.host.cancelNavigation();
-      this.pawQueued = w;
-    } else {
-      this.host.navigateTo(w);
-    }
+    if (this.host.isBlock(w)) this.host.tapBlock(w);
+    else this.host.navigateTo(w);
   }
 
   /** Команды на один шаг; однократные нажатия расходуются */
@@ -203,9 +201,8 @@ export class InputManager {
     }
     if (this.touchScratch) {
       const w = this.host.toWorld(this.touchNow.x, this.touchNow.y);
-      const c = this.host.catCenter();
       cmd.aim = w;
-      if (Math.hypot(w.x - c.x, w.y - c.y) <= CONFIG.touch.attackReach) {
+      if (this.host.inStrikeRange(w)) {
         if (this.host.isNavigating()) this.host.cancelNavigation();
         cmd.scratch = w;
       } else {

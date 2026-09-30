@@ -31,7 +31,7 @@ export class Camera {
     const vw = this.viewW;
     const vh = this.viewH;
     const dx = vw >= worldW ? (worldW - vw) / 2 : Math.max(0, Math.min(worldW - vw, tx - vw / 2));
-    const dy = vh >= worldH ? (worldH - vh) / 2 : Math.max(-CONFIG.camera.topMargin / this.zoom, Math.min(worldH - vh, ty - vh * 0.55));
+    const dy = vh >= worldH ? (worldH - vh) / 2 : Math.max(-CONFIG.camera.topMargin / this.zoom - CONFIG.cat.height * 1.2, Math.min(worldH - vh, ty - vh * 0.55));
     if (instant) {
       this.x = dx;
       this.y = dy;

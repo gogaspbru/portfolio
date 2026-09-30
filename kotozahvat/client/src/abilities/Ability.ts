@@ -30,7 +30,7 @@ export interface Ability {
 
 /** Откуда кот бьёт — примерно от груди */
 export function strikeOrigin(cat: Cat): Vec {
-  return { x: cat.x + cat.facing * 6, y: cat.y - cat.h * 0.55 };
+  return { x: cat.x + cat.facing * cat.w * 0.18, y: cat.y - cat.h * 0.55 };
 }
 
 /** Точка удара: в сторону цели, не дальше reach */

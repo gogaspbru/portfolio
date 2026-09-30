@@ -124,7 +124,7 @@ function startGame(data: LevelData, image: CanvasImageSource) {
 
   const hint = $('hud-hint');
   hint.textContent = isTouch
-    ? 'Тап — идти · тап по блоку рядом — лапой · держать — когти · свайп вниз — спрыгнуть'
+    ? 'Тап — идти · тап по блоку — лапой · держать — когти · свайп вниз — спрыгнуть'
     : 'A/D — бег · пробел — прыжок, ещё раз — кульбит, держать — лезть вверх · S — вниз · клик — лапой · зажать — когти';
   hint.classList.remove('hide');
   show(hint, true);

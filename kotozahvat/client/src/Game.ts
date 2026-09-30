@@ -9,7 +9,8 @@ import { InputManager } from './input/InputManager';
 import { emptyCommands, type Commands } from './input/commands';
 import { Camera } from './render/Camera';
 import { Effects } from './render/Effects';
-import type { Ability, AbilityContext } from './abilities/Ability';
+import { strikeOrigin, type Ability, type AbilityContext } from './abilities/Ability';
+import type { Vec } from './input/commands';
 import { Paw } from './abilities/Paw';
 import { Claws } from './abilities/Claws';
 
@@ -58,6 +59,9 @@ export class Game {
   private playTime = 0;
   private stateTime = 0;
   private wasScratching = false;
+  /** Блок, к которому кот идёт, чтобы ударить (тап по дальнему блоку) */
+  private hitTarget: Vec | null = null;
+  private pendingPaw: Vec | null = null;
   private reportTick = 0;
   private landDuration: number;
   private resizeObserver: ResizeObserver;
@@ -93,10 +97,24 @@ export class Game {
 
     this.input = new InputManager(canvas, {
       toWorld: (sx, sy) => this.camera.toWorld(sx, sy),
-      catCenter: () => ({ x: this.cat.x, y: this.cat.centerY }),
       isBlock: (p) => !!this.level.elementAt(p.x, p.y),
+      inStrikeRange: (p) => this.inStrikeRange(p),
+      tapBlock: (p) => {
+        if (this.inStrikeRange(p)) {
+          this.navigator.cancel();
+          this.hitTarget = null;
+          this.pendingPaw = p;
+        } else if (this.state === 'play') {
+          // далеко: идём к блоку и бьём, как только дотянемся
+          this.hitTarget = p;
+          this.navigator.goTo(p.x, p.y);
+        }
+      },
       navigateTo: (p) => this.state === 'play' && this.navigator.goTo(p.x, p.y),
-      cancelNavigation: () => this.navigator.cancel(),
+      cancelNavigation: () => {
+        this.navigator.cancel();
+        this.hitTarget = null;
+      },
       isNavigating: () => this.navigator.active,
       onFirstInput: () => callbacks.onFirstInput(),
     });
@@ -107,12 +125,18 @@ export class Game {
     this.camera.follow(this.cat.x, this.cat.centerY, 0, this.level.width, this.level.worldHeight, true);
   }
 
+  /** Достанет ли лапа до точки, не сходя с места (с небольшим запасом на радиус удара) */
+  private inStrikeRange(p: Vec): boolean {
+    const o = strikeOrigin(this.cat);
+    return Math.hypot(p.x - o.x, p.y - o.y) <= CONFIG.paw.reach + CONFIG.paw.hitRadius * 0.7;
+  }
+
   /** Кот появляется над самым верхним элементом ближе к левому краю */
   private spawnPoint(): [number, number] {
     const els = this.level.elements.filter((e) => !e.dead && e.w >= 60);
     els.sort((a, b) => a.y - b.y || a.x - b.x);
     const e = els[0];
-    return e ? [Math.min(e.x + 60, e.x + e.w / 2), Math.max(0, e.y - 40)] : [100, 0];
+    return e ? [Math.min(e.x + CONFIG.cat.width * 1.6, e.x + e.w / 2), Math.max(0, e.y - 40)] : [CONFIG.cat.width * 1.6, 0];
   }
 
   start() {
@@ -206,6 +230,18 @@ export class Game {
     this.time += dt;
     this.stateTime += dt;
     let cmd: Commands = this.input.poll(dt);
+    if (this.pendingPaw) {
+      cmd.paw = cmd.aim = this.pendingPaw;
+      this.pendingPaw = null;
+    }
+    if (this.hitTarget) {
+      if (!this.level.elementAt(this.hitTarget.x, this.hitTarget.y)) this.hitTarget = null; // уже разрушен
+      else if (this.inStrikeRange(this.hitTarget)) {
+        cmd.paw = cmd.aim = this.hitTarget;
+        this.navigator.cancel();
+        this.hitTarget = null;
+      } else if (!this.navigator.active) this.hitTarget = null; // не дошли — игрок тапнет ещё
+    }
     if (this.state === 'play') {
       this.navigator.update(this.cat, dt, cmd);
       this.playTime += dt;

@@ -4,6 +4,14 @@
  * скорости — пикселей в секунду, время — секунды (если не сказано иное).
  */
 
+/**
+ * Размер кота. 1 — исходный маленький, 3 — втрое больше.
+ * От него зависят хитбокс, спрайт, дальность лапы и когтей, прыжок и скорость
+ * (не всё линейно: прыжок и скорость растут медленнее, иначе кот «летает»).
+ */
+const CAT_SIZE = 3;
+const grow = (v: number, power = 1) => Math.round(v * CAT_SIZE ** power);
+
 const isTouchDevice =
   typeof matchMedia !== 'undefined' && matchMedia('(pointer: coarse)').matches;
 
@@ -24,17 +32,17 @@ export const CONFIG = {
 
   cat: {
     /** Хитбокс кота */
-    width: 34,
-    height: 30,
+    width: grow(34),
+    height: grow(30),
     /** Во сколько раз увеличивать пиксели спрайта */
-    spriteScale: 2,
-    runSpeed: 300,
-    groundAccel: 2800,
-    airAccel: 1700,
-    groundFriction: 2600,
-    jumpVelocity: 760,
+    spriteScale: 2 * CAT_SIZE,
+    runSpeed: grow(300, 0.35),
+    groundAccel: grow(2800, 0.35),
+    airAccel: grow(1700, 0.35),
+    groundFriction: grow(2600, 0.35),
+    jumpVelocity: grow(760, 0.3),
     /** Кульбит — второй прыжок в воздухе */
-    doubleJumpVelocity: 680,
+    doubleJumpVelocity: grow(680, 0.3),
     /** Отпустили пробел рано — прыжок ниже (скорость умножается на это) */
     jumpCutMultiplier: 0.45,
     /** Можно прыгнуть чуть позже, чем сошёл с края */
@@ -44,7 +52,7 @@ export const CONFIG = {
     /** Сколько игнорировать платформу после «спрыгнуть вниз» */
     dropThroughTime: 0.22,
     /** С какой скорости падения проигрывается анимация приземления */
-    landingSpeedForAnim: 520,
+    landingSpeedForAnim: grow(520, 0.3),
     flipDuration: 0.36,
   },
 
@@ -55,7 +63,7 @@ export const CONFIG = {
    */
   climb: {
     enabled: true,
-    speed: 320,
+    speed: grow(320, 0.3),
     /** Горизонтальная скорость при лазанье (доля от бега) */
     sideSpeed: 0.6,
   },
@@ -63,10 +71,10 @@ export const CONFIG = {
   /** Удар лапой (клик / тап по блоку) */
   paw: {
     damage: 24,
-    reach: 40,
-    hitRadius: 18,
+    reach: grow(40),
+    hitRadius: grow(18, 0.6),
     /** Радиус «откола» клеток при ударе */
-    chipRadius: 11,
+    chipRadius: grow(11, 0.6),
     cooldown: 0.18,
   },
 
@@ -75,11 +83,11 @@ export const CONFIG = {
     /** Через сколько после нажатия клик превращается в «точить когти» */
     holdDelay: 0.22,
     damagePerSecond: 80,
-    reach: 38,
-    radius: 14,
+    reach: grow(38),
+    radius: grow(14, 0.6),
     scratchInterval: 0.06,
     chipInterval: 0.3,
-    chipRadius: 8,
+    chipRadius: grow(8, 0.6),
   },
 
   /** Здоровье элемента = множитель_типа × (base + perSqrtArea × √(ширина×высота)) */
@@ -127,15 +135,13 @@ export const CONFIG = {
     followSpeed: 7,
     /** Запас сверху (экранные пиксели), чтобы шапка сайта не пряталась под шкалой захвата */
     topMargin: 90,
-    lookAhead: 50,
+    lookAhead: grow(50),
   },
 
   touch: {
     longPressMs: 260,
     swipeMinDistance: 45,
     tapMaxMove: 14,
-    /** В каком радиусе от кота тап по блоку — удар, а не «иди туда» (пиксели уровня) */
-    attackReach: 95,
   },
 
   render: {

@@ -8,6 +8,9 @@ interface Swipe {
   claws: boolean;
 }
 
+/** Дуги ударов растут вместе с котом */
+const SWIPE_SCALE = CONFIG.cat.spriteScale / 2;
+
 /** Мелкие эффекты: дуги ударов и тряска экрана */
 export class Effects {
   private swipes: Swipe[] = [];
@@ -47,9 +50,10 @@ export class Effects {
       ctx.save();
       ctx.translate(s.x, s.y);
       ctx.rotate(s.angle);
+      ctx.scale(SWIPE_SCALE, SWIPE_SCALE);
       ctx.globalAlpha = 1 - k;
       ctx.strokeStyle = s.claws ? '#ffffff' : '#fff3c4';
-      ctx.lineWidth = 3;
+      ctx.lineWidth = 3 / Math.sqrt(SWIPE_SCALE);
       ctx.lineCap = 'round';
       const r = 16 + k * 8;
       for (let i = -1; i <= 1; i++) {

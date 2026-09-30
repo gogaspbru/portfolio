@@ -155,9 +155,7 @@ kbd {
 /* ---------- HUD ---------- */
 #hud {
   position: absolute;
-  left: 0;
-  right: 0;
-  top: 0;
+  inset: 0;
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
@@ -202,7 +200,7 @@ kbd {
 .hint {
   position: absolute;
   left: 50%;
-  top: calc(max(10px, env(safe-area-inset-top)) + 64px);
+  bottom: calc(max(8px, env(safe-area-inset-bottom)) + 40px);
   transform: translateX(-50%);
   width: max-content;
   max-width: calc(100vw - 32px);
