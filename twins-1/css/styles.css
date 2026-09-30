@@ -20,7 +20,7 @@
   --gap: clamp(8px, 0.85vw, 16px);      /* зазор между картинками и поля сетки */
   --ease: cubic-bezier(0.22, 1, 0.36, 1);
 
-  --fs-hero: clamp(38px, 3vw, 58px);
+  --fs-hero: clamp(46px, 4.2vw, 80px);
   --fs-h2: clamp(40px, 3.7vw, 72px);
   --fs-big: clamp(28px, 2.9vw, 56px);   /* крупные утверждения */
   --fs-h3: clamp(32px, 2.6vw, 50px);
@@ -158,7 +158,7 @@ img { display: block; max-width: 100%; }
   padding: 0 65px clamp(40px, 8vh, 80px) var(--pad);
 }
 .hero__kicker { font-size: 19px; font-weight: 500; letter-spacing: -0.02em; margin-bottom: 36px; }
-.hero__title { font-size: var(--fs-hero); font-weight: 400; line-height: 1.02; letter-spacing: -0.045em; max-width: 8.6em; }
+.hero__title { font-size: var(--fs-hero); font-weight: 400; line-height: 0.95; letter-spacing: -0.045em; max-width: 8.6em; }
 .hero__actions { display: flex; gap: var(--gap); flex-shrink: 0; }
 
 /* ---------- БЛОК 2: проекты ---------- */
@@ -299,7 +299,7 @@ img { display: block; max-width: 100%; }
 .stats span { font-size: clamp(16px, 1.1vw, 20px); color: #9a9a9a; }
 
 /* ---------- БЛОК 6: подвал (светлый) ---------- */
-.footer { margin: 0 var(--gap) var(--gap); border-radius: var(--radius); background: var(--white); color: var(--fg); padding: clamp(56px, 4.4vw, 84px) var(--pad) 36px; }
+.footer { margin: 0 var(--gap) var(--gap); border-radius: var(--radius); background: var(--white); color: var(--fg); padding: clamp(73px, 5.7vw, 109px) var(--pad) 48px; }
 .footer__top { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr 1fr; gap: 40px 24px; }
 .footer__title { font-size: clamp(26px, 1.8vw, 34px); letter-spacing: -0.04em; line-height: 1.1; margin-bottom: 32px; }
 .footer__label { font-size: 15px; color: var(--muted); margin-bottom: 30px; }
@@ -315,7 +315,7 @@ img { display: block; max-width: 100%; }
   justify-content: space-between;
   gap: 16px 32px;
   flex-wrap: wrap;
-  margin-top: clamp(56px, 4.4vw, 84px);
+  margin-top: clamp(73px, 5.7vw, 109px);
   padding-top: 28px;
   border-top: 1px solid var(--line);
   font-size: 13px;
