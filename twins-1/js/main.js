@@ -109,21 +109,71 @@
   window.addEventListener('scroll', onScroll, { passive: true });
   window.addEventListener('resize', function () { measure(); renderRing(); });
 
-  // ---------- цвет логотипа: белый над тёмными секциями ----------
-  var header = document.querySelector('.header');
-  var lightZones = Array.prototype.slice.call(document.querySelectorAll('[data-nav="light"]'));
-  function updateNav() {
-    if (!header) return;
-    var y = 44; // высота линии логотипа
-    var light = lightZones.some(function (el) {
-      var r = el.getBoundingClientRect();
-      return r.top <= y && r.bottom >= y;
-    });
-    header.classList.toggle('is-light', light);
+  // ---------- контрастный логотип/бургер: цвет подбирается под фон ----------
+  var logo = document.querySelector('.logo');
+  var burger = document.querySelector('.burger');
+  var cvs = document.createElement('canvas');
+  var ctx = cvs.getContext('2d', { willReadFrequently: true });
+
+  function lumColor(c) {
+    var m = c && c.match(/rgba?\(([^)]+)\)/);
+    if (!m) return null;
+    var p = m[1].split(',').map(Number);
+    if (p.length >= 4 && p[3] === 0) return null; // прозрачный — смотрим глубже
+    return (0.2126 * p[0] + 0.7152 * p[1] + 0.0722 * p[2]) / 255;
   }
-  updateNav();
-  window.addEventListener('scroll', updateNav, { passive: true });
-  window.addEventListener('resize', updateNav);
+
+  function sampleMedia(m, x, y) {
+    var nw = m.naturalWidth || m.videoWidth, nh = m.naturalHeight || m.videoHeight;
+    if (!nw || !nh) return null;
+    var b = m.getBoundingClientRect();
+    if (x < b.left || x > b.right || y < b.top || y > b.bottom) return null;
+    var cw = Math.max(2, Math.round(b.width / 6)), ch = Math.max(2, Math.round(b.height / 6));
+    cvs.width = cw; cvs.height = ch;
+    var arB = b.width / b.height, arI = nw / nh, sx, sy, sw, sh;
+    if (arI > arB) { sh = nh; sw = nh * arB; sx = (nw - sw) / 2; sy = 0; }
+    else { sw = nw; sh = nw / arB; sx = 0; sy = (nh - sh) / 2; }
+    try {
+      ctx.drawImage(m, sx, sy, sw, sh, 0, 0, cw, ch);
+      var lx = Math.min(cw - 1, Math.max(0, Math.round((x - b.left) / b.width * cw)));
+      var ly = Math.min(ch - 1, Math.max(0, Math.round((y - b.top) / b.height * ch)));
+      var d = ctx.getImageData(lx, ly, 1, 1).data;
+      return (0.2126 * d[0] + 0.7152 * d[1] + 0.0722 * d[2]) / 255;
+    } catch (e) { return null; } // напр. tainted canvas
+  }
+
+  function lumAt(x, y) {
+    var els = document.elementsFromPoint(x, y);
+    for (var i = 0; i < els.length; i++) {
+      var el = els[i];
+      if (el.closest && el.closest('.header')) continue; // пропускаем сам логотип/бургер
+      var media = (el.tagName === 'IMG' || el.tagName === 'VIDEO') ? el
+        : (el.querySelector ? el.querySelector('img, video') : null);
+      if (media) { var lm = sampleMedia(media, x, y); if (lm != null) return lm; }
+      var lc = lumColor(getComputedStyle(el).backgroundColor);
+      if (lc != null) return lc;
+    }
+    return 1; // по умолчанию считаем фон светлым
+  }
+
+  function paintContrast(el) {
+    if (!el) return;
+    var r = el.getBoundingClientRect();
+    var L = lumAt(r.left + r.width / 2, r.top + r.height / 2);
+    el.style.color = L > 0.5 ? '#111' : '#fff'; // противоположный фону
+  }
+  function updateContrast() { paintContrast(logo); paintContrast(burger); }
+
+  var cTick = false;
+  function onContrast() {
+    if (cTick) return; cTick = true;
+    requestAnimationFrame(function () { cTick = false; updateContrast(); });
+  }
+  updateContrast();
+  window.addEventListener('scroll', onContrast, { passive: true });
+  window.addEventListener('resize', onContrast);
+  // фон-видео и фото догружаются/меняют кадр — пересчитываем чуть позже
+  [200, 600, 1200, 2000].forEach(function (t) { setTimeout(updateContrast, t); });
 
   // ---------- год в подвале ----------
   var year = document.getElementById('year');

@@ -95,11 +95,10 @@ img { display: block; max-width: 100%; }
   align-items: center;
   justify-content: space-between;
   padding: 30px 32px;
-  color: var(--fg); /* тёмный логотип по умолчанию (светлый фон) */
-  transition: color 0.3s var(--ease);
+  color: #fff; /* цвет логотипа/бургера подбирает JS под фон (контраст) */
   pointer-events: none;
 }
-.header.is-light { color: #fff; } /* белый логотип на тёмном фоне */
+.logo, .burger { transition: color 0.25s var(--ease); }
 .header > * { pointer-events: auto; }
 .logo__svg { display: block; width: 110px; height: auto; }
 .burger {
