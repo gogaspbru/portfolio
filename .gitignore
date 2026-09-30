@@ -4,3 +4,6 @@ __pycache__/
 *.pyc
 node_modules/
 package-lock.json
+
+# Котозахват: lock-файл нужен для воспроизводимой сборки
+!kotozahvat/package-lock.json
