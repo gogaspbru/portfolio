@@ -109,6 +109,22 @@
   window.addEventListener('scroll', onScroll, { passive: true });
   window.addEventListener('resize', function () { measure(); renderRing(); });
 
+  // ---------- цвет логотипа: белый над тёмными секциями ----------
+  var header = document.querySelector('.header');
+  var lightZones = Array.prototype.slice.call(document.querySelectorAll('[data-nav="light"]'));
+  function updateNav() {
+    if (!header) return;
+    var y = 44; // высота линии логотипа
+    var light = lightZones.some(function (el) {
+      var r = el.getBoundingClientRect();
+      return r.top <= y && r.bottom >= y;
+    });
+    header.classList.toggle('is-light', light);
+  }
+  updateNav();
+  window.addEventListener('scroll', updateNav, { passive: true });
+  window.addEventListener('resize', updateNav);
+
   // ---------- год в подвале ----------
   var year = document.getElementById('year');
   if (year) year.textContent = new Date().getFullYear();
