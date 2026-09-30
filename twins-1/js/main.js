@@ -156,10 +156,17 @@
     return 1; // по умолчанию считаем фон светлым
   }
 
+  var hero = document.querySelector('.hero');
   function paintContrast(el) {
     if (!el) return;
     var r = el.getBoundingClientRect();
-    var L = lumAt(r.left + r.width / 2, r.top + r.height / 2);
+    var cy = r.top + r.height / 2;
+    // на первом экране логотип и бургер всегда белые
+    if (hero) {
+      var h = hero.getBoundingClientRect();
+      if (h.top <= cy && h.bottom >= cy) { el.style.color = '#fff'; return; }
+    }
+    var L = lumAt(r.left + r.width / 2, cy);
     el.style.color = L > 0.5 ? '#111' : '#fff'; // противоположный фону
   }
   function updateContrast() { paintContrast(logo); paintContrast(burger); }
