@@ -8,9 +8,15 @@
 <link rel="preload" href="assets/fonts/SuisseIntl-Regular.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="js/lenis.css">
 <link rel="stylesheet" href="css/styles.css">
-<script>document.documentElement.classList.add("js")</script>
+<script>document.documentElement.classList.add("js","is-loading")</script>
 </head>
 <body>
+
+<!-- Прелоадер: счётчик 0–100, затем «занавес» уезжает вверх -->
+<div class="preloader" id="preloader" aria-hidden="true">
+  <span class="preloader__mark">TW<span class="preloader__sep"></span>NS</span>
+  <span class="preloader__num"><span id="preNum">0</span>%</span>
+</div>
 
 <!--
   TWINS 1 — главная. Сетка повторяет референс, контент — заглушки:

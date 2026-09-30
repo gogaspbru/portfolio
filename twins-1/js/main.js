@@ -4,10 +4,26 @@
   var root = document.documentElement;
   var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  // ---------- первый экран: запускаем анимацию после первой отрисовки ----------
-  requestAnimationFrame(function () {
-    requestAnimationFrame(function () { root.classList.add('loaded'); });
-  });
+  // ---------- прелоадер → появление первого экрана ----------
+  var pre = document.getElementById('preloader');
+  function reveal() { root.classList.remove('is-loading'); root.classList.add('loaded'); }
+  if (reduce || !pre) {
+    if (pre) pre.style.display = 'none';
+    reveal();
+  } else {
+    var numEl = document.getElementById('preNum');
+    var t0 = performance.now(), DUR = 1200;
+    (function tick(t) {
+      var k = Math.min(1, (t - t0) / DUR);
+      if (numEl) numEl.textContent = Math.round(k * 100);
+      if (k < 1) { requestAnimationFrame(tick); return; }
+      setTimeout(function () {
+        pre.classList.add('is-done');
+        reveal();
+        pre.addEventListener('transitionend', function () { pre.style.display = 'none'; }, { once: true });
+      }, 200);
+    })(t0);
+  }
 
   // ---------- меню ----------
   var burger = document.querySelector('.burger');

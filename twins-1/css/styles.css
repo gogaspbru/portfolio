@@ -310,18 +310,19 @@ img { display: block; max-width: 100%; }
 .socials a { border-radius: var(--radius); width: 48px; height: 48px; display: grid; place-items: center; background: #efefef; font-size: 14px; transition: background 0.3s; }
 .socials a:hover { background: #e2e2e2; opacity: 1; }
 .footer__bottom {
-  display: flex;
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr 1fr;
   align-items: center;
-  justify-content: space-between;
-  gap: 16px 32px;
-  flex-wrap: wrap;
+  gap: 16px 24px;
   margin-top: clamp(73px, 5.7vw, 109px);
   padding-top: 28px;
   border-top: 1px solid var(--line);
   font-size: 13px;
   font-weight: 400;
 }
-.footer__legal { display: flex; gap: 24px; flex-wrap: wrap; color: var(--muted); font-weight: 400; }
+.footer__bottom > span { grid-column: 1; }
+.footer__legal { grid-column: 2 / 5; display: flex; gap: 24px; flex-wrap: wrap; color: var(--muted); font-weight: 400; }
+.footer__bottom > a:last-child { grid-column: 5; justify-self: end; }
 .footer__bottom a:hover { color: var(--fg); }
 
 /* ==========================================================================
@@ -384,9 +385,41 @@ img { display: block; max-width: 100%; }
   .press { justify-content: center; gap: 24px 32px; }
   .ring__more { opacity: 1; }
   .footer__top { grid-template-columns: 1fr 1fr; }
-  .footer__bottom { flex-direction: column; align-items: flex-start; gap: 18px; }
-  .footer__legal { flex-direction: column; gap: 10px; }
+  .footer__bottom { display: flex; flex-direction: column; align-items: flex-start; gap: 18px; }
+  .footer__legal { grid-column: auto; flex-direction: column; gap: 10px; }
+  .footer__bottom > a:last-child { grid-column: auto; justify-self: start; }
 }
 
 /* real photos inside placeholders (keep .ph animations) */
 .ph img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; }
+
+/* ---------- Прелоадер + появление первого экрана ---------- */
+html.is-loading, html.is-loading body { overflow: hidden; }
+
+.preloader {
+  position: fixed; inset: 0; z-index: 1000;
+  background: #111; color: #fff;
+  display: grid; place-items: center;
+}
+.js .preloader { transition: transform 0.95s cubic-bezier(0.76, 0, 0.24, 1); will-change: transform; }
+.preloader.is-done { transform: translateY(-101%); }
+.preloader__mark {
+  display: inline-flex; align-items: center; gap: 0.28em;
+  font-size: clamp(26px, 4vw, 52px); font-weight: 600;
+  letter-spacing: 0.28em; padding-left: 0.28em;
+}
+.preloader__sep { width: 1px; height: 1em; background: currentColor; opacity: 0.55; }
+.preloader__num {
+  position: absolute; right: 28px; bottom: 24px;
+  font-size: 14px; opacity: 0.7; font-variant-numeric: tabular-nums;
+}
+
+/* логотип и меню появляются после прелоадера */
+.js .header .logo, .js .header .burger { opacity: 0; transform: translateY(-14px); transition: opacity 1s var(--ease), transform 1.1s var(--ease); }
+.loaded .header .logo { opacity: 1; transform: none; transition-delay: 0.15s; }
+.loaded .header .burger { opacity: 1; transform: none; transition-delay: 0.28s; }
+
+@media (prefers-reduced-motion: reduce) {
+  .js .preloader { transition: none; }
+  .js .header .logo, .js .header .burger { opacity: 1; transform: none; transition: none; }
+}
