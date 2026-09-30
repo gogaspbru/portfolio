@@ -16,6 +16,7 @@
   --white: #ffffff;
 
   --pad: clamp(20px, 4.2vw, 80px);      /* поля для текста */
+  --radius: 5px;                        /* скругление всех прямоугольников */
   --gap: clamp(8px, 0.85vw, 16px);      /* зазор между картинками и поля сетки */
   --ease: cubic-bezier(0.22, 1, 0.36, 1);
 
@@ -68,6 +69,7 @@ img { display: block; max-width: 100%; }
 
 /* ---------- кнопки ---------- */
 .btn {
+  border-radius: var(--radius);
   display: inline-flex;
   align-items: center;
   height: 54px;
@@ -175,7 +177,7 @@ img { display: block; max-width: 100%; }
 .row--3 { grid-template-columns: repeat(3, 1fr); }
 .row--portrait .card { aspect-ratio: 5 / 6; }
 .row--landscape .card { aspect-ratio: 3 / 2; }
-.card { position: relative; overflow: hidden; display: block; background: #ddd; }
+.card { position: relative; overflow: hidden; display: block; background: #ddd; border-radius: var(--radius); isolation: isolate; }
 .card .ph { transition: transform 1.4s var(--ease); }
 .card::before {
   content: "";
@@ -199,8 +201,8 @@ img { display: block; max-width: 100%; }
   transform: translateY(10px);
   transition: opacity 0.5s, transform 0.6s var(--ease);
 }
-.card__name { left: 20px; }
-.card__place { right: 20px; }
+.card__name { left: 20px; max-width: 58%; }
+.card__place { right: 20px; max-width: 38%; text-align: right; }
 .card:hover .ph { transform: scale(1.04); }
 .card:hover::before, .card:hover .card__name, .card:hover .card__place { opacity: 1; transform: none; }
 
@@ -247,6 +249,7 @@ img { display: block; max-width: 100%; }
   position: absolute;
   inset: 0;
   overflow: hidden;
+  border-radius: var(--radius);
   color: var(--white);
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
@@ -285,6 +288,7 @@ img { display: block; max-width: 100%; }
   margin: 0 var(--gap) var(--gap);
   padding: clamp(90px, 8vw, 150px) calc(var(--pad) - var(--gap)) clamp(90px, 8vw, 150px);
   background: #111111;
+  border-radius: var(--radius);
   color: #f5f5f5;
 }
 .about__text { max-width: 16em; font-size: var(--fs-big); line-height: 1.1; letter-spacing: -0.045em; }
@@ -295,7 +299,7 @@ img { display: block; max-width: 100%; }
 .stats span { font-size: clamp(16px, 1.1vw, 20px); color: #9a9a9a; }
 
 /* ---------- БЛОК 6: подвал (светлый) ---------- */
-.footer { margin: 0 var(--gap) var(--gap); background: var(--white); color: var(--fg); padding: clamp(56px, 4.4vw, 84px) var(--pad) 36px; }
+.footer { margin: 0 var(--gap) var(--gap); border-radius: var(--radius); background: var(--white); color: var(--fg); padding: clamp(56px, 4.4vw, 84px) var(--pad) 36px; }
 .footer__top { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr 1fr; gap: 40px 24px; }
 .footer__title { font-size: clamp(26px, 1.8vw, 34px); letter-spacing: -0.04em; line-height: 1.1; margin-bottom: 32px; }
 .footer__label { font-size: 15px; color: var(--muted); margin-bottom: 30px; }
@@ -303,7 +307,7 @@ img { display: block; max-width: 100%; }
 .footer__col .footer__label { font-weight: 400; margin-bottom: 18px; }
 .footer__col a:hover { opacity: 0.6; }
 .socials { display: flex; gap: 4px; }
-.socials a { width: 48px; height: 48px; display: grid; place-items: center; background: #efefef; font-size: 14px; transition: background 0.3s; }
+.socials a { border-radius: var(--radius); width: 48px; height: 48px; display: grid; place-items: center; background: #efefef; font-size: 14px; transition: background 0.3s; }
 .socials a:hover { background: #e2e2e2; opacity: 1; }
 .footer__bottom {
   display: flex;
@@ -326,9 +330,9 @@ img { display: block; max-width: 100%; }
 .js [data-reveal] { opacity: 0; transform: translateY(40px); transition: opacity 1s var(--ease), transform 1.2s var(--ease); }
 .js [data-reveal].is-in { opacity: 1; transform: none; }
 /* картинки «проявляются» снизу вверх и чуть уменьшаются */
-.js [data-reveal="img"] { opacity: 1; transform: none; clip-path: inset(100% 0 0 0); transition: clip-path 1.4s var(--ease); }
+.js [data-reveal="img"] { opacity: 1; transform: none; clip-path: inset(100% 0 0 0 round var(--radius)); transition: clip-path 1.4s var(--ease); }
 .js [data-reveal="img"] .ph { transform: scale(1.15); transition: transform 1.8s var(--ease); }
-.js [data-reveal="img"].is-in { clip-path: inset(0 0 0 0); }
+.js [data-reveal="img"].is-in { clip-path: inset(0 0 0 0 round var(--radius)); }
 .js [data-reveal="img"].is-in .ph { transform: scale(1); }
 .js .card[data-reveal="img"].is-in:hover .ph { transform: scale(1.04); transition-duration: 1.4s; }
 
