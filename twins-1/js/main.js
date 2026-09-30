@@ -175,6 +175,14 @@
   // фон-видео и фото догружаются/меняют кадр — пересчитываем чуть позже
   [200, 600, 1200, 2000].forEach(function (t) { setTimeout(updateContrast, t); });
 
+  // ---------- плавный скролл (Lenis) ----------
+  if (!reduce && typeof Lenis !== 'undefined') {
+    var lenis = new Lenis({ lerp: 0.09, wheelMultiplier: 1, smoothWheel: true });
+    lenis.on('scroll', function () { onScroll(); onContrast(); });
+    function raf(t) { lenis.raf(t); requestAnimationFrame(raf); }
+    requestAnimationFrame(raf);
+  }
+
   // ---------- год в подвале ----------
   var year = document.getElementById('year');
   if (year) year.textContent = new Date().getFullYear();
