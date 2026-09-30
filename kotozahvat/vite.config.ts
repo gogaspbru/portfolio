@@ -12,5 +12,9 @@ export default defineConfig({
     emptyOutDir: true,
     target: 'es2020',
   },
-  server: { host: true },
+  server: {
+    host: true,
+    // PHP-загрузчик сайтов в разработке: запустите рядом `npm run php`
+    proxy: { '/api': 'http://127.0.0.1:8081' },
+  },
 });

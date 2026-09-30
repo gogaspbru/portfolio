@@ -1,21 +1,14 @@
 import type { LevelData } from '../../shared/types';
 import { loadImage } from './cat/spriteSheet';
+import { captureSite, CaptureError } from './capture/liveSite';
 
 export interface LoadedLevel {
   data: LevelData;
-  image: HTMLImageElement;
+  image: CanvasImageSource;
   /** Что показывать игроку как адрес */
   site: string;
   isDemo: boolean;
-  /** Сообщение для игрока (например, «сервер не подключён — играем в демо») */
-  notice?: string;
 }
-
-/**
- * Адрес сервера (этап 2). Пусто — сервера нет, играем только демо.
- * Задаётся при сборке: VITE_API_URL=https://api.example.ru npm run build
- */
-const API_URL: string = (import.meta.env.VITE_API_URL as string | undefined) ?? '';
 
 export const DEMO_ID = 'demo';
 
@@ -28,14 +21,17 @@ export function normalizeSiteInput(raw: string): string {
 
 export async function loadLevel(raw: string): Promise<LoadedLevel> {
   const site = normalizeSiteInput(raw);
-  if (site === DEMO_ID || !API_URL) {
-    const demo = await loadDemo();
-    if (site !== DEMO_ID) {
-      demo.notice = 'Сервер котика пока не подключён — тренируемся на демо-сайте.';
-    }
-    return demo;
+  if (site === DEMO_ID) return loadDemo();
+  // схему не дописываем: если её нет, загрузчик попробует https, потом http
+  const url = raw.trim();
+  try {
+    const cap = await captureSite(url);
+    return { data: cap.data, image: cap.image, site, isDemo: false };
+  } catch (e) {
+    if (e instanceof CaptureError) throw e;
+    console.error(e);
+    throw new CaptureError('Сайт не открылся');
   }
-  throw new Error('Загрузка настоящих сайтов появится на этапе 2');
 }
 
 async function loadDemo(): Promise<LoadedLevel> {

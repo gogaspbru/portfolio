@@ -83,12 +83,11 @@ async function launch(raw: string) {
   }, 900);
 
   try {
-    const [level] = await Promise.all([loadLevel(site), new Promise((r) => setTimeout(r, CONFIG.ui.minLoadingMs))]);
+    const [level] = await Promise.all([loadLevel(raw), new Promise((r) => setTimeout(r, CONFIG.ui.minLoadingMs))]);
     clearInterval(statusTimer);
     loadingPreview.stop();
     show($('screen-loading'), false);
     startGame(level.data, level.image);
-    if (level.notice) toast(level.notice, 4500);
   } catch (err) {
     clearInterval(statusTimer);
     toStart();

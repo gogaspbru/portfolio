@@ -7,3 +7,5 @@ package-lock.json
 
 # Котозахват: lock-файл нужен для воспроизводимой сборки
 !kotozahvat/package-lock.json
+# Котозахват: кеш загрузчика сайтов (создаётся на сервере)
+kot/api/cache/*/

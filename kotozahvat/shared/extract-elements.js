@@ -6,11 +6,18 @@
  * (`page.evaluate(`(${source})(${JSON.stringify(opts)})`)`).
  * Используется и генератором демо-уровня, и сервером — формат один.
  *
+ * Второй аргумент — окно, в котором искать (например, iframe в браузере игрока);
+ * по умолчанию текущее.
+ *
  * Возвращает { width, height, background, elements: [{ id, type, x, y, w, h }] }
  * Порядок элементов — порядок отрисовки: родительский блок раньше детей,
  * поэтому на клиенте «кто позже, тот сверху».
  */
-(function extractElements(opts) {
+(function extractElements(opts, win) {
+  win = win || window;
+  const document = win.document;
+  const getComputedStyle = (el) => win.getComputedStyle(el);
+  const NodeFilter = win.NodeFilter;
   const width = opts.width;
   const maxHeight = opts.maxHeight;
   const minSize = opts.minSize || 8;
@@ -49,10 +56,10 @@
   };
 
   const toPage = (r) => {
-    const x1 = Math.max(0, r.left + window.scrollX);
-    const y1 = Math.max(0, r.top + window.scrollY);
-    const x2 = Math.min(width, r.right + window.scrollX);
-    const y2 = Math.min(height, r.bottom + window.scrollY);
+    const x1 = Math.max(0, r.left + win.scrollX);
+    const y1 = Math.max(0, r.top + win.scrollY);
+    const x2 = Math.min(width, r.right + win.scrollX);
+    const y2 = Math.min(height, r.bottom + win.scrollY);
     if (x2 - x1 < minSize || y2 - y1 < minSize) return null;
     return { x: Math.round(x1), y: Math.round(y1), w: Math.round(x2 - x1), h: Math.round(y2 - y1) };
   };
