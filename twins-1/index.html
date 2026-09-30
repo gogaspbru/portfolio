@@ -1,0 +1,202 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>TWINS — интерьеры, в которых живут</title>
+<meta name="description" content="Студия дизайна интерьеров TWINS: дома, квартиры, коммерческие объекты. 14 лет опыта.">
+<link rel="preload" href="assets/fonts/SuisseIntl-Regular.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="css/styles.css">
+<script>document.documentElement.classList.add("js")</script>
+</head>
+<body>
+
+<!--
+  TWINS 1 — главная. Сетка повторяет референс, контент — заглушки:
+  .ph = место под картинку (подпись внутри — пропорции), тексты — черновые.
+  Каждый блок помечен комментарием «БЛОК N» — удобно вычёркивать.
+-->
+
+<!-- БЛОК 0: шапка (поверх всего, цвет инвертируется от фона) -->
+<header class="header">
+  <a class="logo" href="#" aria-label="TWINS — на главную">
+    <svg class="logo__svg" aria-hidden="true" width="94" height="32" viewBox="0 0 94 32" fill="none" xmlns="http://www.w3.org/2000/svg"><g clip-path="url(#clip0_225_1696)"><path d="M93.7241 13.0909L91.6086 13.8182C91.3327 13 90.6888 12.5455 89.7691 12.5455C88.7573 12.5455 88.2975 12.8182 88.2975 13.4545C88.2975 13.7273 88.3894 13.9091 88.5734 14.0909C88.7573 14.2727 89.1252 14.4545 89.7691 14.5455C90.8728 14.7273 91.6086 15 92.1605 15.1818C92.6204 15.3636 93.0802 15.7273 93.4481 16.2727C93.816 16.7273 94 17.2727 94 17.9091C94 18.8182 93.6321 19.6364 92.8963 20.3636C92.1605 21 91.0568 21.3636 89.6771 21.3636C88.5734 21.3636 87.6536 21.0909 86.9178 20.6364C86.182 20.1818 85.6301 19.4545 85.4462 18.4545L87.7456 17.9091C88.0215 18.9091 88.7573 19.3636 89.8611 19.3636C90.4129 19.3636 90.8728 19.2727 91.1487 19C91.4247 18.8182 91.6086 18.5455 91.6086 18.2727C91.6086 18 91.5166 17.7273 91.2407 17.5455C90.9648 17.3636 90.5049 17.1818 89.7691 17.0909C88.3894 16.8182 87.4697 16.4545 86.9178 16C86.366 15.5455 86.09 14.8182 86.09 13.9091C86.09 13 86.4579 12.1818 87.1018 11.5455C87.7456 10.9091 88.6654 10.6364 89.8611 10.6364C91.7926 10.6364 93.1722 11.4545 93.7241 13.0909ZM72.2016 10.6364V21.2727H70.0861L66.0391 14.0909C66.0391 14.2727 66.0391 14.3636 66.0391 14.4545C66.0391 14.6364 66.0391 14.8182 66.0391 14.9091V21.2727H64.1076V10.6364H66.7749L70.2701 16.9091C70.2701 16.6364 70.1781 16.3636 70.1781 16.1818V10.6364H72.2016ZM49.8513 0V32H47.3679V0H49.8513ZM34.0313 10.6364L31.364 21.2727H28.9726L27.225 14.2727L25.5695 21.2727H23.1781L20.5108 10.6364H22.9941L24.4658 17.0909C24.4658 17.0909 24.4658 17.2727 24.5577 17.4545C24.5577 17.5455 24.6497 17.6364 24.6497 17.8182L26.3973 10.6364H28.6967L30.4442 17.8182C30.4442 17.7273 30.5362 17.4545 30.6282 17.1818L32.0998 10.7273H34.0313V10.6364ZM7.72603 10.6364V12.7273H5.05871V21.3636H2.57534V12.7273H0V10.6364H7.72603Z" fill="currentColor"/></g><defs><clipPath id="clip0_225_1696"><rect width="94" height="32" fill="white"/></clipPath></defs></svg>
+  </a>
+  <button class="burger" type="button" aria-label="Меню" aria-expanded="false" aria-controls="menu">
+    <span></span><span></span>
+  </button>
+</header>
+
+<nav class="menu" id="menu" aria-hidden="true">
+  <ul>
+    <li><a href="#projects">Проекты</a></li>
+    <li><a href="#services">Услуги</a></li>
+    <li><a href="#why">О студии</a></li>
+    <li><a href="#faq">Вопросы</a></li>
+    <li><a href="#contacts">Контакты</a></li>
+  </ul>
+  <div class="menu__foot">
+    <a href="tel:+78126040406">+7 812 604-0-406</a>
+    <a class="btn btn--white" href="#contacts">Консультация</a>
+  </div>
+</nav>
+
+<main>
+  <!-- БЛОК 1: первый экран на всю высоту -->
+  <section class="hero">
+    <div class="ph ph--hero hero__media" data-label="Фото на весь экран"></div>
+    <div class="hero__shade"></div>
+    <div class="hero__content">
+      <div class="hero__text">
+        <p class="hero__kicker">Студия дизайна интерьеров</p>
+        <h1 class="hero__title">Интерьеры, в&nbsp;которых живут</h1>
+      </div>
+      <div class="hero__actions">
+        <a class="btn btn--glass" href="#projects">Портфолио</a>
+        <a class="btn btn--white" href="#contacts">Консультация</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- БЛОК 2: избранные проекты — заголовок + плотная сетка -->
+  <section class="projects" id="projects">
+    <h2 class="projects__title">Проекты</h2>
+    <div class="grid">
+      <!-- ряд: 2 высокие карточки -->
+      <div class="row row--2">
+        <a class="card" href="#"><div class="ph ph--1" data-label="4:5"></div><span class="card__name">Проект 01</span><span class="card__place">Город</span></a>
+        <a class="card" href="#"><div class="ph ph--2" data-label="4:5"></div><span class="card__name">Проект 02</span><span class="card__place">Город</span></a>
+      </div>
+      <!-- ряд: 3 вертикальные -->
+      <div class="row row--3 row--portrait">
+        <a class="card" href="#"><div class="ph ph--3" data-label="5:6"></div><span class="card__name">Проект 03</span><span class="card__place">Город</span></a>
+        <a class="card" href="#"><div class="ph ph--4" data-label="5:6"></div><span class="card__name">Проект 04</span><span class="card__place">Город</span></a>
+        <a class="card" href="#"><div class="ph ph--5" data-label="5:6"></div><span class="card__name">Проект 05</span><span class="card__place">Город</span></a>
+      </div>
+      <!-- ряд: 2 высокие -->
+      <div class="row row--2">
+        <a class="card" href="#"><div class="ph ph--6" data-label="4:5"></div><span class="card__name">Проект 06</span><span class="card__place">Город</span></a>
+        <a class="card" href="#"><div class="ph ph--7" data-label="4:5"></div><span class="card__name">Проект 07</span><span class="card__place">Город</span></a>
+      </div>
+      <!-- ряд: 3 горизонтальные -->
+      <div class="row row--3 row--landscape">
+        <a class="card" href="#"><div class="ph ph--8" data-label="3:2"></div><span class="card__name">Проект 08</span><span class="card__place">Город</span></a>
+        <a class="card" href="#"><div class="ph ph--1" data-label="3:2"></div><span class="card__name">Проект 09</span><span class="card__place">Город</span></a>
+        <a class="card" href="#"><div class="ph ph--2" data-label="3:2"></div><span class="card__name">Проект 10</span><span class="card__place">Город</span></a>
+      </div>
+      <!-- ряд: 2 высокие -->
+      <div class="row row--2">
+        <a class="card" href="#"><div class="ph ph--3" data-label="4:5"></div><span class="card__name">Проект 11</span><span class="card__place">Город</span></a>
+        <a class="card" href="#"><div class="ph ph--4" data-label="4:5"></div><span class="card__name">Проект 12</span><span class="card__place">Город</span></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- БЛОК 3: крупное утверждение по центру -->
+  <section class="statement">
+    <p class="statement__text">14 лет опыта, десятки проектов по&nbsp;миру и&nbsp;признание глянца</p>
+    <!-- Публикации: сейчас названия текстом — заменить на логотипы журналов (картинки) -->
+    <ul class="press" aria-label="Публикации">
+      <li>AD</li><li>Interior+Design</li><li>ELLE Decoration</li><li>BURO.</li><li>ДОМ</li>
+      <li>mydecor</li><li>Luxury Home</li><li>Hi home</li><li>Галерея интерьеров</li>
+    </ul>
+  </section>
+
+  <!-- БЛОК 4: услуги — карточки на изогнутой «ленте», крутятся при прокрутке -->
+  <section class="services" id="services">
+    <div class="services__sticky">
+      <div class="ring" aria-label="Услуги">
+        <a class="ring__card" href="#"><div class="ph ph--6" data-label="Фото"></div><span class="ring__title">Дома</span><span class="ring__more">Смотреть</span></a>
+        <a class="ring__card" href="#"><div class="ph ph--2" data-label="Фото"></div><span class="ring__title">Квартиры</span><span class="ring__more">Смотреть</span></a>
+        <a class="ring__card" href="#"><div class="ph ph--8" data-label="Фото"></div><span class="ring__title">Коммерческие<br>объекты</span><span class="ring__more">Смотреть</span></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- БЛОК 5: утверждение слева + цифры -->
+  <section class="about">
+    <p class="about__text">Второе утверждение подлиннее: как студия работает с клиентом и почему результату можно доверять</p>
+    <ul class="stats">
+      <li><b data-count="14">14</b><span>Лет опыта</span></li>
+      <!-- цифры ниже — заглушки, уточнить -->
+      <li><b data-count="100" data-suffix="+">100+</b><span>Проектов</span></li>
+      <li><b data-count="10" data-suffix="+">10+</b><span>Стран</span></li>
+      <li><b data-count="10" data-suffix="+">10+</b><span>Публикаций</span></li>
+    </ul>
+  </section>
+
+  <!-- БЛОК 6: почему мы — половина текст, половина картинка -->
+  <section class="why" id="why">
+    <div class="why__text">
+      <h2 class="why__title">Почему с нами?</h2>
+      <!-- На скриншотах видна только верхняя часть — пункты ниже заголовка предположительные -->
+      <ol class="why__list">
+        <li><b>Причина первая</b><span>Одна-две строки пояснения, почему это важно.</span></li>
+        <li><b>Причина вторая</b><span>Одна-две строки пояснения, почему это важно.</span></li>
+        <li><b>Причина третья</b><span>Одна-две строки пояснения, почему это важно.</span></li>
+      </ol>
+    </div>
+    <div class="ph ph--7 why__media" data-label="Фото, половина ширины"></div>
+  </section>
+
+  <!-- БЛОК 7: широкая картинка (на скриншотах виден только её низ — уточнить) -->
+  <section class="band">
+    <div class="ph ph--hero" data-label="Широкое фото"></div>
+  </section>
+
+  <!-- БЛОК 8: вопросы и ответы -->
+  <section class="faq" id="faq">
+    <h2 class="faq__title">Вы спрашивали — мы отвечаем</h2>
+    <div class="faq__list">
+      <details><summary>Первый частый вопрос клиента?</summary><p>Ответ в два-три предложения. Коротко и по делу.</p></details>
+      <details><summary>Второй частый вопрос клиента?</summary><p>Ответ в два-три предложения. Коротко и по делу.</p></details>
+      <details><summary>Сколько времени занимает проект?</summary><p>Ответ в два-три предложения. Коротко и по делу.</p></details>
+      <details><summary>Можно ли вернуться к проекту позже?</summary><p>Ответ в два-три предложения. Коротко и по делу.</p></details>
+    </div>
+  </section>
+</main>
+
+<!-- БЛОК 9: подвал -->
+<footer class="footer" id="contacts">
+  <div class="footer__top">
+    <div class="footer__cta">
+      <p class="footer__title">Обсудим ваш интерьер</p>
+      <a class="btn btn--white" href="tel:+78126040406">Консультация</a>
+    </div>
+    <div class="footer__col">
+      <p class="footer__label">Навигация</p>
+      <a href="#projects">Портфолио</a>
+      <a href="#services">Услуги</a>
+      <a href="#contacts">Контакты</a>
+    </div>
+    <div class="footer__col">
+      <p class="footer__label">Контакты</p>
+      <a href="mailto:info@twinsstudio.design">info@twinsstudio.design</a>
+      <a href="tel:+78126040406">+7 812 604-0-406</a>
+    </div>
+    <div class="footer__col">
+      <p class="footer__label">Адрес</p>
+      <p>ул. 13-я линия В.О., 70<br>АРТМУЗА, Санкт-Петербург</p>
+    </div>
+    <div class="footer__col">
+      <p class="footer__label">Соцсети</p>
+      <div class="socials">
+        <a href="#" aria-label="ВКонтакте">VK</a>
+        <a href="#" aria-label="Телеграм">TG</a>
+      </div>
+    </div>
+  </div>
+  <div class="footer__bottom">
+    <span>© <span id="year">2026</span> Твинс</span>
+    <nav class="footer__legal" aria-label="Документы">
+      <a href="#">Согласие на обработку ПД</a>
+      <a href="#">Политика конфиденциальности</a>
+      <a href="#">Согласие на получение рассылки</a>
+    </nav>
+    <a href="https://goga.spb.ru" target="_blank" rel="noopener">Разработка сайта — Егор Сорокин и&nbsp;К°</a>
+  </div>
+</footer>
+
+<script src="js/main.js" defer></script>
+</body>
+</html>
