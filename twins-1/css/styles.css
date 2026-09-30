@@ -387,3 +387,6 @@ img { display: block; max-width: 100%; }
   .footer__bottom { flex-direction: column; align-items: flex-start; gap: 18px; }
   .footer__legal { flex-direction: column; gap: 10px; }
 }
+
+/* real photos inside placeholders (keep .ph animations) */
+.ph img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; }
