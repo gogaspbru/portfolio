@@ -16,7 +16,7 @@
   --white: #ffffff;
 
   --pad: clamp(20px, 4.2vw, 80px);      /* поля для текста */
-  --gap: 4px;                           /* зазор между картинками */
+  --gap: clamp(8px, 0.85vw, 16px);      /* зазор между картинками и поля сетки */
   --ease: cubic-bezier(0.22, 1, 0.36, 1);
 
   --fs-hero: clamp(38px, 3vw, 58px);
@@ -237,7 +237,7 @@ img { display: block; max-width: 100%; }
   perspective: 1600px;
 }
 .ring {
-  --card-w: clamp(280px, 31vw, 600px);
+  --card-w: clamp(320px, 40vw, 780px);
   position: relative;
   width: var(--card-w);
   aspect-ratio: 3 / 2;
@@ -281,13 +281,18 @@ img { display: block; max-width: 100%; }
 .ring__card:hover .ring__more { opacity: 1; }
 
 /* ---------- БЛОК 5: утверждение слева + цифры ---------- */
-.about { padding: clamp(60px, 6vw, 100px) var(--pad) clamp(90px, 7vw, 130px); }
+.about {
+  margin: 0 var(--gap) var(--gap);
+  padding: clamp(90px, 8vw, 150px) calc(var(--pad) - var(--gap)) clamp(90px, 8vw, 150px);
+  background: #111111;
+  color: #f5f5f5;
+}
 .about__text { max-width: 16em; font-size: var(--fs-big); line-height: 1.1; letter-spacing: -0.045em; }
 .stats { display: grid; grid-template-columns: repeat(4, 1fr); margin-top: clamp(56px, 5vw, 84px); }
-.stats li { display: flex; flex-direction: column; gap: 10px; padding-left: 32px; border-left: 1px solid var(--line); }
+.stats li { display: flex; flex-direction: column; gap: 10px; padding-left: 32px; border-left: 1px solid rgba(255, 255, 255, 0.16); }
 .stats li:first-child { padding-left: 0; border-left: 0; }
 .stats b { font-size: clamp(26px, 1.8vw, 34px); font-weight: 400; letter-spacing: -0.03em; }
-.stats span { font-size: clamp(16px, 1.1vw, 20px); color: #5c5c5c; }
+.stats span { font-size: clamp(16px, 1.1vw, 20px); color: #9a9a9a; }
 
 /* ---------- БЛОК 6: подвал (светлый) ---------- */
 .footer { margin: 0 var(--gap) var(--gap); background: var(--white); color: var(--fg); padding: clamp(56px, 4.4vw, 84px) var(--pad) 36px; }
@@ -371,7 +376,7 @@ img { display: block; max-width: 100%; }
   .card__name, .card__place { font-size: 16px; bottom: 14px; }
   .card__name { left: 16px; }
   .card__place { right: 16px; }
-  .ring { --card-w: 78vw; }
+  .ring { --card-w: 84vw; }
   .press { justify-content: center; gap: 24px 32px; }
   .ring__more { opacity: 1; }
   .footer__top { grid-template-columns: 1fr 1fr; }
