@@ -389,9 +389,9 @@ img { display: block; max-width: 100%; }
   .card__name { left: 16px; }
   .card__place { right: 16px; }
   .ring { --card-w: 72vw; aspect-ratio: 1 / 1; } /* мобайл — квадратные */
-  /* меньше пустого места вокруг ленты услуг на телефоне */
-  .services { height: 150vh; }
-  .services__sticky { height: 66vh; height: 66svh; }
+  /* лента услуг по центру экрана на телефоне */
+  .services { height: 180vh; }
+  .services__sticky { height: 100svh; }
   /* чёрный блок — во всю ширину экрана */
   .about { margin-left: 0; margin-right: 0; border-radius: 0; padding-left: var(--pad); padding-right: var(--pad); }
   .press { justify-content: center; gap: 24px 32px; }
