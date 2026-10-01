@@ -641,3 +641,9 @@ main { padding-top: 0; }
   .header__glass { border-radius: 14px !important; }
   .header__bar .logo__svg { width: 74px; }
 }
+
+/* ======================= TWINS 2 — v8: лого внутри стеклянной полосы (как в правильном варианте) ======================= */
+/* Отменяем абсолютное позиционирование лого — оно уезжало из стекла */
+.header__bar .logo { position: static; top: auto; left: auto; transform: none; }
+.header__glass { display: flex; align-items: center; justify-content: center; }
+.header__glass .logo { position: static; display: flex; align-items: center; justify-content: center; }
