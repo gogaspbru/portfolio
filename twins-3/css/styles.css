@@ -93,8 +93,8 @@ main { padding-top: 0; }
 .stack__panel { position: sticky; top: 0; height: 100vh; height: 100svh; display: block; overflow: hidden; color: #fff; background: var(--bg); padding: 0 clamp(14px, 2vw, 34px) clamp(14px, 2vw, 34px) clamp(14px, 2vw, 34px); }
 .stack__media { position: relative; width: 100%; height: 100%; overflow: hidden; }
 .stack__media img { width: 100%; height: 100%; object-fit: cover; display: block; }
-.stack__media::after { content: ""; position: absolute; inset: 0; background: rgba(0,0,0,0.26); z-index: 1; }
-.stack__label { position: absolute; z-index: 2; left: 50%; top: 50%; transform: translate(-50%, -50%); width: 90%; text-align: center; font-size: clamp(26px, 2.8vw, 46px); letter-spacing: -0.03em; line-height: 1.05; }
+.stack__media::after { content: ""; position: absolute; inset: 0; background: rgba(0,0,0,0.14); z-index: 1; }
+.stack__label { position: absolute; z-index: 2; top: 50%; left: 0; right: 0; transform: translateY(-50%); display: block; padding: 0 24px; text-align: center; font-size: clamp(26px, 2.8vw, 46px); letter-spacing: -0.03em; line-height: 1.08; text-shadow: 0 2px 30px rgba(0,0,0,0.5), 0 2px 8px rgba(0,0,0,0.45); }
 
 /* ---------- утверждение + логотипы прессы ---------- */
 .statement { text-align: center; padding: clamp(42px, 4.6vw, 86px) var(--pad) clamp(74px, 7vw, 120px); overflow: hidden; }
