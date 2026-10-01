@@ -6,8 +6,8 @@
 <title>TWINS — интерьеры, в которых живут (v3)</title>
 <meta name="description" content="Студия дизайна интерьеров TWINS: дома, квартиры, коммерческие объекты. 14 лет опыта.">
 <link rel="preload" href="assets/fonts/SuisseIntl-Regular.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="js/lenis.css?v=20261003b">
-<link rel="stylesheet" href="css/styles.css?v=20261003b">
+<link rel="stylesheet" href="js/lenis.css?v=20261003c">
+<link rel="stylesheet" href="css/styles.css?v=20261003c">
 <script>document.documentElement.classList.add("js","is-loading")</script>
 </head>
 <body>
@@ -22,7 +22,10 @@
 
 <!-- Шапка: телефон слева, лого по центру (крупное → уезжает в полоску), справа кнопка + меню -->
 <header class="header" id="header">
-  <a class="header__phone" href="tel:+78126040406">+7&nbsp;812&nbsp;604-0-406</a>
+  <a class="header__phone" href="tel:+78126040406" aria-label="Позвонить">
+    <span class="header__phone-num">+7&nbsp;812&nbsp;604-0-406</span>
+    <svg class="header__phone-ico" width="21" height="21" viewBox="0 0 21 21" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M19.2237 16.0387C19.2237 16.3537 19.1537 16.6775 19.005 16.9925C18.8562 17.3075 18.6638 17.605 18.41 17.885C17.9813 18.3575 17.5087 18.6988 16.975 18.9175C16.45 19.1363 15.8813 19.25 15.2688 19.25C14.3763 19.25 13.4225 19.04 12.4162 18.6113C11.41 18.1825 10.4037 17.605 9.40625 16.8788C8.4 16.1438 7.44625 15.33 6.53625 14.4287C5.635 13.5187 4.82125 12.565 4.095 11.5675C3.3775 10.57 2.8 9.5725 2.38 8.58375C1.96 7.58625 1.75 6.6325 1.75 5.7225C1.75 5.1275 1.855 4.55875 2.065 4.03375C2.275 3.5 2.6075 3.01 3.07125 2.5725C3.63125 2.02125 4.24375 1.75 4.89125 1.75C5.13625 1.75 5.38125 1.8025 5.6 1.9075C5.8275 2.0125 6.02875 2.17 6.18625 2.3975L8.21625 5.25875C8.37375 5.4775 8.4875 5.67875 8.56625 5.87125C8.645 6.055 8.68875 6.23875 8.68875 6.405C8.68875 6.615 8.6275 6.825 8.505 7.02625C8.39125 7.2275 8.225 7.4375 8.015 7.6475L7.35 8.33875C7.25375 8.435 7.21 8.54875 7.21 8.68875C7.21 8.75875 7.21875 8.82 7.23625 8.89C7.2625 8.96 7.28875 9.0125 7.30625 9.065C7.46375 9.35375 7.735 9.73 8.12 10.185C8.51375 10.64 8.93375 11.1038 9.38875 11.5675C9.86125 12.0313 10.3162 12.46 10.78 12.8537C11.235 13.2387 11.6112 13.5012 11.9087 13.6587C11.9525 13.6762 12.005 13.7025 12.0662 13.7287C12.1362 13.755 12.2062 13.7637 12.285 13.7637C12.4337 13.7637 12.5475 13.7113 12.6437 13.615L13.3088 12.9588C13.5275 12.74 13.7375 12.5737 13.9388 12.4688C14.14 12.3462 14.3412 12.285 14.56 12.285C14.7262 12.285 14.9013 12.32 15.0938 12.3988C15.2862 12.4775 15.4875 12.5913 15.7063 12.74L18.6025 14.7962C18.83 14.9537 18.9875 15.1375 19.0837 15.3562C19.1712 15.575 19.2237 15.7937 19.2237 16.0387Z" stroke="currentColor" stroke-width="1.5" stroke-miterlimit="10"/></svg>
+  </a>
   <a class="brand" id="brand" href="#" aria-label="TWINS — на главную">
     <svg class="brand__svg" aria-hidden="true" width="94" height="32" viewBox="0 0 94 32" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M93.7241 13.0909L91.6086 13.8182C91.3327 13 90.6888 12.5455 89.7691 12.5455C88.7573 12.5455 88.2975 12.8182 88.2975 13.4545C88.2975 13.7273 88.3894 13.9091 88.5734 14.0909C88.7573 14.2727 89.1252 14.4545 89.7691 14.5455C90.8728 14.7273 91.6086 15 92.1605 15.1818C92.6204 15.3636 93.0802 15.7273 93.4481 16.2727C93.816 16.7273 94 17.2727 94 17.9091C94 18.8182 93.6321 19.6364 92.8963 20.3636C92.1605 21 91.0568 21.3636 89.6771 21.3636C88.5734 21.3636 87.6536 21.0909 86.9178 20.6364C86.182 20.1818 85.6301 19.4545 85.4462 18.4545L87.7456 17.9091C88.0215 18.9091 88.7573 19.3636 89.8611 19.3636C90.4129 19.3636 90.8728 19.2727 91.1487 19C91.4247 18.8182 91.6086 18.5455 91.6086 18.2727C91.6086 18 91.5166 17.7273 91.2407 17.5455C90.9648 17.3636 90.5049 17.1818 89.7691 17.0909C88.3894 16.8182 87.4697 16.4545 86.9178 16C86.366 15.5455 86.09 14.8182 86.09 13.9091C86.09 13 86.4579 12.1818 87.1018 11.5455C87.7456 10.9091 88.6654 10.6364 89.8611 10.6364C91.7926 10.6364 93.1722 11.4545 93.7241 13.0909ZM72.2016 10.6364V21.2727H70.0861L66.0391 14.0909C66.0391 14.2727 66.0391 14.3636 66.0391 14.4545C66.0391 14.6364 66.0391 14.8182 66.0391 14.9091V21.2727H64.1076V10.6364H66.7749L70.2701 16.9091C70.2701 16.6364 70.1781 16.3636 70.1781 16.1818V10.6364H72.2016ZM49.8513 0V32H47.3679V0H49.8513ZM34.0313 10.6364L31.364 21.2727H28.9726L27.225 14.2727L25.5695 21.2727H23.1781L20.5108 10.6364H22.9941L24.4658 17.0909C24.4658 17.0909 24.4658 17.2727 24.5577 17.4545C24.5577 17.5455 24.6497 17.6364 24.6497 17.8182L26.3973 10.6364H28.6967L30.4442 17.8182C30.4442 17.7273 30.5362 17.4545 30.6282 17.1818L32.0998 10.7273H34.0313V10.6364ZM7.72603 10.6364V12.7273H5.05871V21.3636H2.57534V12.7273H0V10.6364H7.72603Z" fill="currentColor"/></svg>
   </a>
@@ -53,36 +56,34 @@
   <!-- БЛОК: избранные проекты — 12 штук, ступенчатая сетка -->
   <section class="projects3" id="projects">
     <div class="pj-grid">
-      <a class="pj" href="#" style="--ar:.82;--mt:0"><span class="pj__num">01</span><span class="pj__media" data-reveal="img"><img src="assets/img/02.webp" alt="" loading="lazy"></span><span class="pj__name" data-reveal-text>Название проекта</span></a>
-      <a class="pj" href="#" style="--ar:.82;--mt:72px"><span class="pj__num">02</span><span class="pj__media" data-reveal="img"><img src="assets/img/03.webp" alt="" loading="lazy"></span><span class="pj__name" data-reveal-text>Название проекта</span></a>
-      <a class="pj" href="#" style="--ar:1.3;--mt:0"><span class="pj__num">03</span><span class="pj__media" data-reveal="img"><img src="assets/img/04.webp" alt="" loading="lazy"></span><span class="pj__name" data-reveal-text>Название проекта</span></a>
-      <a class="pj" href="#" style="--ar:.78;--mt:0"><span class="pj__num">04</span><span class="pj__media" data-reveal="img"><img src="assets/img/05.webp" alt="" loading="lazy"></span><span class="pj__name" data-reveal-text>Название проекта</span></a>
+      <a class="pj" href="#" style="--ar:.80"><span class="pj__num">01</span><span class="pj__media" data-reveal="img"><img src="assets/img/02.webp" alt="" loading="lazy"></span><span class="pj__name" data-reveal-text>Квартира в ЖК Neva Haus</span></a>
+      <a class="pj" href="#" style="--ar:.80"><span class="pj__num">02</span><span class="pj__media" data-reveal="img"><img src="assets/img/03.webp" alt="" loading="lazy"></span><span class="pj__name" data-reveal-text>Дом в КП Репино-парк</span></a>
+      <a class="pj" href="#" style="--ar:1.35"><span class="pj__num">03</span><span class="pj__media" data-reveal="img"><img src="assets/img/04.webp" alt="" loading="lazy"></span><span class="pj__name" data-reveal-text>Квартира в ЖК Лахта-парк</span></a>
+      <a class="pj" href="#" style="--ar:.80"><span class="pj__num">04</span><span class="pj__media" data-reveal="img"><img src="assets/img/05.webp" alt="" loading="lazy"></span><span class="pj__name" data-reveal-text>Квартира на Невском</span></a>
 
-      <a class="pj" href="#" style="--ar:1.25;--mt:0"><span class="pj__num">05</span><span class="pj__media" data-reveal="img"><img src="assets/img/06.webp" alt="" loading="lazy"></span><span class="pj__name" data-reveal-text>Название проекта</span></a>
-      <a class="pj" href="#" style="--ar:.82;--mt:0"><span class="pj__num">06</span><span class="pj__media" data-reveal="img"><img src="assets/img/07.webp" alt="" loading="lazy"></span><span class="pj__name" data-reveal-text>Название проекта</span></a>
-      <a class="pj" href="#" style="--ar:.78;--mt:70px"><span class="pj__num">07</span><span class="pj__media" data-reveal="img"><img src="assets/img/08.webp" alt="" loading="lazy"></span><span class="pj__name" data-reveal-text>Название проекта</span></a>
-      <a class="pj" href="#" style="--ar:.82;--mt:0"><span class="pj__num">08</span><span class="pj__media" data-reveal="img"><img src="assets/img/09.webp" alt="" loading="lazy"></span><span class="pj__name" data-reveal-text>Название проекта</span></a>
+      <a class="pj" href="#" style="--ar:1.45"><span class="pj__num">05</span><span class="pj__media" data-reveal="img"><img src="assets/img/06.webp" alt="" loading="lazy"></span><span class="pj__name" data-reveal-text>Квартира в ЖК Familia</span></a>
+      <a class="pj" href="#" style="--ar:.85"><span class="pj__num">06</span><span class="pj__media" data-reveal="img"><img src="assets/img/07.webp" alt="" loading="lazy"></span><span class="pj__name" data-reveal-text>Дом в КП Суходольское</span></a>
+      <a class="pj" href="#" style="--ar:.72"><span class="pj__num">07</span><span class="pj__media" data-reveal="img"><img src="assets/img/08.webp" alt="" loading="lazy"></span><span class="pj__name" data-reveal-text>Квартира в ЖК Neva Haus 1/23</span></a>
+      <a class="pj" href="#" style="--ar:.85"><span class="pj__num">08</span><span class="pj__media" data-reveal="img"><img src="assets/img/09.webp" alt="" loading="lazy"></span><span class="pj__name" data-reveal-text>Квартира в ЖК Golden City</span></a>
 
-      <a class="pj" href="#" style="--ar:1.2;--mt:0"><span class="pj__num">09</span><span class="pj__media" data-reveal="img"><img src="assets/img/010.webp" alt="" loading="lazy"></span><span class="pj__name" data-reveal-text>Название проекта</span></a>
-      <a class="pj" href="#" style="--ar:.78;--mt:70px"><span class="pj__num">010</span><span class="pj__media" data-reveal="img"><img src="assets/img/011.webp" alt="" loading="lazy"></span><span class="pj__name" data-reveal-text>Название проекта</span></a>
-      <a class="pj" href="#" style="--ar:1.25;--mt:0"><span class="pj__num">011</span><span class="pj__media" data-reveal="img"><img src="assets/img/01.webp" alt="" loading="lazy"></span><span class="pj__name" data-reveal-text>Название проекта</span></a>
-      <a class="pj" href="#" style="--ar:.8;--mt:0"><span class="pj__num">012</span><span class="pj__media" data-reveal="img"><img src="assets/img/02.webp" alt="" loading="lazy"></span><span class="pj__name" data-reveal-text>Название проекта</span></a>
+      <a class="pj" href="#" style="--ar:.85"><span class="pj__num">09</span><span class="pj__media" data-reveal="img"><img src="assets/img/010.webp" alt="" loading="lazy"></span><span class="pj__name" data-reveal-text>Дом в КП Лисий Нос</span></a>
+      <a class="pj" href="#" style="--ar:.72"><span class="pj__num">010</span><span class="pj__media" data-reveal="img"><img src="assets/img/011.webp" alt="" loading="lazy"></span><span class="pj__name" data-reveal-text>Квартира на Петроградской</span></a>
+      <a class="pj" href="#" style="--ar:1.35"><span class="pj__num">011</span><span class="pj__media" data-reveal="img"><img src="assets/img/01.webp" alt="" loading="lazy"></span><span class="pj__name" data-reveal-text>Квартира в ЖК Esper Club</span></a>
+      <a class="pj" href="#" style="--ar:.85"><span class="pj__num">012</span><span class="pj__media" data-reveal="img"><img src="assets/img/02.webp" alt="" loading="lazy"></span><span class="pj__name" data-reveal-text>Дом в КП Юнтолово</span></a>
     </div>
+    <div class="pj-more"><a class="btn-all" href="#">Все проекты</a></div>
   </section>
 
   <!-- БЛОК: три полноэкранных раздела со «стопкой» (накладываются при скролле) -->
   <section class="stack" id="services" aria-label="Направления">
     <a class="stack__panel" href="#">
-      <span class="stack__media"><img src="assets/img/blk-houses.webp" alt="Дома" loading="lazy"></span>
-      <span class="stack__label">Дома</span>
+      <span class="stack__media"><img src="assets/img/blk-houses.webp" alt="Дома" loading="lazy"><span class="stack__label">Дома</span></span>
     </a>
     <a class="stack__panel" href="#">
-      <span class="stack__media"><img src="assets/img/blk-apartments.webp" alt="Квартиры" loading="lazy"></span>
-      <span class="stack__label">Квартиры</span>
+      <span class="stack__media"><img src="assets/img/blk-apartments.webp" alt="Квартиры" loading="lazy"><span class="stack__label">Квартиры</span></span>
     </a>
     <a class="stack__panel" href="#">
-      <span class="stack__media"><img src="assets/img/blk-commercial.webp" alt="Коммерческие объекты" loading="lazy"></span>
-      <span class="stack__label">Коммерческие объекты</span>
+      <span class="stack__media"><img src="assets/img/blk-commercial.webp" alt="Коммерческие объекты" loading="lazy"><span class="stack__label">Коммерческие объекты</span></span>
     </a>
   </section>
 
@@ -106,42 +107,29 @@
 
 <!-- Подвал -->
 <footer class="footer" id="contacts">
-  <div class="footer__top">
-    <div class="footer__cta">
-      <p class="footer__title">Обсудим ваш интерьер</p>
-      <a class="btn btn--dark" href="tel:+78126040406">Консультация</a>
-    </div>
-    <div class="footer__col">
-      <a href="#projects">Портфолио</a>
-      <a href="#services">Услуги</a>
-      <a href="#contacts">Контакты</a>
-    </div>
-    <div class="footer__col">
-      <a href="mailto:info@twinsstudio.design">info@twinsstudio.design</a>
+  <div class="footer__grid">
+    <div class="footer__copy">© <span id="year">2026</span> Твинс</div>
+    <div class="footer__mid">
       <a href="tel:+78126040406">+7 812 604-0-406</a>
-    </div>
-    <div class="footer__col">
+      <a href="mailto:info@twinsstudio.design">info@twinsstudio.design</a>
       <p>ул. 13-я линия В.О., 70<br>АРТМУЗА, Санкт-Петербург</p>
+      <nav class="footer__legal" aria-label="Документы">
+        <a href="#">Согласие на обработку ПД</a>
+        <a href="#">Политика конфиденциальности</a>
+        <a href="#">Согласие на получение рассылки</a>
+      </nav>
     </div>
-    <div class="footer__col">
+    <div class="footer__right">
       <div class="socials">
         <a href="#" aria-label="ВКонтакте">VK</a>
         <a href="#" aria-label="Телеграм">TG</a>
       </div>
+      <a class="footer__dev" href="https://goga.spb.ru" target="_blank" rel="noopener">Разработка сайта — Егор Сорокин и&nbsp;К°</a>
     </div>
-  </div>
-  <div class="footer__bottom">
-    <span>© <span id="year">2026</span> Твинс</span>
-    <nav class="footer__legal" aria-label="Документы">
-      <a href="#">Согласие на обработку ПД</a>
-      <a href="#">Политика конфиденциальности</a>
-      <a href="#">Согласие на получение рассылки</a>
-    </nav>
-    <a href="https://goga.spb.ru" target="_blank" rel="noopener">Разработка сайта — Егор Сорокин и&nbsp;К°</a>
   </div>
 </footer>
 
-<script src="js/lenis.min.js?v=20261003b" defer></script>
-<script src="js/main.js?v=20261003b" defer></script>
+<script src="js/lenis.min.js?v=20261003c" defer></script>
+<script src="js/main.js?v=20261003c" defer></script>
 </body>
 </html>

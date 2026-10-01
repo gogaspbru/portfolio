@@ -47,27 +47,31 @@
   var header = document.getElementById('header');
   function updateBrand() {
     if (!brand) return;
-    var vh = window.innerHeight;
+    var vh = window.innerHeight, vw = window.innerWidth;
     var mobile = window.matchMedia('(max-width: 760px)').matches;
     var range = vh * (mobile ? 0.34 : 0.42);
     var p = Math.min(1, Math.max(0, window.scrollY / range));
-    var K = mobile ? 2.8 : 4.6;        // во сколько раз крупнее в самом верху
-    var DOWN = vh * (mobile ? 0.15 : 0.28); // насколько ниже опущен в самом верху
+    var base = brand.offsetWidth || 110;                 // ширина лого при scale 1
+    var targetBig = mobile ? vw * 0.74 : Math.min(vw * 0.52, 820); // крупный размер вверху
+    var K = Math.max(1, targetBig / base);
+    var centerY = vh * (mobile ? 0.15 : 0.16);           // где центр крупного лого
+    var natCenter = (brand.offsetTop || 18) + (brand.offsetHeight || 37) / 2;
+    var DOWN = Math.max(0, centerY - natCenter);
     var scale = 1 + (1 - p) * (K - 1);
     var ty = (1 - p) * DOWN;
     brand.style.transform = 'translate(-50%,' + ty + 'px) scale(' + scale + ')';
     if (header) header.classList.toggle('is-compact', p > 0.6);
   }
 
-  // ---------- появление карточек (клип сверху) ----------
-  var cardIO = new IntersectionObserver(function (entries) {
+  // ---------- появление плиток портфолио: «выпадают» снизу ----------
+  var pjIO = new IntersectionObserver(function (entries) {
     entries.forEach(function (entry) {
       if (!entry.isIntersecting) return;
       entry.target.classList.add('is-in');
-      cardIO.unobserve(entry.target);
+      pjIO.unobserve(entry.target);
     });
-  }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' });
-  document.querySelectorAll('[data-reveal="img"]').forEach(function (el) { cardIO.observe(el); });
+  }, { threshold: 0.08, rootMargin: '0px 0px -6% 0px' });
+  document.querySelectorAll('.pj').forEach(function (el) { pjIO.observe(el); });
 
   // ---------- мобильная «бегущая» лента логотипов прессы ----------
   (function () {
@@ -90,7 +94,7 @@
   })();
 
   // ---------- тексты: каждая строка выезжает снизу из-под маски ----------
-  var TEXT_TARGETS = '.statement__text, .footer__title, .footer__col a, .footer__col p, .pj__name';
+  var TEXT_TARGETS = '.statement__text';
   document.querySelectorAll(TEXT_TARGETS).forEach(function (el) { el.setAttribute('data-reveal-text', ''); });
 
   (function initReveal() {
