@@ -6,8 +6,8 @@
 <title>TWINS — интерьеры, в которых живут (v2)</title>
 <meta name="description" content="Студия дизайна интерьеров TWINS: дома, квартиры, коммерческие объекты. 14 лет опыта.">
 <link rel="preload" href="assets/fonts/SuisseIntl-Regular.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="js/lenis.css?v=20261001h">
-<link rel="stylesheet" href="css/styles.css?v=20261001h">
+<link rel="stylesheet" href="js/lenis.css?v=20261002a">
+<link rel="stylesheet" href="css/styles.css?v=20261002a">
 <script>document.documentElement.classList.add("js","is-loading")</script>
 </head>
 <body>
@@ -62,32 +62,49 @@
     </div>
   </section>
 
-  <!-- БЛОК 2: избранные проекты — заголовок + плотная сетка -->
+  <!-- БЛОК 2: избранные проекты — асимметричная сетка -->
   <section class="projects" id="projects">
-    <h2 class="projects__title">Избранные проекты</h2>
-    <div class="grid">
-      <!-- ряд: 2 квадратные карточки -->
-      <div class="row row--2">
-        <a class="card" href="#"><div class="ph ph--1"><img src="assets/img/02.webp" alt="Проект TWINS" loading="lazy"></div><span class="card__name">Квартира в ЖК Neva Haus</span><span class="card__place">Санкт-Петербург*</span></a>
-        <a class="card" href="#"><div class="ph ph--2"><img src="assets/img/03.webp" alt="Проект TWINS" loading="lazy"></div><span class="card__name">Дом в КП Репино-парк 3/23</span><span class="card__place">Санкт-Петербург (Репино)*</span></a>
-      </div>
-      <!-- ряд: 3 вертикальные -->
-      <div class="row row--3 row--portrait">
-        <a class="card" href="#"><div class="ph ph--3"><img src="assets/img/04.webp" alt="Проект TWINS" loading="lazy"></div><span class="card__name">Квартира в ЖК Лахта-парк</span><span class="card__place">Санкт-Петербург*</span></a>
-        <a class="card" href="#"><div class="ph ph--4"><img src="assets/img/05.webp" alt="Проект TWINS" loading="lazy"></div><span class="card__name">Квартира на Невском</span><span class="card__place">Санкт-Петербург*</span></a>
-        <a class="card" href="#"><div class="ph ph--5"><img src="assets/img/06.webp" alt="Проект TWINS" loading="lazy"></div><span class="card__name">Квартира в ЖК Familia</span><span class="card__place">Санкт-Петербург*</span></a>
-      </div>
-      <!-- ряд: 2 квадратные -->
-      <div class="row row--2">
-        <a class="card" href="#"><div class="ph ph--6"><img src="assets/img/07.webp" alt="Проект TWINS" loading="lazy"></div><span class="card__name">Дом в КП Суходольское</span><span class="card__place">Ленинградская область*</span></a>
-        <a class="card" href="#"><div class="ph ph--7"><img src="assets/img/08.webp" alt="Проект TWINS" loading="lazy"></div><span class="card__name">Квартира в ЖК Neva Haus 1/23</span><span class="card__place">Санкт-Петербург*</span></a>
-      </div>
-      <!-- ряд: 3 горизонтальные -->
-      <div class="row row--3 row--landscape">
-        <a class="card" href="#"><div class="ph ph--8"><img src="assets/img/09.webp" alt="Проект TWINS" loading="lazy"></div><span class="card__name">Квартира в Royal Park 3/21</span><span class="card__place">Санкт-Петербург*</span></a>
-        <a class="card" href="#"><div class="ph ph--1"><img src="assets/img/010.webp" alt="Проект TWINS" loading="lazy"></div><span class="card__name">Дом в г. Минеральные Воды</span><span class="card__place">Минеральные Воды</span></a>
-        <a class="card" href="#"><div class="ph ph--2"><img src="assets/img/011.webp" alt="Проект TWINS" loading="lazy"></div><span class="card__name">Салон красоты «Серебро»</span><span class="card__place">Челябинск</span></a>
-      </div>
+    <div class="p2-grid">
+      <a class="p2" style="grid-column:span 3;--ar:3/4" href="#">
+        <span class="p2__media" data-reveal="img"><img src="assets/img/02.webp" alt="Квартира в ЖК Neva Haus" loading="lazy"></span>
+        <span class="p2__name" data-reveal-text>Квартира в ЖК Neva Haus</span>
+      </a>
+      <a class="p2" style="grid-column:span 2;--ar:1/1;--mt:70px" href="#">
+        <span class="p2__media" data-reveal="img"><img src="assets/img/03.webp" alt="Дом в КП Репино-парк 3/23" loading="lazy"></span>
+        <span class="p2__name" data-reveal-text>Дом в КП Репино-парк 3/23</span>
+      </a>
+      <a class="p2" style="grid-column:span 2;--ar:1/1" href="#">
+        <span class="p2__media" data-reveal="img"><img src="assets/img/04.webp" alt="Квартира в ЖК Лахта-парк" loading="lazy"></span>
+        <span class="p2__name" data-reveal-text>Квартира в ЖК Лахта-парк</span>
+      </a>
+      <a class="p2" style="grid-column:span 2;--ar:1/1" href="#">
+        <span class="p2__media" data-reveal="img"><img src="assets/img/05.webp" alt="Квартира на Невском" loading="lazy"></span>
+        <span class="p2__name" data-reveal-text>Квартира на Невском</span>
+      </a>
+      <a class="p2" style="grid-column:span 2;--ar:1/1;--mt:50px" href="#">
+        <span class="p2__media" data-reveal="img"><img src="assets/img/06.webp" alt="Квартира в ЖК Familia" loading="lazy"></span>
+        <span class="p2__name" data-reveal-text>Квартира в ЖК Familia</span>
+      </a>
+      <a class="p2" style="grid-column:span 2;--ar:1/1" href="#">
+        <span class="p2__media" data-reveal="img"><img src="assets/img/07.webp" alt="Дом в КП Суходольское" loading="lazy"></span>
+        <span class="p2__name" data-reveal-text>Дом в КП Суходольское</span>
+      </a>
+      <a class="p2" style="grid-column:span 4;--ar:3/2;--mt:50px" href="#">
+        <span class="p2__media" data-reveal="img"><img src="assets/img/08.webp" alt="Квартира в ЖК Neva Haus 1/23" loading="lazy"></span>
+        <span class="p2__name" data-reveal-text>Квартира в ЖК Neva Haus 1/23</span>
+      </a>
+      <a class="p2" style="grid-column:span 3;--ar:3/4" href="#">
+        <span class="p2__media" data-reveal="img"><img src="assets/img/09.webp" alt="Квартира в Royal Park 3/21" loading="lazy"></span>
+        <span class="p2__name" data-reveal-text>Квартира в Royal Park 3/21</span>
+      </a>
+      <a class="p2" style="grid-column:span 3;--ar:1/1;--mt:40px" href="#">
+        <span class="p2__media" data-reveal="img"><img src="assets/img/010.webp" alt="Дом в г. Минеральные Воды" loading="lazy"></span>
+        <span class="p2__name" data-reveal-text>Дом в г. Минеральные Воды</span>
+      </a>
+      <a class="p2" style="grid-column:span 3;--ar:3/2" href="#">
+        <span class="p2__media" data-reveal="img"><img src="assets/img/011.webp" alt="Салон красоты «Серебро»" loading="lazy"></span>
+        <span class="p2__name" data-reveal-text>Салон красоты «Серебро»</span>
+      </a>
     </div>
   </section>
 
@@ -109,27 +126,11 @@
     </ul>
   </section>
 
-  <!-- БЛОК 4: направления — карточки 3:2 на изогнутой «ленте», крутятся при прокрутке -->
-  <section class="services" id="services">
-    <div class="services__sticky">
-      <div class="ring" aria-label="Услуги">
-        <a class="ring__card" href="#"><div class="ph ph--6"><img src="assets/img/cat-houses.webp" alt="Дома" loading="lazy"></div><span class="ring__title">Дома</span><span class="ring__more">Смотреть</span></a>
-        <a class="ring__card" href="#"><div class="ph ph--2"><img src="assets/img/cat-apartments.webp" alt="Квартиры" loading="lazy"></div><span class="ring__title">Квартиры</span><span class="ring__more">Смотреть</span></a>
-        <a class="ring__card" href="#"><div class="ph ph--8"><img src="assets/img/cat-commercial.webp" alt="Коммерческие объекты" loading="lazy"></div><span class="ring__title">Коммерческие<br>объекты</span><span class="ring__more">Смотреть</span></a>
-      </div>
-    </div>
-  </section>
-
-  <!-- БЛОК 5: утверждение слева + цифры -->
-  <section class="about">
-    <p class="about__text">Мы ведём проект вместе с вами на каждом этапе — поэтому готовый интерьер совпадает с тем, что вы задумали</p>
-    <ul class="stats">
-      <li><b data-count="14">14</b><span>Лет опыта</span></li>
-      <!-- цифры ниже — заглушки, уточнить -->
-      <li><b data-count="100" data-suffix="+">100+</b><span>Проектов</span></li>
-      <li><b data-count="10" data-suffix="+">10+</b><span>Стран</span></li>
-      <li><b data-count="10" data-suffix="+">10+</b><span>Публикаций</span></li>
-    </ul>
+  <!-- БЛОК 4: направления — статичная лента 3 в ряд -->
+  <section class="band" id="services" aria-label="Направления">
+    <a class="band__item" href="#" data-reveal="img"><img src="assets/img/cat-houses.webp" alt="Дома" loading="lazy"><span class="band__label">Дома</span></a>
+    <a class="band__item" href="#" data-reveal="img"><img src="assets/img/cat-apartments.webp" alt="Квартиры" loading="lazy"><span class="band__label">Квартиры</span></a>
+    <a class="band__item" href="#" data-reveal="img"><img src="assets/img/cat-commercial.webp" alt="Коммерческие объекты" loading="lazy"><span class="band__label">Коммерческие объекты</span></a>
   </section>
 </main>
 
@@ -174,7 +175,7 @@
   </div>
 </footer>
 
-<script src="js/lenis.min.js?v=20261001h" defer></script>
-<script src="js/main.js?v=20261001h" defer></script>
+<script src="js/lenis.min.js?v=20261002a" defer></script>
+<script src="js/main.js?v=20261002a" defer></script>
 </body>
 </html>

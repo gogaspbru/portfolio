@@ -430,3 +430,29 @@ html.is-loading, html.is-loading body { overflow: hidden; }
   .js .preloader { transition: none; }
   .js .header .logo, .js .header .burger { opacity: 1; transform: none; transition: none; }
 }
+
+/* ======================= TWINS 2 ======================= */
+/* Асимметричная сетка проектов */
+.projects { padding: clamp(56px, 6vw, 120px) var(--pad); }
+.p2-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: clamp(30px, 3.4vw, 64px) clamp(16px, 2vw, 32px); align-items: start; grid-auto-flow: dense; }
+.p2 { display: block; margin-top: var(--mt, 0); }
+.p2__media { position: relative; display: block; overflow: hidden; border-radius: var(--radius); aspect-ratio: var(--ar, 1 / 1); background: #ececea; }
+.p2__media img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 1.2s var(--ease); }
+.p2:hover .p2__media img { transform: scale(1.04); }
+.p2__name { display: block; margin-top: 16px; font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink); }
+
+/* Статичная лента направлений (3 в ряд, во всю ширину) */
+.band { display: grid; grid-template-columns: repeat(3, 1fr); }
+.band__item { position: relative; display: block; overflow: hidden; height: clamp(420px, 44vw, 680px); color: #fff; }
+.band__item img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 1.2s var(--ease); }
+.band__item:hover img { transform: scale(1.04); }
+.band__item::after { content: ""; position: absolute; inset: 0; background: linear-gradient(0deg, rgba(0,0,0,0.45), transparent 55%); z-index: 1; }
+.band__label { position: absolute; z-index: 2; left: clamp(18px, 2vw, 34px); bottom: clamp(16px, 2vw, 28px); font-size: clamp(18px, 1.5vw, 26px); letter-spacing: -0.02em; }
+
+@media (max-width: 760px) {
+  .p2-grid { grid-template-columns: repeat(2, 1fr); gap: 28px 14px; }
+  .p2 { grid-column: span 1 !important; margin-top: 0 !important; }
+  .p2__media { aspect-ratio: 1 / 1 !important; }
+  .band { grid-template-columns: 1fr; }
+  .band__item { height: 64vw; }
+}
