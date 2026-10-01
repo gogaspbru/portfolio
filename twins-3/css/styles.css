@@ -76,7 +76,7 @@ html.is-loading, html.is-loading body { overflow: hidden; }
 
 /* ---------- место под крупный логотип ---------- */
 main { padding-top: 0; }
-.hero3 { height: clamp(360px, 46vh, 520px); }
+.hero3 { height: clamp(420px, 56vh, 620px); }
 
 /* ---------- проекты: 4 колонки, ступенчато ---------- */
 .projects3 { padding: 0 var(--pad) clamp(50px, 6vw, 110px); }
@@ -93,8 +93,8 @@ main { padding-top: 0; }
 .stack__panel { position: sticky; top: 0; height: 100vh; height: 100svh; display: block; overflow: hidden; color: #fff; background: var(--bg); padding: 0 clamp(14px, 2vw, 34px) clamp(14px, 2vw, 34px) clamp(14px, 2vw, 34px); }
 .stack__media { position: relative; width: 100%; height: 100%; overflow: hidden; }
 .stack__media img { width: 100%; height: 100%; object-fit: cover; display: block; }
-.stack__media::after { content: ""; position: absolute; inset: 0; background: linear-gradient(0deg, rgba(0,0,0,0.5), rgba(0,0,0,0) 55%); z-index: 1; }
-.stack__label { position: absolute; z-index: 2; left: clamp(20px, 3.4vw, 60px); bottom: clamp(24px, 4vh, 54px); font-size: clamp(26px, 2.8vw, 46px); letter-spacing: -0.03em; line-height: 1; }
+.stack__media::after { content: ""; position: absolute; inset: 0; background: rgba(0,0,0,0.26); z-index: 1; }
+.stack__label { position: absolute; z-index: 2; left: 50%; top: 50%; transform: translate(-50%, -50%); width: 90%; text-align: center; font-size: clamp(26px, 2.8vw, 46px); letter-spacing: -0.03em; line-height: 1.05; }
 
 /* ---------- утверждение + логотипы прессы ---------- */
 .statement { text-align: center; padding: clamp(42px, 4.6vw, 86px) var(--pad) clamp(74px, 7vw, 120px); overflow: hidden; }
@@ -168,7 +168,7 @@ main { padding-top: 0; }
   .hero3 { height: clamp(160px, 20vh, 210px); }
   .pj__media { aspect-ratio: var(--ar, 1); }
   .stack__panel { height: 100svh; padding: 0 10px 10px 10px; }
-  .stack__label { font-size: clamp(30px, 9vw, 46px); line-height: 0.98; max-width: 7em; }
+  .stack__label { font-size: clamp(30px, 8vw, 44px); line-height: 1.02; }
   /* бегущая лента логотипов */
   .press.is-marquee { flex-wrap: nowrap; justify-content: flex-start; width: max-content; gap: 0; animation: press-marquee 26s linear infinite; will-change: transform; }
   .press.is-marquee li { flex: 0 0 auto; margin-right: 44px; }

@@ -55,10 +55,10 @@
     var baseH = brand.offsetHeight || 37;
     var targetBig = mobile ? vw * 0.62 : Math.min(vw * 0.52, 820); // крупный размер вверху
     var K = Math.max(1, targetBig / base);
-    // позиционируем по ВЕРХНЕМУ краю: в макете лого прилипает к верху
-    var targetTop = mobile ? vh * 0.085 : 8;
+    // центр крупного лого (в макете опущен в зону героя)
+    var centerY = vh * (mobile ? 0.13 : 0.30);
     var natCenter = (brand.offsetTop || 18) + baseH / 2;
-    var DOWN = Math.max(0, targetTop - natCenter + (baseH * K) / 2);
+    var DOWN = Math.max(0, centerY - natCenter);
     var scale = 1 + (1 - p) * (K - 1);
     var ty = (1 - p) * DOWN;
     brand.style.transform = 'translate(-50%,' + ty + 'px) scale(' + scale + ')';
