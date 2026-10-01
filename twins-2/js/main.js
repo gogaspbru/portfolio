@@ -233,24 +233,21 @@
     return 1; // по умолчанию считаем фон светлым
   }
 
-  var hero = document.querySelector('.hero');
   function paintContrast(el) {
     if (!el) return;
     var r = el.getBoundingClientRect();
     var cy = r.top + r.height / 2;
-    // на первом экране логотип и бургер всегда белые
-    if (hero) {
-      var h = hero.getBoundingClientRect();
-      if (h.top <= cy && h.bottom >= cy) { el.style.color = '#fff'; return; }
-    }
-    var L = lumAt(r.left + r.width / 2, cy);
-    el.style.color = L > 0.5 ? '#111' : '#fff'; // противоположный фону
+    // усредняем яркость фона по ширине логотипа (3 точки)
+    var xs = [r.left + r.width * 0.2, r.left + r.width * 0.5, r.left + r.width * 0.8];
+    var sum = 0;
+    xs.forEach(function (x) { sum += lumAt(x, cy); });
+    var L = sum / xs.length;
+    // стеклянная полоса осветляет фон на ~20%, поэтому порог смещён ниже 0.5
+    el.style.color = L > 0.42 ? '#111' : '#fff'; // противоположный фону
   }
-  var navPhone = document.querySelector('.header__phone');
-  // Шапка — сплошная белая полоса, поэтому логотип/бургер/телефон всегда тёмные
-  function updateContrast() {
-    [logo, burger, navPhone].forEach(function (el) { if (el) el.style.color = '#111'; });
-  }
+  // Логотип в стеклянной полосе подстраивает цвет под фон (белый на тёмном, тёмный на светлом).
+  // Бургер/телефон/кнопка — на белых плашках, поэтому всегда тёмные (их красит CSS).
+  function updateContrast() { paintContrast(logo); }
 
   var cTick = false;
   function onContrast() {
