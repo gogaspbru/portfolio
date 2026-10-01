@@ -388,7 +388,7 @@ img { display: block; max-width: 100%; }
   .card__name, .card__place { font-size: 16px; bottom: 14px; }
   .card__name { left: 16px; }
   .card__place { right: 16px; }
-  .ring { --card-w: 72vw; aspect-ratio: 1 / 1; } /* мобайл — квадратные */
+  .ring { --card-w: 94vw; aspect-ratio: 1 / 1; } /* мобайл — квадратные, крупнее */
   /* лента услуг по центру экрана на телефоне */
   .services { height: 180vh; }
   .services__sticky { height: 100svh; }
