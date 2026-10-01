@@ -246,7 +246,8 @@
     var L = lumAt(r.left + r.width / 2, cy);
     el.style.color = L > 0.5 ? '#111' : '#fff'; // противоположный фону
   }
-  function updateContrast() { paintContrast(logo); paintContrast(burger); }
+  var navPhone = document.querySelector('.header__phone');
+  function updateContrast() { paintContrast(logo); paintContrast(burger); paintContrast(navPhone); }
 
   var cTick = false;
   function onContrast() {

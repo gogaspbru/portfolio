@@ -456,3 +456,48 @@ html.is-loading, html.is-loading body { overflow: hidden; }
   .band { grid-template-columns: 1fr; }
   .band__item { height: 64vw; }
 }
+
+/* ======================= TWINS 2 — v2 (по макету) ======================= */
+/* Шапка: бургер+телефон слева, лого по центру, кнопка справа */
+.header { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 16px; }
+.header__left { display: flex; align-items: center; gap: 18px; }
+.header__phone { font-size: 14px; letter-spacing: 0.01em; white-space: nowrap; }
+.logo { justify-self: center; }
+.btn-consult { justify-self: end; background: #fff; color: #111; border-radius: 999px; padding: 12px 24px; font-size: 13px; letter-spacing: 0.06em; text-transform: uppercase; white-space: nowrap; transition: background 0.2s, transform 0.15s; }
+.btn-consult:hover { background: #ececec; transform: translateY(-1px); }
+
+/* Герой: заголовок справа внизу, капсом */
+.hero__content { justify-content: flex-end; text-align: right; padding-right: var(--pad); }
+.hero__title { text-transform: uppercase; }
+
+/* Сетка проектов: две колонки со смещением (7 карточек) */
+.p2-grid { display: flex; gap: clamp(20px, 2.4vw, 44px); align-items: flex-start; }
+.p2-col { display: flex; flex-direction: column; gap: clamp(28px, 3.2vw, 60px); }
+.p2-col--left { flex: 0 0 56%; max-width: 56%; }
+.p2-col--right { flex: 0 0 40%; max-width: 40%; margin-left: auto; margin-top: clamp(50px, 9vw, 150px); }
+.p2-row { display: flex; gap: clamp(14px, 1.4vw, 26px); }
+.p2-row > .p2 { flex: 1 1 0; }
+.p2 { display: block; margin-top: 0; }
+.p2--half { width: 54%; }
+.p2__media { aspect-ratio: var(--ar, 1 / 1); }
+
+/* Тёмный подвал + подложка TWINS */
+.footer { position: relative; overflow: hidden; background: #0e0e0e; color: #f1f1ef; }
+.footer__label { color: #8c8c8a; }
+.footer .btn--dark { background: #fff; color: #111; }
+.footer .btn--dark:hover { background: #ececec; }
+.socials a { background: rgba(255,255,255,0.08); color: #f1f1ef; }
+.socials a:hover { background: rgba(255,255,255,0.16); }
+.footer__bottom { border-top-color: rgba(255,255,255,0.12); }
+.footer__legal { color: #8c8c8a; }
+.footer__bottom a:hover { color: #fff; }
+.footer__watermark { font-weight: 700; font-size: clamp(74px, 23vw, 360px); line-height: 0.78; letter-spacing: 0.06em; text-align: center; color: #fff; opacity: 0.05; white-space: nowrap; user-select: none; margin: clamp(20px, 3vw, 50px) auto -0.14em; }
+
+@media (max-width: 760px) {
+  .header__phone { display: none; }
+  .btn-consult { padding: 10px 16px; font-size: 12px; }
+  .hero__content { text-align: left; }
+  .p2-grid { flex-direction: column; gap: 30px; }
+  .p2-col, .p2-col--left, .p2-col--right { flex: 1 1 auto; max-width: 100%; margin: 0; }
+  .p2--half { width: 100%; }
+}
