@@ -625,3 +625,19 @@ main { padding-top: 0; }
   .header__glass { border-radius: 14px !important; }
   .header__bar .logo__svg { width: 76px; }
 }
+
+/* ======================= TWINS 2 — v7: компактная шапка по центру (как на макете 100%) ======================= */
+.header { padding: clamp(14px, 1.7vw, 22px) var(--pad); }
+.header__bar { width: min(620px, 100%); max-width: 620px; height: clamp(50px, 3.8vw, 58px); gap: clamp(6px, 0.5vw, 9px); }
+.header .hdr-btn { width: clamp(50px, 3.8vw, 58px); border-radius: 16px !important; }
+.header .hdr-btn svg { width: 22px; }
+.header__glass { border-radius: 16px !important; }
+.header__bar .logo__svg { width: clamp(80px, 6.2vw, 96px); }
+.header .btn-consult { padding: 0 clamp(20px, 2vw, 34px); border-radius: 16px !important; font-size: clamp(11px, 0.85vw, 13px); letter-spacing: 0.1em; }
+
+@media (max-width: 760px) {
+  .header__bar { width: 100%; max-width: none; height: 52px; gap: 6px; }
+  .header .hdr-btn { width: 52px; border-radius: 14px !important; }
+  .header__glass { border-radius: 14px !important; }
+  .header__bar .logo__svg { width: 74px; }
+}
