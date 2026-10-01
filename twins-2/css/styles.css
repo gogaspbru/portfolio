@@ -569,3 +569,41 @@ main { padding-top: 76px; }
   .p2 { display: block; grid-column: auto !important; grid-row: auto !important; margin-top: 0 !important; }
   .p2__media { aspect-ratio: 1 / 1 !important; flex: none; }
 }
+
+/* ======================= TWINS 2 — v5: стеклянная шапка, без скруглений ======================= */
+/* Убираем все скругления по сайту */
+:root { --radius: 0px; }
+.band__item, .p2__media, .socials a, .footer, .btn, .btn-consult, .hdr-btn, .header__glass, .card, .ph { border-radius: 0 !important; }
+
+/* Плавающая по центру «стеклянная» шапка поверх героя */
+.header { position: fixed; inset: 0 0 auto 0; z-index: 100; display: flex; justify-content: center; align-items: flex-start; gap: 0; padding: clamp(14px, 1.8vw, 24px) var(--pad); height: auto; background: none; border: 0; color: #111; pointer-events: none; }
+.header__bar { pointer-events: auto; display: flex; align-items: stretch; gap: 8px; width: min(640px, 100%); height: clamp(52px, 4vw, 62px); }
+.header .hdr-btn { display: flex; align-items: center; justify-content: center; flex: 0 0 auto; width: clamp(52px, 4vw, 62px); height: 100%; margin: 0; padding: 0; background: #fff; color: #111; border: 0; cursor: pointer; transition: background 0.2s; }
+.header .hdr-btn:hover { background: #f1f0ed; }
+.header .hdr-btn svg { display: block; }
+.header__glass { flex: 1 1 auto; display: flex; align-items: center; justify-content: center; background: rgba(255, 255, 255, 0.16); backdrop-filter: blur(16px) saturate(1.3); -webkit-backdrop-filter: blur(16px) saturate(1.3); }
+.header__glass .logo { display: flex; align-items: center; justify-content: center; }
+.header__glass .logo__svg { width: 84px; }
+.header .btn-consult { flex: 0 0 auto; display: flex; align-items: center; justify-content: center; height: 100%; padding: 0 clamp(18px, 2vw, 34px); background: #fff; color: #111; border: 0; font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; white-space: nowrap; transition: background 0.2s; }
+.header .btn-consult:hover { background: #f1f0ed; transform: none; }
+
+/* Шапка плавает над героем — контент не сдвигаем, герой на всю высоту */
+main { padding-top: 0; }
+.hero { height: 100svh; }
+
+/* Появление шапки целиком после прелоадера (вместо поэлементного) */
+.js .header .logo, .js .header .burger { opacity: 1; transform: none; transition: none; }
+.js .header__bar { opacity: 0; transform: translateY(-16px); transition: opacity 1s var(--ease), transform 1.1s var(--ease); }
+.loaded .header__bar { opacity: 1; transform: none; transition-delay: 0.1s; }
+
+@media (max-width: 760px) {
+  .header { padding: 12px var(--gap); }
+  .header__bar { width: 100%; height: 52px; gap: 6px; }
+  .header .hdr-btn { width: 52px; }
+  .header .btn-consult { display: none; }
+  .header__glass .logo__svg { width: 72px; }
+  /* Герой на мобиле — крупнее межстрочное у заголовка */
+  .hero__title { line-height: 1.02; }
+  /* Названия проектов на мобиле — плотнее межстрочное */
+  .p2__name { line-height: 1.12; }
+}
