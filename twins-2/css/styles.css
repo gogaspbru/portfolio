@@ -501,3 +501,33 @@ html.is-loading, html.is-loading body { overflow: hidden; }
   .p2-col, .p2-col--left, .p2-col--right { flex: 1 1 auto; max-width: 100%; margin: 0; }
   .p2--half { width: 100%; }
 }
+
+/* ======================= TWINS 2 — правки по макету (v3) ======================= */
+/* Белая полоса-шапка сверху, контент ниже */
+.header { background: #fff; height: 72px; padding: 0 var(--pad); color: #111; }
+main { padding-top: 72px; }
+.hero { height: calc(100svh - 72px); min-height: 520px; }
+.btn-consult { background: #111; color: #fff; }
+.btn-consult:hover { background: #2a2a2a; }
+
+/* Сетка проектов — по макету (12 колонок, 7 карточек) */
+.p2-grid { display: grid; grid-template-columns: repeat(12, 1fr); column-gap: clamp(16px, 1.8vw, 30px); row-gap: clamp(30px, 3.4vw, 64px); align-items: start; }
+.p2 { display: block; margin-top: var(--mt, 0); width: auto; max-width: none; }
+.p2__media { position: relative; display: block; overflow: hidden; border-radius: var(--radius); aspect-ratio: var(--ar, 1 / 1); }
+.p2__media img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 1.2s var(--ease); }
+.p2:hover .p2__media img { transform: scale(1.04); }
+.p2__name { display: block; margin-top: 16px; font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink); }
+
+/* Утверждение + логотипы — слева, капсом (как на макете) */
+.statement { text-align: left; padding: clamp(80px, 9vw, 170px) var(--pad) clamp(50px, 6vw, 100px); }
+.statement__text { max-width: 16em; margin: 0; text-transform: uppercase; line-height: 1.06; letter-spacing: -0.03em; }
+
+@media (max-width: 760px) {
+  .header { height: 60px; }
+  main { padding-top: 60px; }
+  .hero { height: calc(100svh - 60px); }
+  .p2-grid { grid-template-columns: repeat(2, 1fr); }
+  .p2 { grid-column: auto / span 1 !important; margin-top: 0 !important; }
+  .p2__media { aspect-ratio: 1 / 1 !important; }
+  .statement__text { max-width: none; }
+}

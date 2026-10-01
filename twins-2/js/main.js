@@ -247,7 +247,10 @@
     el.style.color = L > 0.5 ? '#111' : '#fff'; // противоположный фону
   }
   var navPhone = document.querySelector('.header__phone');
-  function updateContrast() { paintContrast(logo); paintContrast(burger); paintContrast(navPhone); }
+  // Шапка — сплошная белая полоса, поэтому логотип/бургер/телефон всегда тёмные
+  function updateContrast() {
+    [logo, burger, navPhone].forEach(function (el) { if (el) el.style.color = '#111'; });
+  }
 
   var cTick = false;
   function onContrast() {
