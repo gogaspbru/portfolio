@@ -239,10 +239,10 @@ img { display: block; max-width: 100%; }
   perspective: 1600px;
 }
 .ring {
-  --card-w: clamp(320px, 40vw, 780px);
+  --card-w: clamp(300px, 30vw, 520px);
   position: relative;
   width: var(--card-w);
-  aspect-ratio: 3 / 2;
+  aspect-ratio: 2 / 3; /* десктоп — вертикальные */
   transform-style: preserve-3d;
 }
 .ring__card {
@@ -387,7 +387,7 @@ img { display: block; max-width: 100%; }
   .card__name, .card__place { font-size: 16px; bottom: 14px; }
   .card__name { left: 16px; }
   .card__place { right: 16px; }
-  .ring { --card-w: 84vw; }
+  .ring { --card-w: 84vw; aspect-ratio: 3 / 2; } /* мобайл — горизонтальные */
   /* меньше пустого места вокруг ленты услуг на телефоне */
   .services { height: 150vh; }
   .services__sticky { height: 66vh; height: 66svh; }
