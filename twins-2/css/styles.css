@@ -693,3 +693,21 @@ main { padding-top: 0; }
   .header__glass { order: 2; }
   .header .hdr-call { order: 3; }
 }
+
+/* ======================= TWINS 2 — v11: бегущая лента логотипов на мобиле ======================= */
+@keyframes press-marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+@media (max-width: 760px) {
+  .statement { overflow: hidden; }
+  .press.is-marquee {
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    width: max-content;
+    gap: 0;
+    animation: press-marquee 26s linear infinite;
+    will-change: transform;
+  }
+  .press.is-marquee li { flex: 0 0 auto; margin-right: 44px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .press.is-marquee { animation: none; }
+}

@@ -44,6 +44,31 @@
   menu.addEventListener('click', function (e) { if (e.target.closest('a')) setMenu(false); });
   document.addEventListener('keydown', function (e) { if (e.key === 'Escape') setMenu(false); });
 
+  // ---------- мобильная «бегущая» лента логотипов прессы ----------
+  (function () {
+    var press = document.querySelector('.press');
+    if (!press) return;
+    var mq = window.matchMedia('(max-width: 760px)');
+    var clones = [];
+    function enable() {
+      if (clones.length) return;
+      [].slice.call(press.children).forEach(function (li) {
+        var c = li.cloneNode(true);
+        c.setAttribute('aria-hidden', 'true');
+        press.appendChild(c); clones.push(c);
+      });
+      press.classList.add('is-marquee');
+    }
+    function disable() {
+      clones.forEach(function (c) { c.remove(); }); clones = [];
+      press.classList.remove('is-marquee');
+    }
+    function sync() { if (mq.matches) enable(); else disable(); }
+    sync();
+    if (mq.addEventListener) mq.addEventListener('change', sync);
+    else if (mq.addListener) mq.addListener(sync);
+  })();
+
   // ---------- появление карточек (клип сверху вниз) ----------
   document.querySelectorAll('.card').forEach(function (el) { el.setAttribute('data-reveal', 'img'); });
   document.querySelectorAll('.row').forEach(function (group) {
