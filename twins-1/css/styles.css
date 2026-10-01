@@ -414,7 +414,7 @@ html.is-loading, html.is-loading body { overflow: hidden; }
 }
 .js .preloader { transition: transform 0.95s cubic-bezier(0.76, 0, 0.24, 1); will-change: transform; }
 .preloader.is-done { transform: translateY(-101%); }
-.preloader__logo { display: block; width: clamp(150px, 18vw, 280px); height: auto; color: #fff; }
+.preloader__logo { display: block; width: clamp(120px, 12vw, 160px); height: auto; color: #fff; }
 .preloader__num {
   position: absolute; right: 28px; bottom: 24px;
   font-size: 14px; opacity: 0.7; font-variant-numeric: tabular-nums;
