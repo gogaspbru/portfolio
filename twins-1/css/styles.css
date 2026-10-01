@@ -158,7 +158,7 @@ img { display: block; max-width: 100%; }
   padding: 0 65px clamp(40px, 8vh, 80px) var(--pad);
 }
 .hero__kicker { font-size: 19px; font-weight: 500; letter-spacing: -0.02em; margin-bottom: 14px; }
-.hero__title { font-size: var(--fs-hero); font-weight: 400; line-height: 0.86; letter-spacing: -0.045em; max-width: 8.6em; }
+.hero__title { font-size: var(--fs-hero); font-weight: 400; line-height: 0.78; letter-spacing: -0.045em; max-width: 8.6em; }
 .hero__actions { display: flex; gap: var(--gap); flex-shrink: 0; }
 
 /* ---------- БЛОК 2: проекты ---------- */
