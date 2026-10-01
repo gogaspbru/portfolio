@@ -683,3 +683,13 @@ main { padding-top: 0; }
   .header .btn-consult { display: none; }
   .header__bar .logo__svg { width: 80px; }
 }
+
+/* ======================= TWINS 2 — v10: мобильная шапка во всю ширину ======================= */
+@media (max-width: 760px) {
+  .header { padding: 12px 8px; }
+  .header__bar { width: 100%; max-width: 100%; }
+  /* меню слева, лого по центру, телефон справа */
+  .header .burger { order: 1; }
+  .header__glass { order: 2; }
+  .header .hdr-call { order: 3; }
+}
