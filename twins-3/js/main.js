@@ -49,14 +49,16 @@
     if (!brand) return;
     var vh = window.innerHeight, vw = window.innerWidth;
     var mobile = window.matchMedia('(max-width: 760px)').matches;
-    var range = vh * (mobile ? 0.34 : 0.42);
+    var range = vh * (mobile ? 0.30 : 0.42);
     var p = Math.min(1, Math.max(0, window.scrollY / range));
     var base = brand.offsetWidth || 110;                 // ширина лого при scale 1
-    var targetBig = mobile ? vw * 0.80 : Math.min(vw * 0.52, 820); // крупный размер вверху
+    var baseH = brand.offsetHeight || 37;
+    var targetBig = mobile ? vw * 0.62 : Math.min(vw * 0.52, 820); // крупный размер вверху
     var K = Math.max(1, targetBig / base);
-    var centerY = vh * (mobile ? 0.21 : 0.16);           // где центр крупного лого
-    var natCenter = (brand.offsetTop || 18) + (brand.offsetHeight || 37) / 2;
-    var DOWN = Math.max(0, centerY - natCenter);
+    // позиционируем по ВЕРХНЕМУ краю: в макете лого прилипает к верху
+    var targetTop = mobile ? vh * 0.085 : 8;
+    var natCenter = (brand.offsetTop || 18) + baseH / 2;
+    var DOWN = Math.max(0, targetTop - natCenter + (baseH * K) / 2);
     var scale = 1 + (1 - p) * (K - 1);
     var ty = (1 - p) * DOWN;
     brand.style.transform = 'translate(-50%,' + ty + 'px) scale(' + scale + ')';
