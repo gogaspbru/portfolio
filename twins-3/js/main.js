@@ -52,9 +52,9 @@
     var range = vh * (mobile ? 0.34 : 0.42);
     var p = Math.min(1, Math.max(0, window.scrollY / range));
     var base = brand.offsetWidth || 110;                 // ширина лого при scale 1
-    var targetBig = mobile ? vw * 0.74 : Math.min(vw * 0.52, 820); // крупный размер вверху
+    var targetBig = mobile ? vw * 0.80 : Math.min(vw * 0.52, 820); // крупный размер вверху
     var K = Math.max(1, targetBig / base);
-    var centerY = vh * (mobile ? 0.15 : 0.16);           // где центр крупного лого
+    var centerY = vh * (mobile ? 0.21 : 0.16);           // где центр крупного лого
     var natCenter = (brand.offsetTop || 18) + (brand.offsetHeight || 37) / 2;
     var DOWN = Math.max(0, centerY - natCenter);
     var scale = 1 + (1 - p) * (K - 1);

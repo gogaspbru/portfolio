@@ -51,10 +51,10 @@ html.is-loading, html.is-loading body { overflow: hidden; }
 
 /* ---------- шапка: телефон слева, лого по центру (крупное → в полоску), справа кнопка+меню ---------- */
 .header { position: fixed; z-index: 100; top: 0; left: 0; right: 0; height: 72px; display: flex; align-items: center; justify-content: space-between; padding: 0 var(--pad); background: #fff; color: #141414; }
-.header__phone { font-size: 14px; letter-spacing: 0.01em; white-space: nowrap; display: inline-flex; align-items: center; color: #141414; }
+.header__phone { font-size: 14px; font-weight: 600; letter-spacing: 0.01em; white-space: nowrap; display: inline-flex; align-items: center; color: #141414; }
 .header__phone-ico { display: none; width: 20px; height: 20px; }
 .header__right { display: flex; align-items: center; gap: clamp(16px, 1.8vw, 28px); }
-.btn-consult { font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase; white-space: nowrap; transition: opacity 0.2s; }
+.btn-consult { font-size: 13px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; white-space: nowrap; transition: opacity 0.2s; }
 .btn-consult:hover { opacity: 0.6; }
 .burger { width: 28px; height: 20px; display: grid; place-content: center; background: none; border: 0; color: #141414; cursor: pointer; }
 .burger svg { display: block; }
@@ -82,7 +82,7 @@ main { padding-top: 0; }
 .projects3 { padding: 0 var(--pad) clamp(50px, 6vw, 110px); }
 .pj-grid { display: grid; grid-template-columns: repeat(4, 1fr); column-gap: clamp(16px, 1.8vw, 30px); row-gap: clamp(30px, 3vw, 58px); align-items: start; }
 .pj { display: flex; flex-direction: column; margin-top: var(--mt, 0); }
-.pj__num { font-size: 12px; letter-spacing: 0.06em; color: var(--muted); margin-bottom: 12px; }
+.pj__num { font-size: clamp(16px, 1.15vw, 20px); font-weight: 600; letter-spacing: 0.02em; color: var(--fg); margin-bottom: 14px; }
 .pj__media { position: relative; display: block; overflow: hidden; aspect-ratio: var(--ar, 1); background: #ececea; }
 .pj__media img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 1.2s var(--ease); }
 .pj:hover .pj__media img { transform: scale(1.04); }
@@ -90,14 +90,14 @@ main { padding-top: 0; }
 
 /* ---------- стопка полноэкранных блоков (накладываются при скролле) ---------- */
 .stack { position: relative; }
-.stack__panel { position: sticky; top: 0; height: 100vh; height: 100svh; display: block; overflow: hidden; color: #fff; background: var(--bg); padding: 0 clamp(14px, 2vw, 34px) clamp(14px, 2vw, 34px) 0; }
+.stack__panel { position: sticky; top: 0; height: 100vh; height: 100svh; display: block; overflow: hidden; color: #fff; background: var(--bg); padding: 0 clamp(14px, 2vw, 34px) clamp(14px, 2vw, 34px) clamp(14px, 2vw, 34px); }
 .stack__media { position: relative; width: 100%; height: 100%; overflow: hidden; }
 .stack__media img { width: 100%; height: 100%; object-fit: cover; display: block; }
 .stack__media::after { content: ""; position: absolute; inset: 0; background: linear-gradient(0deg, rgba(0,0,0,0.5), rgba(0,0,0,0) 55%); z-index: 1; }
 .stack__label { position: absolute; z-index: 2; left: clamp(20px, 3.4vw, 60px); bottom: clamp(24px, 4vh, 54px); font-size: clamp(26px, 2.8vw, 46px); letter-spacing: -0.03em; line-height: 1; }
 
 /* ---------- утверждение + логотипы прессы ---------- */
-.statement { text-align: center; padding: clamp(80px, 9vw, 170px) var(--pad) clamp(60px, 6vw, 110px); overflow: hidden; }
+.statement { text-align: center; padding: clamp(70px, 7vw, 120px) var(--pad); overflow: hidden; }
 .statement__text { max-width: 16em; margin: 0 auto; text-transform: uppercase; line-height: 1.12; letter-spacing: -0.01em; font-size: clamp(22px, 2.4vw, 40px); font-weight: 500; }
 .statement__text.reveal-split { align-items: center; }
 .press { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 30px 48px; margin-top: clamp(50px, 6vw, 92px); }
@@ -108,21 +108,17 @@ main { padding-top: 0; }
 .btn-all { display: inline-flex; align-items: center; justify-content: center; height: 54px; padding: 0 40px; border: 1px solid var(--fg); font-size: 13px; letter-spacing: 0.1em; text-transform: uppercase; transition: background 0.3s, color 0.3s; }
 .btn-all:hover { background: var(--fg); color: #fff; }
 
-/* ---------- подвал (тёмный, во всю ширину) ---------- */
-.footer { background: #0e0e0e; color: #f1f1ef; padding: clamp(70px, 7vw, 130px) var(--pad) clamp(50px, 5vw, 90px); }
-.footer__grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 30px 24px; align-items: start; }
-.footer__copy { font-size: 14px; }
-.footer__mid { display: flex; flex-direction: column; align-items: flex-start; gap: 10px; font-size: 15px; letter-spacing: -0.01em; }
-.footer__mid a:hover { opacity: 0.6; }
-.footer__mid p { color: #c9c9c6; }
-.footer__legal { display: flex; flex-direction: column; gap: 10px; margin-top: 24px; color: #8c8c8a; font-size: 13px; }
+/* ---------- подвал (тёмный, по центру, с подложкой-логотипом) ---------- */
+.footer { position: relative; overflow: hidden; background: #0e0e0e; color: #f1f1ef; padding: clamp(64px, 6vw, 110px) var(--pad) 0; }
+.footer__inner { position: relative; z-index: 2; display: flex; flex-direction: column; align-items: center; text-align: center; gap: clamp(22px, 2.4vw, 34px); }
+.footer__contacts { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px clamp(28px, 3vw, 56px); font-size: 15px; letter-spacing: -0.01em; }
+.footer__contacts a:hover { opacity: 0.6; }
+.footer__legal { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px clamp(20px, 2.4vw, 40px); color: #8c8c8a; font-size: 13px; }
 .footer__legal a:hover { color: #fff; }
-.footer__right { display: flex; flex-direction: column; align-items: flex-start; gap: 24px; }
-.socials { display: flex; gap: 4px; }
-.socials a { width: 46px; height: 46px; display: grid; place-items: center; background: rgba(255,255,255,0.08); font-size: 14px; transition: background 0.3s; }
-.socials a:hover { background: rgba(255,255,255,0.16); }
-.footer__dev { font-size: 13px; color: #8c8c8a; }
-.footer__dev:hover { color: #fff; }
+.footer__socials { display: flex; justify-content: center; gap: clamp(20px, 2vw, 36px); font-size: 15px; }
+.footer__socials a:hover { opacity: 0.6; }
+.footer__copy { font-size: 14px; color: #c9c9c6; }
+.footer__wm { position: relative; z-index: 1; display: block; width: 100%; margin-top: clamp(20px, 2vw, 40px); color: #fff; opacity: 0.05; margin-bottom: -2%; }
 
 /* ==========================================================================
    Анимации появления
@@ -169,9 +165,9 @@ main { padding-top: 0; }
   .header__phone-num { display: none; }
   .header__phone-ico { display: block; }
   .brand__svg { width: 92px; }
-  .hero3 { height: clamp(300px, 42vh, 460px); }
+  .hero3 { height: clamp(230px, 31vh, 340px); }
   .pj__media { aspect-ratio: var(--ar, 1); }
-  .stack__panel { height: 100svh; padding: 0 10px 10px 0; }
+  .stack__panel { height: 100svh; padding: 0 10px 10px 10px; }
   .stack__label { font-size: clamp(30px, 9vw, 46px); line-height: 0.98; max-width: 7em; }
   /* бегущая лента логотипов */
   .press.is-marquee { flex-wrap: nowrap; justify-content: flex-start; width: max-content; gap: 0; animation: press-marquee 26s linear infinite; will-change: transform; }
