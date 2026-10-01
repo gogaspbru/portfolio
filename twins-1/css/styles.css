@@ -239,10 +239,10 @@ img { display: block; max-width: 100%; }
   perspective: 1600px;
 }
 .ring {
-  --card-w: clamp(300px, 30vw, 520px);
+  --card-w: clamp(320px, 40vw, 780px);
   position: relative;
   width: var(--card-w);
-  aspect-ratio: 2 / 3; /* десктоп — вертикальные */
+  aspect-ratio: 3 / 2; /* десктоп — горизонтальные */
   transform-style: preserve-3d;
 }
 .ring__card {
@@ -336,7 +336,8 @@ img { display: block; max-width: 100%; }
 .js .card[data-reveal="img"].is-in:hover .ph { transform: scale(1.04); transition-duration: 1.4s; }
 
 /* тексты: каждая строка выезжает снизу из-под маски (studio style) */
-.reveal-line { display: block; overflow: hidden; padding: 0.24em 0.03em; margin: -0.24em -0.03em; }
+.reveal-split { display: flex; flex-direction: column; } /* отключает схлопывание отступов строк */
+.reveal-line { display: block; overflow: hidden; padding: 0.22em 0; margin: -0.22em 0; }
 .reveal-line__inner { display: block; transform: translateY(120%); transition: transform 0.95s cubic-bezier(0.22, 1, 0.36, 1); }
 [data-reveal-text].is-in .reveal-line__inner { transform: translateY(0); }
 .reveal-line__inner.reveal-line--noanim { transition: none; }
@@ -387,7 +388,7 @@ img { display: block; max-width: 100%; }
   .card__name, .card__place { font-size: 16px; bottom: 14px; }
   .card__name { left: 16px; }
   .card__place { right: 16px; }
-  .ring { --card-w: 84vw; aspect-ratio: 3 / 2; } /* мобайл — горизонтальные */
+  .ring { --card-w: 62vw; aspect-ratio: 2 / 3; } /* мобайл — вертикальные */
   /* меньше пустого места вокруг ленты услуг на телефоне */
   .services { height: 150vh; }
   .services__sticky { height: 66vh; height: 66svh; }

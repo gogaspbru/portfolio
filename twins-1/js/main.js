@@ -81,6 +81,7 @@
       spans.forEach(function (s) { var t = s.offsetTop; if (top === null) top = t; if (t - top > 2) { lines.push(cur); cur = []; top = t; } cur.push(s.textContent); });
       if (cur.length) lines.push(cur);
       el.textContent = ''; el._inners = [];
+      el.classList.add('reveal-split');
       lines.forEach(function (lw, i) {
         var line = document.createElement('span'); line.className = 'reveal-line';
         var inner = document.createElement('span'); inner.className = 'reveal-line__inner';
