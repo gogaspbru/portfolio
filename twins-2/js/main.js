@@ -60,9 +60,9 @@
   document.querySelectorAll('[data-reveal="img"]').forEach(function (el) { cardIO.observe(el); });
 
   // ---------- тексты: каждая строка выезжает снизу из-под маски (как на goga.spb.ru) ----------
-  var TEXT_TARGETS = '.hero__kicker, .hero__title, .projects__title, .statement__text, .about__text, ' +
-    '.footer__title, .footer__label, .footer__col a, .footer__col p, .footer__legal a, ' +
-    '.footer__bottom > span, .footer__bottom > a:last-child, .stats li span, .cat__label';
+  var TEXT_TARGETS = '.hero__title, .projects__title, .statement__text, .about__text, ' +
+    '.footer__title, .footer__col a, .footer__col p, ' +
+    '.stats li span, .cat__label';
   document.querySelectorAll(TEXT_TARGETS).forEach(function (el) { el.setAttribute('data-reveal-text', ''); });
 
   (function initReveal() {

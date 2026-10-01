@@ -607,3 +607,21 @@ main { padding-top: 0; }
   /* Названия проектов на мобиле — плотнее межстрочное */
   .p2__name { line-height: 1.12; }
 }
+
+/* ======================= TWINS 2 — v6: шапка строго по макету ======================= */
+/* Широкая плавающая шапка со скруглёнными блоками, лого по центру кадра, «Консультация» справа */
+.header { padding: clamp(16px, 2vw, 30px) var(--pad); align-items: flex-start; }
+.header__bar { position: relative; width: 100%; max-width: none; height: clamp(56px, 4.6vw, 70px); gap: clamp(10px, 0.9vw, 16px); }
+.header .hdr-btn { width: clamp(56px, 4.6vw, 70px); border-radius: 18px !important; }
+.header .hdr-btn svg { width: 24px; height: auto; }
+.header__glass { border-radius: 18px !important; }
+.header__bar .logo { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 2; display: flex; align-items: center; justify-content: center; }
+.header__bar .logo__svg { width: clamp(96px, 8vw, 124px); }
+.header .btn-consult { padding: 0 clamp(28px, 3.4vw, 66px); border-radius: 18px !important; font-size: clamp(12px, 0.95vw, 15px); letter-spacing: 0.12em; }
+
+@media (max-width: 760px) {
+  .header__bar { height: 54px; gap: 8px; }
+  .header .hdr-btn { width: 54px; border-radius: 14px !important; }
+  .header__glass { border-radius: 14px !important; }
+  .header__bar .logo__svg { width: 76px; }
+}
