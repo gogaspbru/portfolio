@@ -157,7 +157,7 @@ img { display: block; max-width: 100%; }
   gap: 32px;
   padding: 0 65px clamp(40px, 8vh, 80px) var(--pad);
 }
-.hero__kicker { font-size: 19px; font-weight: 500; letter-spacing: -0.02em; margin-bottom: 36px; }
+.hero__kicker { font-size: 19px; font-weight: 500; letter-spacing: -0.02em; margin-bottom: 14px; }
 .hero__title { font-size: var(--fs-hero); font-weight: 400; line-height: 0.95; letter-spacing: -0.045em; max-width: 8.6em; }
 .hero__actions { display: flex; gap: var(--gap); flex-shrink: 0; }
 
@@ -328,8 +328,6 @@ img { display: block; max-width: 100%; }
 /* ==========================================================================
    Анимации появления (классы ставит js/main.js)
    ========================================================================== */
-.js [data-reveal] { opacity: 0; transform: translateY(40px); transition: opacity 1s var(--ease), transform 1.2s var(--ease); }
-.js [data-reveal].is-in { opacity: 1; transform: none; }
 /* картинки «проявляются» снизу вверх и чуть уменьшаются */
 .js [data-reveal="img"] { opacity: 1; transform: none; clip-path: inset(100% 0 0 0 round var(--radius)); transition: clip-path 1.4s var(--ease); }
 .js [data-reveal="img"] .ph { transform: scale(1.15); transition: transform 1.8s var(--ease); }
@@ -337,17 +335,25 @@ img { display: block; max-width: 100%; }
 .js [data-reveal="img"].is-in .ph { transform: scale(1); }
 .js .card[data-reveal="img"].is-in:hover .ph { transform: scale(1.04); transition-duration: 1.4s; }
 
-/* первый экран: фото отъезжает, текст поднимается */
+/* тексты: каждая строка выезжает снизу из-под маски (studio style) */
+.reveal-line { display: block; overflow: hidden; padding: 0.24em 0.03em; margin: -0.24em -0.03em; }
+.reveal-line__inner { display: block; transform: translateY(120%); transition: transform 0.95s cubic-bezier(0.22, 1, 0.36, 1); }
+[data-reveal-text].is-in .reveal-line__inner { transform: translateY(0); }
+.reveal-line__inner.reveal-line--noanim { transition: none; }
+[data-reveal-text].reveal-simple { opacity: 0; transform: translateY(26px); transition: opacity 0.7s ease, transform 0.85s cubic-bezier(0.22, 1, 0.36, 1); }
+[data-reveal-text].reveal-simple.is-in { opacity: 1; transform: none; }
+
+/* первый экран: фото отъезжает, кнопка поднимается */
 .js .hero__media { transform: scale(1.14); transition: transform 2.6s var(--ease); }
-.js .hero__kicker, .js .hero__title, .js .hero__actions { opacity: 0; transform: translateY(36px); transition: opacity 1.1s var(--ease), transform 1.3s var(--ease); }
-.js .hero__title { transition-delay: 0.12s; }
-.js .hero__actions { transition-delay: 0.3s; }
+.js .hero__actions { opacity: 0; transform: translateY(36px); transition: opacity 1.1s var(--ease), transform 1.3s var(--ease); transition-delay: 0.3s; }
 .loaded .hero__media { transform: none; }
-.loaded .hero__kicker, .loaded .hero__title, .loaded .hero__actions { opacity: 1; transform: none; }
+.loaded .hero__actions { opacity: 1; transform: none; }
 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; }
-  .js [data-reveal], .js [data-reveal="img"] { opacity: 1; transform: none; clip-path: none; }
+  .js [data-reveal="img"] { opacity: 1; transform: none; clip-path: none; }
+  .reveal-line__inner { transform: none; }
+  [data-reveal-text].reveal-simple { opacity: 1; transform: none; }
 }
 
 /* ==========================================================================
@@ -362,7 +368,7 @@ img { display: block; max-width: 100%; }
   .header { padding: 20px; }
   .logo__svg { width: 92px; }
   .hero__content { flex-direction: column; align-items: flex-start; padding: 0 var(--pad) 32px; }
-  .hero__kicker { margin-bottom: 20px; font-size: 16px; }
+  .hero__kicker { margin-bottom: 10px; font-size: 16px; }
   .row--3 { grid-template-columns: 1fr 1fr; }
   .row--3 .card:last-child { grid-column: 1 / -1; aspect-ratio: 3 / 2; }
   .stats { grid-template-columns: 1fr 1fr; row-gap: 36px; }
@@ -382,6 +388,11 @@ img { display: block; max-width: 100%; }
   .card__name { left: 16px; }
   .card__place { right: 16px; }
   .ring { --card-w: 84vw; }
+  /* меньше пустого места вокруг ленты услуг на телефоне */
+  .services { height: 150vh; }
+  .services__sticky { height: 66vh; height: 66svh; }
+  /* чёрный блок — во всю ширину экрана */
+  .about { margin-left: 0; margin-right: 0; border-radius: 0; padding-left: var(--pad); padding-right: var(--pad); }
   .press { justify-content: center; gap: 24px 32px; }
   .ring__more { opacity: 1; }
   .footer__top { grid-template-columns: 1fr 1fr; }
@@ -403,12 +414,7 @@ html.is-loading, html.is-loading body { overflow: hidden; }
 }
 .js .preloader { transition: transform 0.95s cubic-bezier(0.76, 0, 0.24, 1); will-change: transform; }
 .preloader.is-done { transform: translateY(-101%); }
-.preloader__mark {
-  display: inline-flex; align-items: center; gap: 0.28em;
-  font-size: clamp(26px, 4vw, 52px); font-weight: 600;
-  letter-spacing: 0.28em; padding-left: 0.28em;
-}
-.preloader__sep { width: 1px; height: 1em; background: currentColor; opacity: 0.55; }
+.preloader__logo { display: block; width: clamp(150px, 18vw, 280px); height: auto; color: #fff; }
 .preloader__num {
   position: absolute; right: 28px; bottom: 24px;
   font-size: 14px; opacity: 0.7; font-variant-numeric: tabular-nums;

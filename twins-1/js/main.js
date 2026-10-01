@@ -3,10 +3,15 @@
   'use strict';
   var root = document.documentElement;
   var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var armReveal = function () {}; // заменяется в initReveal(); вызывается после прелоадера
+
+  // год в подвале — до построчной разбивки текста (splitLines перезапишет узел)
+  var yearEl = document.getElementById('year');
+  if (yearEl) yearEl.textContent = new Date().getFullYear();
 
   // ---------- прелоадер → появление первого экрана ----------
   var pre = document.getElementById('preloader');
-  function reveal() { root.classList.remove('is-loading'); root.classList.add('loaded'); }
+  function reveal() { root.classList.remove('is-loading'); root.classList.add('loaded'); armReveal(); }
   if (reduce || !pre) {
     if (pre) pre.style.display = 'none';
     reveal();
@@ -39,27 +44,82 @@
   menu.addEventListener('click', function (e) { if (e.target.closest('a')) setMenu(false); });
   document.addEventListener('keydown', function (e) { if (e.key === 'Escape') setMenu(false); });
 
-  // ---------- появление при прокрутке ----------
-  var textTargets = '.projects__title, .statement__text, .press, .about__text, .stats li, .footer__top > *';
-  var imageTargets = '.card';
-  document.querySelectorAll(textTargets).forEach(function (el) { el.setAttribute('data-reveal', ''); });
-  document.querySelectorAll(imageTargets).forEach(function (el) { el.setAttribute('data-reveal', 'img'); });
-
-  // соседние элементы в одном ряду появляются лесенкой
-  document.querySelectorAll('.row, .stats, .press, .footer__top').forEach(function (group) {
+  // ---------- появление карточек (клип сверху вниз) ----------
+  document.querySelectorAll('.card').forEach(function (el) { el.setAttribute('data-reveal', 'img'); });
+  document.querySelectorAll('.row').forEach(function (group) {
     Array.prototype.forEach.call(group.children, function (el, i) { el.style.transitionDelay = (i * 0.09) + 's'; });
   });
-
-  var io = new IntersectionObserver(function (entries) {
+  var cardIO = new IntersectionObserver(function (entries) {
     entries.forEach(function (entry) {
       if (!entry.isIntersecting) return;
       entry.target.classList.add('is-in');
-      io.unobserve(entry.target);
-      // задержку «лесенки» убираем после появления, чтобы наведение реагировало сразу
+      cardIO.unobserve(entry.target);
       setTimeout(function () { entry.target.style.transitionDelay = ''; }, 1800);
     });
   }, { rootMargin: '0px 0px -8% 0px' });
-  document.querySelectorAll('[data-reveal]').forEach(function (el) { io.observe(el); });
+  document.querySelectorAll('[data-reveal="img"]').forEach(function (el) { cardIO.observe(el); });
+
+  // ---------- тексты: каждая строка выезжает снизу из-под маски (как на goga.spb.ru) ----------
+  var TEXT_TARGETS = '.hero__kicker, .hero__title, .projects__title, .statement__text, .about__text, ' +
+    '.footer__title, .footer__label, .footer__col a, .footer__col p, .footer__legal a, ' +
+    '.footer__bottom > span, .footer__bottom > a:last-child, .stats li span, .cat__label';
+  document.querySelectorAll(TEXT_TARGETS).forEach(function (el) { el.setAttribute('data-reveal-text', ''); });
+
+  (function initReveal() {
+    var els = [].slice.call(document.querySelectorAll('[data-reveal-text]'));
+    if (!els.length || reduce) return;
+    var STAGGER = 0.09;
+    var queued = [], armed = false;
+
+    function splitLines(el) {
+      var text = el._revealText;
+      el.textContent = '';
+      var words = text.split(/\s+/).filter(Boolean);
+      var spans = words.map(function (w) { var s = document.createElement('span'); s.style.display = 'inline-block'; s.textContent = w; return s; });
+      spans.forEach(function (s, i) { el.appendChild(s); if (i < spans.length - 1) el.appendChild(document.createTextNode(' ')); });
+      var lines = [], cur = [], top = null;
+      spans.forEach(function (s) { var t = s.offsetTop; if (top === null) top = t; if (t - top > 2) { lines.push(cur); cur = []; top = t; } cur.push(s.textContent); });
+      if (cur.length) lines.push(cur);
+      el.textContent = ''; el._inners = [];
+      lines.forEach(function (lw, i) {
+        var line = document.createElement('span'); line.className = 'reveal-line';
+        var inner = document.createElement('span'); inner.className = 'reveal-line__inner';
+        inner.style.transitionDelay = (i * STAGGER) + 's'; inner.textContent = lw.join(' ');
+        line.appendChild(inner); el.appendChild(line); el._inners.push(inner);
+      });
+    }
+    function fire(el) { el.classList.add('is-in'); el._revealed = true; }
+    var lineMode = !(window.matchMedia && window.matchMedia('(max-width: 640px)').matches);
+
+    els.forEach(function (el) {
+      el._revealText = el.textContent.trim();
+      if (lineMode) splitLines(el); else el.classList.add('reveal-simple');
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) { if (!e.isIntersecting) return; io.unobserve(el); if (armed) fire(el); else queued.push(el); });
+      }, { threshold: 0.2, rootMargin: '0px 0px -8% 0px' });
+      io.observe(el);
+    });
+
+    armReveal = function () { if (armed) return; armed = true; queued.forEach(fire); queued = []; };
+
+    var t;
+    window.addEventListener('resize', function () {
+      if (!lineMode) return;
+      clearTimeout(t);
+      t = setTimeout(function () {
+        els.forEach(function (el) {
+          if (!el._inners) return;
+          var was = el._revealed; splitLines(el);
+          if (was) {
+            el.classList.add('is-in');
+            el._inners.forEach(function (i) { i.classList.add('reveal-line--noanim'); });
+            void el.offsetWidth;
+            el._inners.forEach(function (i) { i.classList.remove('reveal-line--noanim'); });
+          }
+        });
+      }, 200);
+    });
+  })();
 
   // ---------- счётчики ----------
   var counters = new IntersectionObserver(function (entries) {
@@ -205,8 +265,4 @@
     function raf(t) { lenis.raf(t); requestAnimationFrame(raf); }
     requestAnimationFrame(raf);
   }
-
-  // ---------- год в подвале ----------
-  var year = document.getElementById('year');
-  if (year) year.textContent = new Date().getFullYear();
 })();
