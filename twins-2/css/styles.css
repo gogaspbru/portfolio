@@ -531,3 +531,41 @@ main { padding-top: 72px; }
   .p2__media { aspect-ratio: 1 / 1 !important; }
   .statement__text { max-width: none; }
 }
+
+/* ======================= TWINS 2 — правки по макету (v4) ======================= */
+/* Шапка: рамка-полоса, бургер в ячейке слева, лого по центру, иконка-телефон + «Консультация» справа */
+.header { display: grid; grid-template-columns: auto 1fr auto; align-items: stretch; gap: 0; padding: 0; height: 76px; background: #fff; color: #111; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+.header .burger { display: flex; align-items: center; justify-content: center; width: 76px; height: 100%; border-right: 1px solid var(--line); margin: 0; }
+.header .logo { justify-self: center; align-self: center; }
+.btn-consult { display: flex; align-items: center; gap: 10px; height: 100%; padding: 0 clamp(20px, 2.2vw, 40px); background: #fff; color: #111; border: 0; border-left: 1px solid var(--line); border-radius: 0; font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase; transition: background 0.2s; }
+.btn-consult:hover { background: #f3f2ef; transform: none; }
+.btn-consult__icon { width: 17px; height: 17px; flex: none; }
+main { padding-top: 76px; }
+.hero { height: calc(100svh - 76px); }
+
+/* Сетка проектов — как на макете: 4 колонки, крупная карточка слева и смещённые квадраты */
+.p2-grid { display: grid; grid-template-columns: repeat(4, 1fr); column-gap: clamp(16px, 1.8vw, 30px); row-gap: clamp(16px, 1.8vw, 30px); grid-auto-rows: clamp(210px, 23vw, 360px); align-items: stretch; }
+.p2 { display: flex; flex-direction: column; margin: 0; }
+.p2__media { flex: 1 1 auto; min-height: 0; aspect-ratio: auto; }
+.p2__name { flex: 0 0 auto; margin-top: 14px; }
+
+/* Три направления — без скругления */
+.band__item { border-radius: 0; }
+.js .band__item[data-reveal="img"] { clip-path: inset(100% 0 0 0); }
+.js .band__item[data-reveal="img"].is-in { clip-path: inset(0 0 0 0); }
+
+/* Подвал — без внешних отступов и без большой подложки TWINS */
+.footer { margin: 0; border-radius: 0; }
+.footer__watermark { display: none; }
+
+@media (max-width: 760px) {
+  .header { height: 60px; }
+  .header .burger { width: 60px; }
+  main { padding-top: 60px; }
+  .hero { height: calc(100svh - 60px); }
+  .btn-consult { width: 60px; padding: 0; justify-content: center; gap: 0; border-left: 1px solid var(--line); }
+  .btn-consult span { display: none; }
+  .p2-grid { grid-template-columns: repeat(2, 1fr); grid-auto-rows: auto; }
+  .p2 { display: block; grid-column: auto !important; grid-row: auto !important; margin-top: 0 !important; }
+  .p2__media { aspect-ratio: 1 / 1 !important; flex: none; }
+}
