@@ -380,9 +380,13 @@ button { cursor: pointer; border: 0; background: none; color: inherit; padding: 
 }
 .case p + .arrow-btn { margin-top: 36px; }
 .arrow-btn:hover { background: var(--red); color: var(--white); }
-.cases__dots { display: flex; justify-content: center; gap: 10px; margin-top: 40px; }
-.cases__dots i { width: 6px; height: 4px; border-radius: 4px; background: #b9c3d2; transition: width 0.25s, background 0.25s; }
-.cases__dots i.is-active { width: 32px; background: var(--blue); }
+/* точки слайдеров: на десктопе только у кейсов, на мобильном — у всех .m-slider */
+.slider-dots { display: none; justify-content: center; gap: 4px; margin-top: 28px; }
+.slider-dots button { width: 14px; height: 14px; display: grid; place-items: center; }
+.slider-dots button::before { content: ""; width: 4px; height: 4px; border-radius: 4px; background: #b9c3d2; transition: width 0.25s, background 0.25s; }
+.slider-dots button.is-active { width: 34px; }
+.slider-dots button.is-active::before { width: 26px; background: var(--blue); }
+.cases__dots { display: flex; margin-top: 40px; }
 
 /* ---------- подвал ---------- */
 .footer { margin-top: 128px; padding-bottom: 60px; background: linear-gradient(180deg, #213f6e 0%, #2d4d7d 100%); color: var(--white); }
@@ -542,7 +546,18 @@ button { cursor: pointer; border: 0; background: none; color: inherit; padding: 
 
   .cases__head { text-align: left; }
   .cases__arrows { position: static; margin-top: 20px; }
-  .cases__track { grid-auto-columns: 86%; gap: 16px; margin-top: 28px; }
+  .cases__track { grid-auto-columns: 100%; gap: 16px; margin-top: 28px; }
+
+  /* мобильные слайдеры: карточка + край следующей, свайп со снапом */
+  .grid.m-slider, .delivery__steps.m-slider {
+    grid-template-columns: none; grid-auto-flow: column; grid-auto-columns: calc(100% - 57px); gap: 18px;
+    margin-right: calc(-1 * var(--gutter)); padding-right: var(--gutter);
+    overflow-x: auto; overscroll-behavior-x: contain; scroll-snap-type: x mandatory; scrollbar-width: none;
+  }
+  .m-slider::-webkit-scrollbar { display: none; }
+  .m-slider > * { scroll-snap-align: start; }
+  .slider-dots { display: flex; margin-top: 24px; }
+  .delivery .slider-dots { margin: -12px 0 8px; }
   .case__body { padding: 22px 22px 28px; }
   .case__title { font-size: 24px; line-height: 28px; }
   .case p { margin-top: 18px; }

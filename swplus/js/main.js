@@ -16,33 +16,56 @@
     });
   }
 
-  // Слайдер «Кейсы и статьи»: стрелки + точки поверх нативной прокрутки
-  var track = document.querySelector('.cases__track');
-  if (track) {
-    var cards = track.children;
-    var dots = document.querySelectorAll('.cases__dots i');
-    var arrows = document.querySelectorAll('.cases__arrows [data-dir]');
+  // Слайдеры: нативная прокрутка со снапом + точки (и стрелки у кейсов).
+  // На десктопе блоки .m-slider — обычные сетки, прокрутки нет и точки скрыты.
+  document.querySelectorAll('[data-slider]').forEach(function (track) {
+    var dotsBox = track.nextElementSibling;
+    if (!dotsBox || !dotsBox.classList.contains('slider-dots')) { dotsBox = null; }
+    var arrows = track.classList.contains('cases__track')
+      ? document.querySelectorAll('.cases__arrows [data-dir]') : [];
+    var dots = [];
     var step = function () {
       var gap = parseFloat(getComputedStyle(track).columnGap) || 0;
-      return cards[0].getBoundingClientRect().width + gap;
+      return track.children[0].getBoundingClientRect().width + gap;
+    };
+    var maxScroll = function () { return track.scrollWidth - track.clientWidth; };
+    var build = function () {
+      if (!dotsBox) { return; }
+      var max = maxScroll();
+      var count = max > 2 ? Math.round(max / step()) + 1 : 0;
+      if (count === dots.length) { return; }
+      dotsBox.innerHTML = '';
+      dots = [];
+      for (var i = 0; i < count; i++) {
+        var dot = document.createElement('button');
+        dot.type = 'button';
+        dot.tabIndex = -1;
+        dot.addEventListener('click', (function (n) {
+          return function () { track.scrollTo({ left: n * step(), behavior: 'smooth' }); };
+        })(i));
+        dotsBox.appendChild(dot);
+        dots.push(dot);
+      }
     };
     var update = function () {
-      var max = track.scrollWidth - track.clientWidth;
-      var idx = Math.round(track.scrollLeft / step());
+      var max = maxScroll();
+      var idx = track.scrollLeft >= max - 2 ? dots.length - 1 : Math.round(track.scrollLeft / step());
       dots.forEach(function (d, i) { d.classList.toggle('is-active', i === idx); });
-      arrows[0].disabled = track.scrollLeft <= 2;
-      arrows[1].disabled = track.scrollLeft >= max - 2;
-      document.querySelector('.cases__dots').style.visibility = max > 2 ? '' : 'hidden';
+      if (arrows.length) {
+        arrows[0].disabled = track.scrollLeft <= 2;
+        arrows[1].disabled = track.scrollLeft >= max - 2;
+      }
     };
-    arrows.forEach(function (btn) {
+    Array.prototype.forEach.call(arrows, function (btn) {
       btn.addEventListener('click', function () {
         track.scrollBy({ left: step() * Number(btn.dataset.dir), behavior: 'smooth' });
       });
     });
     track.addEventListener('scroll', function () { window.requestAnimationFrame(update); }, { passive: true });
-    window.addEventListener('resize', update);
+    window.addEventListener('resize', function () { build(); update(); });
+    build();
     update();
-  }
+  });
 
   // Форма «Есть вопросы?» — простая проверка; отправку подключить к бэкенду
   var form = document.querySelector('.question__form');
