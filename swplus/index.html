@@ -1,0 +1,623 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SWPlus — дополнение для SOLIDWORKS | Цифровой прогресс</title>
+  <meta name="description" content="SWPlus помогает оформлять чертежи по ЕСКД: свойства моделей, спецификации, технические требования и изменения — в привычной среде SOLIDWORKS.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600;700&family=Onest:wght@300;400;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+<!-- ============ ШАПКА + ПЕРВЫЙ ЭКРАН ============ -->
+<section class="hero">
+  <div class="hero__box">
+    <header class="header">
+      <div class="container header__row">
+        <a class="header__logo" href="https://dipro.ru/">
+          <img src="img/logo.png" width="192" height="48" alt="Цифровой прогресс — на главную">
+        </a>
+
+        <nav class="header__nav" aria-label="Основное меню">
+          <ul class="header__nav-top">
+            <li><a href="#">О компании</a></li>
+            <li><a href="#">Контакты</a></li>
+            <li><a href="#">Партнёры</a></li>
+            <li><a href="#">Карьера</a></li>
+            <li><a href="#">Акции</a></li>
+          </ul>
+          <ul class="header__nav-main">
+            <li><a href="#" class="has-sub">Продукты и решения</a></li>
+            <li><a href="#" class="has-sub">Услуги</a></li>
+            <li><a href="#">Блог</a></li>
+            <li><a href="#">Тех. поддержка</a></li>
+          </ul>
+        </nav>
+
+        <div class="header__phones">
+          <a href="tel:+78123099120"><small>Санкт-Петербург</small>+7 (812) 309-91-20</a>
+          <a href="tel:+74954814001"><small>Москва</small>+7 (495) 481-40-01</a>
+        </div>
+
+        <button class="header__search" type="button" aria-label="Поиск">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+        </button>
+        <a class="btn btn--outline-red header__cta" href="#question">Заявка</a>
+
+        <button class="header__burger" type="button" aria-label="Открыть меню" aria-expanded="false" aria-controls="mobile-menu">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+
+      <div class="mobile-menu" id="mobile-menu" hidden>
+        <ul>
+          <li><a href="#">Продукты и решения</a></li>
+          <li><a href="#">Услуги</a></li>
+          <li><a href="#">Блог</a></li>
+          <li><a href="#">Тех. поддержка</a></li>
+          <li><a href="#">О компании</a></li>
+          <li><a href="#">Контакты</a></li>
+          <li><a href="#">Партнёры</a></li>
+          <li><a href="#">Карьера</a></li>
+          <li><a href="#">Акции</a></li>
+        </ul>
+        <a class="mobile-menu__phone" href="tel:+78123099120">+7 (812) 309-91-20</a>
+        <a class="mobile-menu__phone" href="tel:+74954814001">+7 (495) 481-40-01</a>
+      </div>
+    </header>
+
+    <div class="container hero__body">
+      <nav class="crumbs" aria-label="Хлебные крошки">
+        <a href="https://dipro.ru/" aria-label="Главная">
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M1.5 5.5 6 1.8l4.5 3.7V10.5h-3v-3h-3v3h-3z"/></svg>
+        </a>
+        <span>—</span><a href="#">Проектирование</a><span>—</span><span aria-current="page">SWPlus</span>
+      </nav>
+
+      <div class="hero__text">
+        <h1 class="hero__title">Конструкторская документация <span>без лишней рутины</span></h1>
+        <p class="hero__lead">SWPlus помогает оформлять чертежи по ЕСКД: заполнять свойства моделей, формировать спецификации, работать с техническими требованиями и изменениями — в привычной среде SOLIDWORKS.</p>
+        <div class="hero__prices">
+          <div><b>25 000 ₽</b><span>годовая лицензия</span></div>
+          <div><b>60 000 ₽</b><span>бессрочная лицензия</span></div>
+        </div>
+      </div>
+
+      <div class="hero__media">
+        <img src="img/hero.png" width="930" height="518" alt="Деталь SOLIDWORKS и окно SWPlus с основной надписью чертежа">
+        <div class="hero__badge">
+          <img src="img/swplus-logo.png" width="98" height="57" alt="SWPlus">
+          <span>Дополнение для SOLIDWORKS</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="hero__bar">
+      <div class="hero__actions">
+        <a class="btn btn--red" href="#prices">Выбрать лицензию</a>
+        <a class="btn btn--outline-red" href="#trial">Попробовать бесплатно</a>
+      </div>
+      <ul class="hero__facts">
+        <li>Оформление по&nbsp;ЕСКД</li>
+        <li>SOLIDWORKS 2018 SP5.0–2026*</li>
+        <li>Реестр российского ПО №&nbsp;28811</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<main>
+
+<!-- ============ 01 РЕШАЕМЫЕ ЗАДАЧИ ============ -->
+<section class="section" id="tasks">
+  <div class="container">
+    <span class="tag">01 / Решаемые задачи</span>
+    <h2 class="h2">Проектируйте больше, <br class="br-d">оформляйте быстрее.</h2>
+    <p class="lead">SWPlus берёт на себя типовые операции при подготовке конструкторской документации. <br class="br-d">Узнайте, какие задачи вы сможете выполнять с помощью его инструментов.</p>
+
+    <div class="grid grid--3 tasks">
+      <article class="card">
+        <img class="card__icon" src="img/ic-cube.png" width="44" height="44" alt="">
+        <h3 class="h3">Спецификации и ведомости</h3>
+        <p>Формируйте спецификации по составу сборки и свойствам компонентов. Подготавливайте ведомости покупных изделий и перечни элементов.</p>
+      </article>
+      <article class="card">
+        <img class="card__icon" src="img/ic-triangle.png" width="40" height="40" alt="">
+        <h3 class="h3">Свойства моделей и чертежей</h3>
+        <p>Заполняйте обозначения, наименования и материалы через единый интерфейс. Используйте данные при оформлении документов.</p>
+      </article>
+      <article class="card">
+        <img class="card__icon" src="img/ic-points.png" width="40" height="40" alt="">
+        <h3 class="h3">Листы и основные надписи</h3>
+        <p>Заполняйте обозначения, наименования и материалы через единый интерфейс. Используйте данные при оформлении документов.</p>
+      </article>
+      <article class="card">
+        <img class="card__icon" src="img/ic-cross.png" width="40" height="40" alt="">
+        <h3 class="h3">Технические требования</h3>
+        <p>Создавайте и редактируйте технические требования, применяйте типовые формулировки и обозначения.</p>
+      </article>
+      <article class="card">
+        <img class="card__icon" src="img/ic-change.png" width="40" height="40" alt="">
+        <h3 class="h3">Изменения документации</h3>
+        <p>Ведите таблицы изменений, подготавливайте извещения и предварительные извещения об изменении.</p>
+      </article>
+      <article class="card">
+        <img class="card__icon" src="img/ic-grid.png" width="40" height="40" alt="">
+        <h3 class="h3">Выпуск и передача КД</h3>
+        <p>Сохраняйте отдельные чертежи в PDF и TIFF для передачи документации.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 02 ЦЕНЫ ============ -->
+<section class="section section--tight" id="prices">
+  <div class="container">
+    <div class="panel panel--gray prices">
+      <span class="tag tag--white">02 / Цены</span>
+      <h2 class="h2">Выберите свою лицензию</h2>
+      <p class="lead">Один продукт, все основные инструменты, два варианта использования. <br class="br-d">Цена указана за одно рабочее место.</p>
+
+      <div class="grid grid--2 licenses">
+        <article class="license">
+          <div class="license__head">
+            <img class="license__icon" src="img/ic-pie.png" width="37" height="37" alt="">
+            <h3 class="license__title">Годовая лицензия</h3>
+            <p class="license__sub">SWPlus на 12 месяцев</p>
+            <p class="license__price">25 000 ₽</p>
+            <p class="license__per">за 1 рабочее место</p>
+          </div>
+          <ul class="license__list">
+            <li>Использование программы в течение 12 месяцев</li>
+            <li>Доступ к обновлениям на срок лицензии</li>
+            <li>Электронная поставка и активация</li>
+          </ul>
+          <div class="license__btns">
+            <a class="btn btn--red" href="#">Купить онлайн</a>
+            <a class="btn btn--outline-red" href="#">Запросить счёт</a>
+          </div>
+        </article>
+        <article class="license">
+          <div class="license__head">
+            <img class="license__icon" src="img/ic-ellipses.png" width="40" height="40" alt="">
+            <h3 class="license__title">Бессрочная лицензия</h3>
+            <p class="license__sub">Для долгосрочного использования</p>
+            <p class="license__price">60 000 ₽</p>
+            <p class="license__per">за 1 рабочее место</p>
+          </div>
+          <ul class="license__list">
+            <li>Бессрочное использование приобретённой версии</li>
+            <li>Обновления в течение первого года</li>
+            <li>После окончания обновлений лицензия продолжает действовать</li>
+          </ul>
+          <div class="license__btns">
+            <a class="btn btn--red" href="#">Купить онлайн</a>
+            <a class="btn btn--outline-red" href="#">Запросить счёт</a>
+          </div>
+        </article>
+      </div>
+
+      <p class="prices__note">ⓘ Онлайн-оплата — для физических лиц. Запрос счёта — для организаций и ИП. Без корзины и регистрации.</p>
+      <ul class="prices__links">
+        <li><a href="#delivery">Как происходит покупка и активация</a></li>
+        <li><a href="#compat">Проверить совместимость</a></li>
+        <li><a href="#">Условия приобретения ↗</a></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 03 ДЕМОНСТРАЦИЯ ============ -->
+<section class="demo" id="demo">
+  <div class="container">
+    <span class="tag tag--glass">03 / Демонстрация</span>
+    <h2 class="h2">Посмотрите, как работает SWPlus</h2>
+    <p class="lead">Не просто перечень функций, а примеры реальных инструментов. Видео можно добавить <br class="br-d">после съёмки — пока в макете используются скриншоты программы.</p>
+
+    <div class="demo__grid">
+      <article class="demo__main">
+        <button class="video" type="button" aria-label="Смотреть видео: Формирование и оформление документов">
+          <img src="img/video-main.png" width="864" height="489" alt="">
+          <span class="video__play" aria-hidden="true"></span>
+        </button>
+        <h3 class="demo__title">Формирование и оформление документов</h3>
+      </article>
+      <article class="demo__item">
+        <div class="demo__item-head">
+          <img src="img/video-2.png" width="125" height="70" alt="">
+          <h3 class="demo__title">Работа <br>со свойствами</h3>
+        </div>
+        <p>Редактор MProp: обозначения, <br class="br-d">материалы и другие атрибуты моделей.</p>
+      </article>
+      <article class="demo__item">
+        <div class="demo__item-head">
+          <img src="img/video-3.png" width="125" height="70" alt="">
+          <h3 class="demo__title">Оформление <br>изменений</h3>
+        </div>
+        <p>RevEditor: работа с изменениями <br class="br-d">и связанными документами.</p>
+      </article>
+    </div>
+
+    <div class="demo__actions">
+      <a class="btn btn--red" href="#prices">Выбрать лицензию</a>
+      <a class="link-white" href="#tools">Все возможности SWPlus ↗</a>
+    </div>
+  </div>
+  <div class="stripes stripes--blue" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+</section>
+
+<!-- ============ 04 ИНСТРУМЕНТЫ ============ -->
+<section class="section" id="tools">
+  <div class="container">
+    <span class="tag">04 / Инструменты</span>
+    <h2 class="h2">Возможности SWPlus</h2>
+    <p class="lead">Восемь специализированных инструментов для работы с моделями, чертежами <br class="br-d">и конструкторскими документами — в одном программном продукте.</p>
+
+    <div class="grid grid--2 tools">
+      <article class="tool">
+        <div class="tool__img"><img src="img/tool-speceditor.png" width="703" height="296" alt=""><span class="chip">SpecEditor</span></div>
+        <div class="tool__body">
+          <h3 class="h3">Спецификации и ведомости</h3>
+          <p>Единичные и групповые спецификации, ведомости покупных изделий, перечни элементов по данным сборки.</p>
+        </div>
+      </article>
+      <article class="tool">
+        <div class="tool__img"><img src="img/tool-mprop.png" width="703" height="296" alt=""><span class="chip">MProp</span></div>
+        <div class="tool__body">
+          <h3 class="h3">Свойства моделей и чертежей</h3>
+          <p>Редактирование обозначений, наименований, материалов и других атрибутов через специальный интерфейс.</p>
+        </div>
+      </article>
+      <article class="tool">
+        <div class="tool__img"><img src="img/tool-dprop.png" width="703" height="296" alt=""><span class="chip">DProp</span></div>
+        <div class="tool__body">
+          <h3 class="h3">Листы и основные надписи</h3>
+          <p>Форматы, типы основных надписей, добавление и удаление листов, типовые операции с чертежами.</p>
+        </div>
+      </article>
+      <article class="tool">
+        <div class="tool__img"><img src="img/tool-reveditor.png" width="703" height="296" alt=""><span class="chip">RevEditor</span></div>
+        <div class="tool__body">
+          <h3 class="h3">Оформление изменений</h3>
+          <p>Таблицы изменений, извещения и предварительные извещения об изменении конструкторской документации.</p>
+        </div>
+      </article>
+    </div>
+
+    <h3 class="h3 h3--lg extra-title">Дополнительные инструменты</h3>
+    <div class="grid grid--4 extra">
+      <article class="card card--sm">
+        <span class="card__label">01 / TT</span>
+        <h3 class="h3">Технические <br>требования</h3>
+        <p>Формулировки, характеристики и специальные тексты на чертежах.</p>
+      </article>
+      <article class="card card--sm">
+        <span class="card__label">02 / SaveAs</span>
+        <h3 class="h3">Сохранение PDF <br>и TIFF</h3>
+        <p>Выпуск электронной документации в нейтральных форматах.</p>
+      </article>
+      <article class="card card--sm">
+        <span class="card__label">03 / Roughness</span>
+        <h3 class="h3">Шероховатость</h3>
+        <p>Простановка знака неуказанной шероховатости на чертеже.</p>
+      </article>
+      <article class="card card--sm">
+        <span class="card__label">04 / AddPrintFormats</span>
+        <h3 class="h3">Форматы печати</h3>
+        <p>Дополнительные форматы для печати документов в Windows.</p>
+      </article>
+    </div>
+
+    <p class="note">Работа с SOLIDWORKS PDM. SWPlus поддерживает отдельные сценарии совместной работы с PDM, но не заменяет эту систему и не включает её в состав поставки. Детали требуют технического подтверждения.</p>
+    <p class="center-link"><a class="link-red" href="#prices">Перейти к выбору лицензии</a></p>
+
+    <img class="wide-img" src="img/gearbox.png" width="1440" height="608" alt="Разнесённая сборка редуктора, связанная со спецификацией">
+  </div>
+</section>
+
+<!-- ============ 05 БЕСПЛАТНОЕ ЗНАКОМСТВО ============ -->
+<section class="trial" id="trial">
+  <div class="container trial__grid">
+    <div class="trial__text">
+      <span class="tag tag--white">05 / Бесплатное знакомство</span>
+      <h2 class="h2">Попробуйте SWPlus <br class="br-d">перед покупкой</h2>
+      <p class="lead">Установите программу и оцените основные возможности на небольшой тестовой сборке. Получать коммерческую лицензию для первого знакомства не нужно.</p>
+      <ul class="dots">
+        <li>Скачать и установить без обязательной регистрации</li>
+        <li>Проверить реальные задачи в SOLIDWORKS</li>
+        <li>Принять решение о покупке после тестирования</li>
+      </ul>
+      <div class="trial__btns">
+        <a class="btn btn--red" href="#">↓ Скачать SWPlus</a>
+        <a class="btn btn--outline-red" href="#">Инструкция по установке ↗</a>
+      </div>
+      <p class="trial__support">Вопросы по установке: <a href="mailto:support@dipro.ru">support@dipro.ru</a></p>
+    </div>
+    <div class="trial__card">
+      <p class="trial__steps-title">Начните за три шага</p>
+      <ol class="trial__steps">
+        <li>Загрузите дистрибутив SWPlus</li>
+        <li>Установите программу по инструкции</li>
+        <li>Проверьте инструменты на тестовой сборке</li>
+      </ol>
+      <p class="trial__limits">Ограничения ознакомительного режима: до 20 компонентов в сборке SOLIDWORKS; недоступно добавление кратных форматов в сервер печати Windows. Подтверждение ограничений — у разработчика SWPlus.</p>
+    </div>
+  </div>
+  <div class="stripes stripes--gray" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+</section>
+
+<!-- ============ 06 ПОСТАВКА И АКТИВАЦИЯ ============ -->
+<section class="section" id="delivery">
+  <div class="container">
+    <span class="tag">06 / Поставка и активация</span>
+    <h2 class="h2">От выбора лицензии <br class="br-d">до работы с программой</h2>
+    <p class="lead">Покупка и поставка проходят дистанционно. Заранее рассказываем, что произойдёт после оформления заказа.</p>
+
+    <div class="delivery">
+      <ol class="delivery__steps">
+        <li class="step">
+          <h3 class="h3">Выберите лицензию</h3>
+          <p>Годовую на 12 месяцев или бессрочную с обновлениями на первый год.</p>
+        </li>
+        <li class="step">
+          <h3 class="h3">Оплатите заказ</h3>
+          <p>Физлица — через Prodamus; организации и ИП — по выставленному счёту.</p>
+        </li>
+        <li class="step">
+          <h3 class="h3">Установите SWPlus</h3>
+          <p>Получите на e-mail ссылку на дистрибутив и руководство по установке.</p>
+        </li>
+        <li class="step">
+          <h3 class="h3">Активируйте ключ</h3>
+          <p>При необходимости сформируйте A-код и отправьте данные для активации.</p>
+        </li>
+      </ol>
+      <div class="delivery__screens" aria-hidden="true">
+        <img class="delivery__s2" src="img/screen-2.png" width="402" height="231" alt="">
+        <img class="delivery__s1" src="img/screen-1.png" width="510" height="339" alt="">
+      </div>
+    </div>
+
+    <div class="alert">
+      <img src="img/ic-alert.png" width="46" height="46" alt="">
+      <div>
+        <h3 class="alert__title">Срок предоставления лицензии — до 5 рабочих дней</h3>
+        <p>После полной оплаты и получения всех необходимых корректных данных для активации. Ключ не обещается мгновенно после платежа.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 07 СОВМЕСТИМОСТЬ ============ -->
+<section class="section section--top0" id="compat">
+  <div class="container">
+    <span class="tag">07 / Совместимость</span>
+    <h2 class="h2">Проверьте вашу рабочую среду</h2>
+    <p class="lead">Перед оплатой убедитесь, что SWPlus совместим с вашей версией SOLIDWORKS и конфигурацией рабочего места.</p>
+
+    <div class="grid grid--4 compat">
+      <article class="card card--sm">
+        <span class="card__label">SOLIDWORKS</span>
+        <h3 class="h3">2018 SP5.0–2026*</h3>
+        <p>Заявленный диапазон версий для работы SWPlus в режиме дополнения.</p>
+      </article>
+      <article class="card card--sm">
+        <span class="card__label">Операционная система</span>
+        <h3 class="h3">Windows x64</h3>
+        <p>Полный перечень поддерживаемых версий необходимо подтвердить.</p>
+      </article>
+      <article class="card card--sm">
+        <span class="card__label">Режим запуска</span>
+        <h3 class="h3">Самостоятельно <br>или Add-In</h3>
+        <p>Набор доступных функций зависит от режима работы.</p>
+      </article>
+      <article class="card card--sm">
+        <span class="card__label">04 / AddPrintFormats</span>
+        <h3 class="h3">SOLIDWORKS PDM</h3>
+        <p>Поддерживаются отдельные сценарии совместной работы.</p>
+      </article>
+    </div>
+    <p class="footnote">* Финальную матрицу совместимости должен подтвердить разработчик SWPlus. <a class="link-red" href="#trial">Не уверены? Проверьте Trial →</a></p>
+    <hr class="rule">
+  </div>
+</section>
+
+<!-- ============ 08 О ПРОДУКТЕ ============ -->
+<section class="section section--top0" id="about">
+  <div class="container">
+    <span class="tag">08 / О продукте</span>
+    <h2 class="h2">Российское программное <br class="br-d">обеспечение</h2>
+    <p class="lead">SWPlus разработан для автоматизации оформления конструкторской документации. <br class="br-d">Лицензии предоставляет ООО «ЦИФРОВОЙ ПРОГРЕСС» как сублицензиар.</p>
+
+    <div class="about">
+      <article class="card card--about">
+        <img class="card__icon" src="img/ic-reg.png" width="42" height="42" alt="">
+        <h3 class="h3">Свидетельство о регистрации</h3>
+        <p>№ 2025612989*</p>
+      </article>
+      <article class="card card--about">
+        <img class="card__icon" src="img/ic-halo.png" width="42" height="42" alt="">
+        <h3 class="h3">Реестр российского ПО</h3>
+        <p>Запись № 28811 от 28.07.2025*</p>
+      </article>
+      <article class="card card--about about__wide">
+        <img class="card__icon" src="img/ic-rotation.png" width="44" height="44" alt="">
+        <h3 class="h3">Поставка лицензий</h3>
+        <p>ООО «ЦИФРОВОЙ ПРОГРЕСС» · сублицензиар</p>
+      </article>
+      <img class="about__photo" src="img/engineer.png" width="457" height="497" alt="Инженер работает в SOLIDWORKS на производстве">
+    </div>
+  </div>
+</section>
+
+<!-- ============ 09 CTA ============ -->
+<section class="section section--top0" id="start">
+  <div class="container">
+    <div class="panel panel--blue cta">
+      <span class="tag tag--glass">09 / Начните работать со SWPlus</span>
+      <h2 class="h2 h2--md">Готовы упростить оформление <br class="br-d">конструкторской документации?</h2>
+      <p class="lead">Выберите лицензию и переходите к оплате или запросите счёт для вашей организации.</p>
+      <div class="grid grid--2 licenses">
+        <article class="license">
+          <div class="license__head license__head--plain">
+            <img class="license__icon" src="img/ic-pie.png" width="37" height="37" alt="">
+            <h3 class="license__title">Годовая лицензия</h3>
+            <p class="license__sub">SWPlus на 12 месяцев</p>
+            <p class="license__price">25 000 ₽</p>
+            <p class="license__per">за 1 рабочее место</p>
+          </div>
+          <div class="license__btns">
+            <a class="btn btn--red" href="#">Купить онлайн</a>
+            <a class="btn btn--outline-red" href="#">Запросить счёт</a>
+          </div>
+        </article>
+        <article class="license">
+          <div class="license__head license__head--plain">
+            <img class="license__icon" src="img/ic-ellipses.png" width="40" height="40" alt="">
+            <h3 class="license__title">Бессрочная лицензия</h3>
+            <p class="license__sub">Для долгосрочного использования</p>
+            <p class="license__price">60 000 ₽</p>
+            <p class="license__per">за 1 рабочее место</p>
+          </div>
+          <div class="license__btns">
+            <a class="btn btn--red" href="#">Купить онлайн</a>
+            <a class="btn btn--outline-red" href="#">Запросить счёт</a>
+          </div>
+        </article>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ ЕСТЬ ВОПРОСЫ ============ -->
+<section class="section section--top0" id="question">
+  <div class="container">
+    <div class="question">
+      <img class="question__avatar" src="img/avatar.png" width="157" height="180" alt="">
+      <div class="question__body">
+        <h2 class="question__title">Есть вопросы?</h2>
+        <p class="question__lead">Напишите нам и мы всё расскажем и поможем!</p>
+        <form class="question__form" novalidate>
+          <label class="sr-only" for="q-name">Как вас зовут?</label>
+          <input id="q-name" name="name" type="text" placeholder="Как вас зовут?" autocomplete="name" required>
+          <label class="sr-only" for="q-phone">Ваш телефон</label>
+          <input id="q-phone" name="phone" type="tel" placeholder="Ваш телефон" autocomplete="tel" required>
+          <button class="btn btn--red" type="submit">Отправить</button>
+        </form>
+        <p class="question__agree">Отправляя сообщение, Вы даете согласие на обработку своих персональных данных</p>
+        <p class="question__done" role="status" hidden>Спасибо! Мы свяжемся с вами в ближайшее время.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ КЕЙСЫ И СТАТЬИ ============ -->
+<section class="section section--top0 cases" id="cases">
+  <div class="container">
+    <div class="cases__head">
+      <h2 class="h2">Кейсы и статьи</h2>
+      <div class="cases__arrows">
+        <button class="round-btn" type="button" data-dir="-1" aria-label="Назад">
+          <svg width="16" height="14" viewBox="0 0 16 14" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M15 7H1m6-6L1 7l6 6"/></svg>
+        </button>
+        <button class="round-btn" type="button" data-dir="1" aria-label="Вперёд">
+          <svg width="16" height="14" viewBox="0 0 16 14" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M1 7h14M9 1l6 6-6 6"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <div class="cases__track">
+      <article class="case">
+        <img src="img/case-1.png" width="456" height="228" alt="Токарная обработка детали">
+        <div class="case__body">
+          <span class="case__tag">SOLIDWORKS</span>
+          <h3 class="case__title">Что делать, когда приходится считать прочность детали?</h3>
+          <p>Для тех, кто никогда не сталкивался с расчетами прочности, весь процесс …</p>
+          <a class="arrow-btn" href="#" aria-label="Читать статью"><svg width="20" height="16" viewBox="0 0 20 16" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M1 8h18M12 1l7 7-7 7"/></svg></a>
+        </div>
+      </article>
+      <article class="case">
+        <img src="img/case-2.png" width="456" height="228" alt="Робот, смоделированный в SOLIDWORKS">
+        <div class="case__body">
+          <span class="case__tag">SOLIDWORKS</span>
+          <h3 class="case__title">Выбор правильного расчета в SOLIDWORKS Simulation</h3>
+          <p>Пользователи, впервые столкнувшиеся с необходимостью выполнить расчет прочности</p>
+          <a class="arrow-btn" href="#" aria-label="Читать статью"><svg width="20" height="16" viewBox="0 0 20 16" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M1 8h18M12 1l7 7-7 7"/></svg></a>
+        </div>
+      </article>
+      <article class="case">
+        <img src="img/case-3.png" width="456" height="228" alt="Модель турбины">
+        <div class="case__body">
+          <span class="case__tag">SOLIDWORKS</span>
+          <h3 class="case__title">SOLIDWORKS PDM Standard и Professional: чем отличаются?</h3>
+          <p>Для задач распределенного управления данных в составе решений SOLIDWORKS …</p>
+          <a class="arrow-btn" href="#" aria-label="Читать статью"><svg width="20" height="16" viewBox="0 0 20 16" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M1 8h18M12 1l7 7-7 7"/></svg></a>
+        </div>
+      </article>
+    </div>
+    <div class="cases__dots" aria-hidden="true"><i class="is-active"></i><i></i><i></i></div>
+  </div>
+</section>
+
+</main>
+
+<!-- ============ ПОДВАЛ ============ -->
+<footer class="footer">
+  <div class="footer__panel">
+    <div class="container">
+      <div class="footer__cols">
+        <div class="footer__products">
+          <p class="footer__title">Продукты и решения</p>
+          <div class="footer__grid">
+            <ul><li><b>Проектирование</b></li><li><a href="#">Компас-3D</a></li><li><a href="#">SOLIDWORKS</a></li><li><a href="#">ZW3D</a></li><li><a href="#">САПР МАКС</a></li><li><a href="#">SOLIDWORKS Electrical</a></li><li><a href="#">Delta Design</a></li></ul>
+            <ul><li><b>Управление данными об изделии</b></li><li><a href="#">Союз-PLM</a></li><li><a href="#">SOLIDWORKS PDM</a></li></ul>
+            <ul><li><b>Автоматизация производства</b></li><li><a href="#">WINNUM Platform</a></li><li><a href="#">СПРУТ-ОКП</a></li></ul>
+            <ul><li><b>Инженерный анализ</b></li><li><a href="#">SOLIDWORKS</a></li><li><a href="#">АПМ</a></li><li><a href="#">FlowVision</a></li></ul>
+          </div>
+        </div>
+        <div class="footer__services">
+          <p class="footer__title">Услуги</p>
+          <ul><li><a href="#">Внедрение систем</a></li><li><a href="#">Техническая поддержка и&nbsp;сопровождение</a></li><li><a href="#">Обучение</a></li><li><a href="#">Инженерный анализ</a></li><li><a href="#">Разработка ПО</a></li></ul>
+        </div>
+      </div>
+      <nav class="footer__nav" aria-label="Разделы сайта">
+        <a href="#">О компании</a><a href="#">Партнёры</a><a href="#">Контакты</a><a href="#">Карьера</a><a href="#">Акции</a><a href="#">Блог</a>
+        <a class="footer__support" href="#">Тех. поддержка</a>
+      </nav>
+    </div>
+  </div>
+
+  <div class="container footer__contacts">
+    <div class="footer__office">
+      <small>Санкт-Петербург</small>
+      <a class="footer__phone" href="tel:+78123099120">+7 (812) 309-91-20</a>
+      <p>Выборгская набережная, д. 61, <br>офис 225Б</p>
+    </div>
+    <div class="footer__office">
+      <small>Москва</small>
+      <a class="footer__phone" href="tel:+74954814001">+7 (495) 481-40-01</a>
+      <p>пр-д Серебрякова, д. 14, <br>стр. 15. БЦ «Сильвер стоун»</p>
+    </div>
+    <a class="footer__mail" href="mailto:info@dipro.ru">info@dipro.ru</a>
+    <div class="footer__socials">
+      <a href="#" aria-label="Telegram"><img src="img/soc-tg.png" width="58" height="58" alt=""></a>
+      <a href="#" aria-label="WhatsApp"><img src="img/soc-wa.png" width="58" height="58" alt=""></a>
+      <a href="#" aria-label="ВКонтакте"><img src="img/soc-vk.png" width="58" height="58" alt=""></a>
+    </div>
+  </div>
+  <div class="container footer__bottom">
+    <img src="img/logo-footer.png" width="40" height="40" alt="Цифровой прогресс">
+    <span>© 2023 ЦИФРОВОЙ ПРОГРЕСС</span>
+    <a href="#">Политика конфиденциальности</a>
+    <span>Разработка сайта — Егор Сорокин и K°</span>
+  </div>
+</footer>
+
+<script src="js/main.js"></script>
+</body>
+</html>
