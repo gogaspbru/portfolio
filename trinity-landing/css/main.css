@@ -343,7 +343,7 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
   height: var(--header-cell-height);
   border-radius: var(--radius-s);
   background-color: transparent;
-  transition: height 300ms var(--ease), background-color 300ms var(--ease);
+  transition: height 300ms var(--ease), background-color 300ms var(--ease), box-shadow 300ms var(--ease);
 }
 /* градиент отдельным слоем, чтобы плавно гасить его при прилипании */
 .header__cell::before,
@@ -363,6 +363,10 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
   background-color: rgba(255, 255, 255, 0.95); /* Figma: 0.9 — сделано белее по просьбе */
   -webkit-backdrop-filter: blur(12px);        /* Figma: blur 2 — размытие усилено по просьбе */
           backdrop-filter: blur(12px);
+  /* тонкая обводка + мягкая тень, чтобы шапка не терялась на белом (в макете нет) */
+  box-shadow:
+    0 0 0 1px rgba(55, 55, 75, 0.08),
+    0 6px 20px rgba(25, 25, 40, 0.08);
 }
 .header--stuck .header__cell::before,
 .header--stuck .header__burger::before { opacity: 0; }
