@@ -1,20 +1,20 @@
-import { initHeroVideo } from './hero-video.js';
-import { initMenu } from './menu.js';
-import { initStickyHeader } from './header.js';
-import { initReveal } from './reveal.js';
-import { initSmoothScroll } from './smooth-scroll.js';
-import { initCountUp } from './count-up.js';
-import { initCardPixels } from './card-pixels.js';
-import { initMegaMenu } from './mega-menu.js';
+/**
+ * Точка входа. Скрипты обычные (не ES-модули), поэтому index.html работает
+ * и двойным кликом с диска (file://), и с любого сервера / в шаблоне Битрикса.
+ * Каждый файл в js/ кладёт свою функцию в window.Trinity; порядок подключения — в index.html.
+ */
+(function (T) {
+  'use strict';
 
-initReveal();
-initHeroVideo(document.querySelector('.hero__video'));
-initStickyHeader(document.querySelector('.header'));
-initMegaMenu(document.querySelector('.header'));
-initMenu({
-  burger: document.querySelector('.header__burger'),
-  nav: document.getElementById('site-nav'),
-});
-initCountUp();
-initCardPixels();
-initSmoothScroll();
+  T.initReveal();
+  T.initHeroVideo(document.querySelector('.hero__video'));
+  T.initStickyHeader(document.querySelector('.header'));
+  T.initMegaMenu(document.querySelector('.header'));
+  T.initMenu({
+    burger: document.querySelector('.header__burger'),
+    nav: document.getElementById('site-nav'),
+  });
+  T.initCountUp();
+  T.initCardPixels();
+  T.initSmoothScroll();
+})(window.Trinity);

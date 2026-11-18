@@ -5,41 +5,47 @@
  *   data-reveal        — когда блок появляется в окне при скролле.
  * Стили — css/main.css, раздел «Построчное появление».
  */
-const STAGGER = 0.09; // секунд между строками
+(function (Trinity) {
+  'use strict';
 
-export function initReveal() {
-  window.__revealInit = true;
-  if (!document.documentElement.classList.contains('reveal-ready')) return; // reduced motion
+  const STAGGER = 0.09; // секунд между строками
 
-  const els = [...document.querySelectorAll('[data-reveal]')];
+  function initReveal() {
+    window.__revealInit = true;
+    if (!document.documentElement.classList.contains('reveal-ready')) return; // reduced motion
 
-  els.forEach((el) => {
-    el.querySelectorAll('.reveal-line__inner').forEach((inner, i) => {
-      inner.style.transitionDelay = `${i * STAGGER}s`;
+    const els = [...document.querySelectorAll('[data-reveal]')];
+
+    els.forEach((el) => {
+      el.querySelectorAll('.reveal-line__inner').forEach((inner, i) => {
+        inner.style.transitionDelay = `${i * STAGGER}s`;
+      });
     });
-  });
 
-  const fire = (el) => el.classList.add('is-in');
+    const fire = (el) => el.classList.add('is-in');
 
-  // Первый экран — после загрузки шрифтов, чтобы строки не прыгали
-  const onLoad = els.filter((el) => el.dataset.reveal === 'load');
-  const fontsReady = document.fonts ? document.fonts.ready : Promise.resolve();
-  fontsReady.then(() => requestAnimationFrame(() => {
-    document.documentElement.classList.add('is-loaded'); // запускает падение шапки и карточку новости (CSS)
-    onLoad.forEach(fire);
-  }));
+    // Первый экран — после загрузки шрифтов, чтобы строки не прыгали
+    const onLoad = els.filter((el) => el.dataset.reveal === 'load');
+    const fontsReady = document.fonts ? document.fonts.ready : Promise.resolve();
+    fontsReady.then(() => requestAnimationFrame(() => {
+      document.documentElement.classList.add('is-loaded'); // запускает падение шапки и карточку новости (CSS)
+      onLoad.forEach(fire);
+    }));
 
-  // Остальные — по скроллу
-  const onScroll = els.filter((el) => el.dataset.reveal !== 'load');
-  if (!('IntersectionObserver' in window)) { onScroll.forEach(fire); return; }
+    // Остальные — по скроллу
+    const onScroll = els.filter((el) => el.dataset.reveal !== 'load');
+    if (!('IntersectionObserver' in window)) { onScroll.forEach(fire); return; }
 
-  const io = new IntersectionObserver((entries) => {
-    entries.forEach((entry) => {
-      if (!entry.isIntersecting) return;
-      io.unobserve(entry.target);
-      fire(entry.target);
-    });
-  }, { rootMargin: '0px 0px -12% 0px' });
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        io.unobserve(entry.target);
+        fire(entry.target);
+      });
+    }, { rootMargin: '0px 0px -12% 0px' });
 
-  onScroll.forEach((el) => io.observe(el));
-}
+    onScroll.forEach((el) => io.observe(el));
+  }
+
+  Trinity.initReveal = initReveal;
+})(window.Trinity = window.Trinity || {});

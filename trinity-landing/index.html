@@ -265,6 +265,16 @@
   </main>
 
 
-  <script type="module" src="./js/main.js"></script>
+  <!-- Обычные скрипты (не модули) — страница работает и при открытии файла с диска.
+       Порядок важен: модули → main.js. -->
+  <script defer src="./js/reveal.js"></script>
+  <script defer src="./js/hero-video.js"></script>
+  <script defer src="./js/header.js"></script>
+  <script defer src="./js/mega-menu.js"></script>
+  <script defer src="./js/menu.js"></script>
+  <script defer src="./js/count-up.js"></script>
+  <script defer src="./js/card-pixels.js"></script>
+  <script defer src="./js/smooth-scroll.js"></script>
+  <script defer src="./js/main.js"></script>
 </body>
 </html>
