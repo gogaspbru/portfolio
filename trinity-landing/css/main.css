@@ -769,13 +769,49 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
   transform: scaleX(-1);
   transition: transform var(--duration) var(--ease);
 }
+/* Ховер — Codrops «Line Hover Styles», №8 (link--kale), MIT © Codrops:
+   под текстом «вспыхивает» плашка 10px (растёт снизу вверх и схлопывается),
+   затем проявляется тонкая линия 1px. */
 .link-more__text {
-  text-decoration: underline;
-  text-decoration-color: transparent;
-  text-underline-offset: 3px;
-  transition: text-decoration-color var(--duration) var(--ease);
+  position: relative;
+  white-space: nowrap;
 }
-.link-more:hover .link-more__text { text-decoration-color: currentColor; }
+.link-more__text::before,
+.link-more__text::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  height: 1px;
+  background: currentColor;
+  pointer-events: none;
+}
+.link-more__text::before {
+  height: 10px;
+  opacity: 0;
+}
+.link-more:hover .link-more__text::before,
+.link-more:focus-visible .link-more__text::before {
+  opacity: 1;
+  animation: link-line-up 0.3s ease forwards;
+}
+.link-more__text::after {
+  opacity: 0;
+  transition: opacity 0.3s;
+  transition-delay: 0s;
+}
+.link-more:hover .link-more__text::after,
+.link-more:focus-visible .link-more__text::after {
+  opacity: 1;
+  transition-delay: 0.3s;
+}
+@keyframes link-line-up {
+  0%   { transform-origin: 50% 100%; transform: scale3d(1, 0.045, 1); }
+  50%  { transform-origin: 50% 100%; transform: scale3d(1, 1, 1); }
+  51%  { transform-origin: 50% 0%;   transform: scale3d(1, 1, 1); }
+  100% { transform-origin: 50% 0%;   transform: scale3d(1, 0.045, 1); }
+}
 .link-more:hover .link-more__icon { transform: scaleX(-1) translateX(-3px); }
 
 /* --- Карточки направлений --- */
