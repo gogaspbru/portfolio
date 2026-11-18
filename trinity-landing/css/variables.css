@@ -32,6 +32,7 @@
   --color-muted: #C8C8C8;         /* надзаголовок «О ТРИНИТИ» */
   --color-white: #FFFFFF;
   --color-footer: #2C2C2C;
+  --color-cubes-bg: #EEF0F4;      /* фон варианта «кубики» (index-cubes.html) */
   --color-accent-lime: #CEE06D;   /* заливка CTA по ховеру (бриф) */        /* прямоугольник под фреймом (вероятно, будущий футер) */
 
   --color-line-light: rgba(255, 255, 255, 0.1); /* вертикальные линии на первом экране */

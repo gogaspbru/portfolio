@@ -13,10 +13,11 @@ export default defineConfig({
   build: {
     outDir: 'dist',
     rollupOptions: {
-      // две страницы: основной вариант (видео) и вариант с «матрицей точек»
+      // страницы: основной вариант (видео) и варианты первого экрана
       input: {
         main: resolve(__dirname, 'index.html'),
         matrix: resolve(__dirname, 'index-matrix.html'),
+        cubes: resolve(__dirname, 'index-cubes.html'),
       },
     },
     // Шрифт woff2 встраиваем в CSS (data:) — Chrome не грузит шрифты с file://.
