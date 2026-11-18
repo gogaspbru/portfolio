@@ -55,6 +55,7 @@
   --col-3: 407;         /* 798 → 1205 */
   --col-4: 334;         /* 1205 → 1539 */
   --page-inset: 9px;    /* отступ подложки первого экрана от края */
+  --stats-inset: 8px;   /* отступ блоков с цифрами от края окна */
 
   /* ---------- Радиусы ---------- */
   --radius-xs: 1px;
@@ -68,7 +69,11 @@
 
   /* ---------- Высоты ---------- */
   --hero-height: 838px;
+  --header-top: 31px;                /* шапка в начале страницы */
+  --header-top-stuck: 6px;           /* прилипшая шапка (Figma «Frame 22») */
   --header-cell-height: 129px;
+  --header-cell-height-stuck: 54px;
+  --sticky-top: 100px;               /* отступ липких блоков «О Тринити» от верха окна */
 
   /* ---------- Анимации ---------- */
   --ease: cubic-bezier(0.2, 0.7, 0.3, 1);
@@ -80,5 +85,8 @@
     --gutter-left: 16px;
     --gutter-right: 16px;
     --page-inset: 6px;
+    --header-top: 16px;
+    --header-cell-height: 72px;
+    --header-cell-height-stuck: 54px;
   }
 }
