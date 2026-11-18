@@ -476,8 +476,9 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
 .header__portal {
   display: flex;
   align-items: center;
+  justify-content: center; /* иконка + текст по центру ячейки */
   gap: 10px;
-  padding: 11px 0 0 18px;
+  padding: 11px 0 0;
   font-size: 14px;
   font-weight: 500;
   line-height: 26px;
