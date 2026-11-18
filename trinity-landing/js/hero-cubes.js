@@ -6,9 +6,9 @@
  * Второй проход (постобработка): размытие и цветные ореолы к краям кадра, лёгкое зерно.
  * Чистый WebGL (без three.js и модулей) — работает с file://.
  *
- * Без мыши (телефон, планшет, курсор вне экрана) волны сами появляются в случайных местах.
+ * Пока курсор не трогали — только лёгкое фоновое движение. На тач-экранах волна — по касанию.
  *
- * Разметка: <canvas class="hero__cubes" data-bg="#3268F2" data-base="#3268F2" data-accent="#EAF1FF">
+ * Разметка: <canvas class="hero__cubes" data-bg="#1E6EF3" data-base="#1E6EF3" data-accent="#EAF1FF">
  *   data-base — цвет кубиков, data-accent — цвет фронта волны, data-bg — фон.
  * Нет WebGL — канвас скрывается, остаётся CSS-фон.
  */
@@ -23,18 +23,17 @@
   const FOV = 40;              // вертикальный угол камеры, ° (больше — сильнее перспектива)
   const TILT_X = -0.16;        // наклон сетки «от зрителя», рад
   const TILT_Y = 0.10;         // поворот вбок, рад
-  const WAVE = 0.35;           // амплитуда фоновой волны (в размерах кубика)
+  const WAVE = 0.3;            // амплитуда фоновой волны (в размерах кубика)
   const JITTER = 0.25;         // случайный разброс глубины кубиков
 
   const RIPPLES = 10;          // сколько волн одновременно
   const RIPPLE_SPEED = 9.5;    // скорость фронта, кубиков в секунду
   const RIPPLE_WIDTH = 1.4;    // ширина фронта, кубиков
   const RIPPLE_LIFE = 1.4;     // постоянная затухания, с (волна живёт ≈ 3× дольше)
-  const RIPPLE_PUSH = 1.6;     // насколько фронт выдвигает кубики
+  const RIPPLE_PUSH = 0.6;     // насколько фронт выдвигает кубики
+  const RIPPLE_GLOW = 0.85;    // яркость фронта (0..1)
   const SPAWN_STEP = 2.4;      // новая волна — каждые N кубиков пути курсора
   const SPAWN_MIN_GAP = 0.12;  // но не чаще, с
-  const GHOST_AFTER = 2.5;     // через сколько секунд без мыши волны появляются сами
-  const GHOST_EVERY = 1.6;     // как часто, с
 
   const EDGE_BLUR = 7;         // размытие у краёв кадра, px
   const ABERRATION = 0.006;    // сила цветных ореолов у краёв
@@ -46,7 +45,7 @@
     attribute vec3 aInst;                         // x, y, случайное 0..1
     uniform mat4 uP, uM; uniform float uCamZ, uT, uWave, uJitter, uSize, uDepth;
     uniform vec4 uRip[${RIPPLES}];                // x, y, возраст (с), сила
-    uniform float uSpeed, uWidth, uLife, uPush;
+    uniform float uSpeed, uWidth, uLife, uPush, uGlow;
     varying vec3 vN; varying vec2 vUv; varying float vHeat, vZ, vFront;
     void main(){
       vec2 o = aInst.xy;
@@ -61,7 +60,7 @@
         float band = exp(-d * d / (uWidth * uWidth));
         heat += band * r.w * exp(-r.z / uLife);
       }
-      heat = 1.0 - exp(-heat * 2.2);             // мягкое насыщение при наложении волн
+      heat = (1.0 - exp(-heat * 1.6)) * uGlow;   // мягкое насыщение при наложении волн
       float z = w * uWave + (aInst.z - 0.5) * uJitter + heat * uPush;
       vec3 p = vec3(aPos.xy * uSize + o, (aPos.z - 0.5) * uDepth + z);
       vec4 wp = uM * vec4(p, 1.0);
@@ -76,16 +75,15 @@
     void main(){
       vec3 L = normalize(vec3(-0.4, 0.7, 0.75));
       float dif = max(dot(normalize(vN), L), 0.0);
-      float shade = 0.62 + 0.38 * dif;
-      shade *= mix(1.0, 0.94 + 0.08 * vUv.y, vFront);          // лицевая грань: градиент
-      shade *= mix(mix(0.7, 1.0, vUv.y), 1.0, vFront);        // бока темнеют к основанию
+      // лицевая грань — ровно фирменный цвет; освещение и тень только на боковых гранях
+      float shade = mix((0.62 + 0.38 * dif) * mix(0.72, 1.0, vUv.y), 1.0, vFront);
       float h = clamp(vHeat, 0.0, 1.0);
       vec3 mid = mix(uBase, uAccent, 0.45);
       vec3 tint = mix(mix(uBase, mid, smoothstep(0.0, 0.5, h)), uAccent, smoothstep(0.45, 1.0, h));
       vec3 col = tint * mix(shade, 0.85 + 0.15 * shade, h);
       float rim = (1.0 - smoothstep(0.0, 0.05, min(1.0 - vUv.y, vUv.x))) * vFront;
       col += rim * (0.05 + 0.15 * h);                         // блик по кромке
-      col = mix(uBg * 0.9, col, clamp(0.72 + vZ * 0.3, 0.0, 1.0)); // утопленные «тонут» в фоне
+      col = mix(uBg * 0.94, col, clamp(0.93 + vZ * 0.25, 0.0, 1.0)); // утопленные чуть «тонут» в фоне
       gl_FragColor = vec4(col, 1.0);
     }`;
 
@@ -197,7 +195,7 @@
 
     const SA = locations(gl, scene, ['aPos', 'aNorm', 'aUv', 'aInst'], gl.getAttribLocation);
     const SU = locations(gl, scene, ['uP', 'uM', 'uCamZ', 'uT', 'uWave', 'uJitter', 'uSize', 'uDepth',
-      'uRip', 'uSpeed', 'uWidth', 'uLife', 'uPush', 'uBase', 'uAccent', 'uBg'], gl.getUniformLocation);
+      'uRip', 'uSpeed', 'uWidth', 'uLife', 'uPush', 'uGlow', 'uBase', 'uAccent', 'uBg'], gl.getUniformLocation);
     const PA = locations(gl, post, ['aQuad'], gl.getAttribLocation);
     const PU = locations(gl, post, ['uTex', 'uPx', 'uT', 'uBlur', 'uAb', 'uGrain', 'uAspect'], gl.getUniformLocation);
 
@@ -211,10 +209,10 @@
     gl.bindBuffer(gl.ARRAY_BUFFER, quadBuf);
     gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 1, -1, -1, 1, -1, 1, 1, -1, 1, 1]), gl.STATIC_DRAW);
 
-    const bg = hexToRgb(canvas.dataset.bg, [0.196, 0.408, 0.949]);
+    const bg = hexToRgb(canvas.dataset.bg, [0.118, 0.431, 0.953]);
     const R = rotYX(TILT_X, TILT_Y);
     gl.useProgram(scene);
-    gl.uniform3fv(SU.uBase, hexToRgb(canvas.dataset.base, [0.196, 0.408, 0.949]));
+    gl.uniform3fv(SU.uBase, hexToRgb(canvas.dataset.base, [0.118, 0.431, 0.953]));
     gl.uniform3fv(SU.uAccent, hexToRgb(canvas.dataset.accent, [0.918, 0.945, 1]));
     gl.uniform3fv(SU.uBg, bg);
     gl.uniform1f(SU.uWave, WAVE);
@@ -225,6 +223,7 @@
     gl.uniform1f(SU.uWidth, RIPPLE_WIDTH);
     gl.uniform1f(SU.uLife, RIPPLE_LIFE);
     gl.uniform1f(SU.uPush, RIPPLE_PUSH);
+    gl.uniform1f(SU.uGlow, RIPPLE_GLOW);
     gl.uniformMatrix4fv(SU.uM, false, toMat4(R));
     gl.useProgram(post);
     gl.uniform1i(PU.uTex, 0);
@@ -309,7 +308,7 @@
     }
 
     // ---------- курсор → точка на плоскости сетки ----------
-    let lastMouse = -1e9, lastSpawn = -1e9, lastGhost = -1e9, sx = 1e9, sy = 1e9, inside = false;
+    let lastSpawn = -1e9, sx = 1e9, sy = 1e9, inside = false;
     function toGrid(nx, ny) {
       const t = Math.tan((FOV * Math.PI) / 360);
       const o = [0, 0, camZ], d = [nx * t * aspect, ny * t, -1];
@@ -325,11 +324,10 @@
       return toGrid(((e.clientX - r.left) / r.width) * 2 - 1, -((e.clientY - r.top) / r.height) * 2 + 1);
     }
     window.addEventListener('pointermove', (e) => {
-      if (reduce || (e.pointerType && e.pointerType !== 'mouse')) return; // тач — волны сами
+      if (reduce || (e.pointerType && e.pointerType !== 'mouse')) return; // тач — волна по касанию
       const p = pointerToGrid(e);
       if (!p) return;
       const now = performance.now();
-      lastMouse = now;
       if (Math.hypot(p[0] - sx, p[1] - sy) >= SPAWN_STEP && now - lastSpawn > SPAWN_MIN_GAP * 1000) {
         spawn(p[0], p[1], 0.9, now);
         sx = p[0]; sy = p[1]; lastSpawn = now;
@@ -338,7 +336,7 @@
     window.addEventListener('pointerdown', (e) => {
       if (reduce) return;
       const p = pointerToGrid(e);
-      if (p) { spawn(p[0], p[1], 1.4, performance.now()); lastMouse = performance.now(); }
+      if (p) spawn(p[0], p[1], 1.2, performance.now());
     }, { passive: true });
     document.documentElement.addEventListener('pointerleave', () => { inside = false; });
 
@@ -354,7 +352,7 @@
       gl.bindFramebuffer(gl.FRAMEBUFFER, fbo);
       gl.viewport(0, 0, fw, fh);
       gl.enable(gl.DEPTH_TEST);
-      gl.clearColor(bg[0] * 0.9, bg[1] * 0.9, bg[2] * 0.9, 1);
+      gl.clearColor(bg[0] * 0.8, bg[1] * 0.8, bg[2] * 0.8, 1);
       gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
       gl.useProgram(scene);
       gl.uniform1f(SU.uT, t);
@@ -393,11 +391,6 @@
       const t = reduce ? 0 : (now - t0) / 1000;
 
       if (!reduce) {
-        // без мыши волны появляются сами
-        if (!(inside && now - lastMouse < GHOST_AFTER * 1000) && now - lastGhost > GHOST_EVERY * 1000) {
-          spawn((Math.random() * 1.4 - 0.7) * halfW, (Math.random() * 1.4 - 0.7) * halfH, 1.0, now);
-          lastGhost = now;
-        }
         for (let i = 0; i < RIPPLES; i++) {
           const age = (now - born[i]) / 1000;
           rip[i * 4 + 2] = age;
