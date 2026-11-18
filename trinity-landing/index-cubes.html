@@ -26,13 +26,14 @@
 <body class="page">
 
   <!-- ===================== HERO (первый экран, внутри — шапка) ===================== -->
-  <div class="hero hero--light" id="top">
+  <div class="hero" id="top">
     <div class="hero__media hero__media--cubes" aria-hidden="true">
-      <!-- «Волна из кубиков» (js/hero-cubes.js, WebGL). Без WebGL остаётся CSS-фон. -->
-      <canvas class="hero__cubes" data-bg="#EEF0F4" data-accent="#3268F2"></canvas>
+      <!-- «Волна из кубиков» (js/hero-cubes.js, WebGL). Без WebGL остаётся CSS-фон.
+           Светлая тема: добавить .hero--light к .hero и поменять цвета в data-атрибутах. -->
+      <canvas class="hero__cubes" data-bg="#3268F2" data-base="#3268F2" data-accent="#EAF1FF"></canvas>
     </div>
 
-    <div class="grid-lines grid-lines--dark" aria-hidden="true"><span></span><span></span><span></span><span></span></div>
+    <div class="grid-lines grid-lines--light" aria-hidden="true"><span></span><span></span><span></span><span></span></div>
 
     <!-- ===================== HEADER ===================== -->
     <header class="header">

@@ -116,12 +116,19 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
 .hero__matrix[hidden] { display: none; }
 
 /* --- Вариант «кубики» (index-cubes.html, js/hero-cubes.js): светлый первый экран --- */
-.hero__media--cubes { background: var(--color-cubes-bg); }
-.hero__media--cubes::after {           /* мягкая дымка по краям, как в референсе */
+.hero__media--cubes { background: var(--color-brand-blue); }
+.hero__media--cubes::after {           /* затемнение слева под текст и мягкая виньетка */
   content: "";
   position: absolute;
   inset: 0;
   pointer-events: none;
+  background:
+    linear-gradient(90deg, rgba(30, 72, 200, 0.55) 0%, rgba(30, 72, 200, 0.2) 35%, rgba(30, 72, 200, 0) 60%),
+    radial-gradient(ellipse at 60% 45%, rgba(20, 50, 160, 0) 50%, rgba(20, 50, 160, 0.35) 100%);
+}
+/* светлая тема (.hero--light): дымка светлая */
+.hero--light .hero__media--cubes { background: var(--color-cubes-bg); }
+.hero--light .hero__media--cubes::after {
   background:
     linear-gradient(90deg, rgba(238, 240, 244, 0.85) 0%, rgba(238, 240, 244, 0.35) 30%, rgba(238, 240, 244, 0) 55%),
     radial-gradient(ellipse at 60% 50%, rgba(238, 240, 244, 0) 55%, rgba(238, 240, 244, 0.55) 100%);
