@@ -493,6 +493,200 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
 .header__portal:hover { color: var(--color-blue); }
 .header__portal:hover .header__portal-icon { transform: scaleX(-1) translateX(-2px); }
 
+/* ==========================================================================
+   Выпадающее меню (Figma: Frame 23 «Продукты», Frame 24 «остальные»)
+   Открывается наведением/фокусом на пункт меню (js/mega-menu.js), только ≥ 1200px.
+   Пока открыто — ячейки шапки в «прилипшем» виде (54px, белые 98%),
+   страница за меню размыта и затемнена (.mega-overlay).
+   Позиции в комментариях — от левого/верхнего края панели (панель: x = 58, y = 61).
+   ========================================================================== */
+.header--mega .header__cell,
+.header--mega .header__burger {
+  height: var(--header-cell-height-stuck);
+  background-color: rgba(255, 255, 255, 0.98);
+  box-shadow: none;
+}
+.header--mega .header__cell::before { opacity: 0; }
+
+.nav__item.is-active .nav__link { color: var(--color-blue); }
+
+.mega {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  padding-top: 1px; /* зазор 1px между ячейками и панелью */
+  pointer-events: none;
+}
+.header--mega .mega { pointer-events: auto; }
+
+.mega__panel {
+  position: relative;
+  min-height: 451px;
+  border-radius: var(--radius-s);
+  background: var(--color-white);
+  clip-path: inset(0 0 100% 0 round var(--radius-s));
+  transition: clip-path 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.header--mega .mega__panel { clip-path: inset(0 0 0 0 round var(--radius-s)); }
+.mega__panel[hidden] { display: none; } /* иначе display: grid/flex ниже перебивает hidden */
+
+/* «Продукты»: 4 колонки + карточка флагмана */
+.mega__panel--products {
+  display: grid;
+  grid-template-columns: 253fr 242fr 293fr 316fr 291px; /* x: 39 / 292 / 534 / 827 / 1143 */
+  align-items: start;
+  padding: 30px 47px 39px 39px; /* итог: высота 451, как в макете */
+}
+
+.mega__heading {
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 26px;
+  letter-spacing: -0.01em;
+  color: var(--color-graphite-dark);
+}
+.mega__slash {
+  margin-right: 0.6em;
+  color: var(--color-blue);
+}
+
+.mega__list {
+  display: flex;
+  flex-direction: column;
+  gap: 21px;
+  margin-top: 18px;
+}
+.mega__col--indent .mega__list { padding-left: 20px; } /* в макете у колонок M8/M7 пункты с отступом */
+
+.mega__link {
+  display: block;
+  padding-right: 16px;
+}
+.mega__title {
+  display: block;
+  padding: 2.5px 0;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 21px;
+  letter-spacing: -0.01em;
+  color: var(--color-graphite-dark);
+  transition: color var(--duration) var(--ease);
+}
+.mega__sub {
+  display: block;
+  padding-top: 4px;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 17px;
+  letter-spacing: -0.01em;
+  color: #ABABB5;
+}
+.mega__link:hover .mega__title { color: var(--color-blue); }
+
+.mega__badge {
+  display: inline-block;
+  margin-left: 6px;
+  padding: 0 8px;
+  border-radius: 100px;
+  background: var(--color-accent-lime);
+  font-size: 14px;
+  line-height: 23px;
+  color: var(--color-graphite-dark);
+  vertical-align: 0;
+}
+
+/* Карточка флагмана */
+.mega__promo {
+  align-self: start;
+  height: 359px;
+  margin-top: 8px; /* y = 99 */
+  padding: 28px 24px 0 34px;
+  border-radius: var(--radius-s) var(--radius-s) var(--radius-xl) var(--radius-s);
+  background: var(--color-light);
+}
+.mega__promo-img {
+  width: 234px;
+  height: 110px;
+  margin-left: -5px;
+  object-fit: cover;
+  object-position: center top;
+  mix-blend-mode: darken; /* белый фон фото растворяется в сером #F8F8F8 */
+}
+.mega__promo-caption {
+  margin-top: 30px;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 26px;
+  letter-spacing: -0.01em;
+  color: #ABABB5;
+}
+.mega__promo-title {
+  margin-top: -2px;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 26px;
+  letter-spacing: -0.01em;
+  color: var(--color-graphite-dark);
+}
+.mega__promo-sub {
+  margin-top: -2px;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 26px;
+  letter-spacing: -0.01em;
+  color: #ABABB5;
+}
+.mega__promo-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 212px;
+  height: 47px;
+  margin-top: 17px;
+  border-radius: var(--radius-s);
+  background: var(--color-blue);
+  font-size: 15px;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  color: var(--color-white);
+  transition: background-color var(--duration) var(--ease);
+}
+.mega__promo-btn:hover { background-color: #1659D1; }
+
+/* Остальные пункты — заглушка «Структура подраздела» */
+.mega__panel--stub {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.mega__stub {
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 26px;
+  letter-spacing: -0.01em;
+  color: var(--color-graphite-dark);
+  opacity: 0.4;
+}
+
+/* Размытие и затемнение страницы под меню (Figma: background blur 50, чёрный 20%) */
+.mega-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background-image: var(--gradient-news-card);
+  -webkit-backdrop-filter: blur(25px);
+          backdrop-filter: blur(25px);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s var(--ease), visibility 0s linear 0.3s;
+}
+.header--mega .mega-overlay {
+  opacity: 1;
+  visibility: visible;
+  transition: opacity 0.3s var(--ease);
+}
+
 /* --- Бургер --- */
 .header__burger {
   display: none;
@@ -813,6 +1007,9 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
     font-size: 24px;
     line-height: 32px;
   }
+
+  .mega,
+  .mega-overlay { display: none; } /* выпадающее меню — только десктоп */
 
   /* оверлей меню — не ячейка шапки: без градиента и «прилипшего» состояния */
   .header .nav,

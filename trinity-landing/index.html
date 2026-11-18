@@ -51,12 +51,12 @@
 
         <nav class="header__cell header__cell--nav nav" id="site-nav" aria-label="Основное меню">
           <ul class="nav__list">
-            <li class="nav__item"><a class="nav__link" href="#products">Продукты</a></li>
-            <li class="nav__item"><a class="nav__link" href="#ai">ИИ</a></li>
-            <li class="nav__item"><a class="nav__link" href="#integration">Интеграция</a></li>
-            <li class="nav__item"><a class="nav__link" href="#partners">Партнёрам</a></li>
-            <li class="nav__item"><a class="nav__link" href="#company">Компания</a></li>
-            <li class="nav__item"><a class="nav__link" href="#configurators">Конфигураторы</a></li>
+            <li class="nav__item" data-mega="products"><a class="nav__link" href="#products" aria-haspopup="true" aria-expanded="false" aria-controls="mega">Продукты</a></li>
+            <li class="nav__item" data-mega="ai"><a class="nav__link" href="#ai" aria-haspopup="true" aria-expanded="false" aria-controls="mega">ИИ</a></li>
+            <li class="nav__item" data-mega="integration"><a class="nav__link" href="#integration" aria-haspopup="true" aria-expanded="false" aria-controls="mega">Интеграция</a></li>
+            <li class="nav__item" data-mega="partners"><a class="nav__link" href="#partners" aria-haspopup="true" aria-expanded="false" aria-controls="mega">Партнёрам</a></li>
+            <li class="nav__item" data-mega="company"><a class="nav__link" href="#company" aria-haspopup="true" aria-expanded="false" aria-controls="mega">Компания</a></li>
+            <li class="nav__item" data-mega="configurators"><a class="nav__link" href="#configurators" aria-haspopup="true" aria-expanded="false" aria-controls="mega">Конфигураторы</a></li>
             <!-- на мобильных кнопки «Портал» в шапке нет — дублируем в меню -->
             <li class="nav__item nav__item--mobile"><a class="nav__link" href="#portal">Портал</a></li>
           </ul>
@@ -90,6 +90,69 @@
           <span class="header__burger-line"></span>
         </button>
       </div>
+      <!-- ===================== ВЫПАДАЮЩЕЕ МЕНЮ (desktop ≥ 1200, js/mega-menu.js) =====================
+           Figma: «ВЫПАДАЙКА ПРОДУКТЫ» (Frame 23) и «Все остальные выпадайки» (Frame 24).
+           Ссылки-заглушки (#) — заменить на реальные разделы. -->
+      <div class="mega container" id="mega">
+        <div class="mega__panel mega__panel--products" data-mega-panel="products" hidden>
+          <div class="mega__col mega__col--indent">
+            <p class="mega__heading"><span class="mega__slash">/</span>Серверы M8</p>
+            <ul class="mega__list">
+              <li><a class="mega__link" href="#"><span class="mega__title">ER225HR-M82U</span><span class="mega__sub">до 24 NVMe, ИИ/ML, HPC</span></a></li>
+              <li><a class="mega__link" href="#"><span class="mega__title">ER225HSR-M8</span><span class="mega__sub">2U · NVMe + SAS/SATA,<br>хранилища</span></a></li>
+              <li><a class="mega__link" href="#"><span class="mega__title">ER220HDR-M8</span><span class="mega__sub">2U · хранение, виртуализация</span></a></li>
+              <li><a class="mega__link" href="#"><span class="mega__title">ER215HR-M8</span><span class="mega__sub">1U · компактные ЦОД</span></a></li>
+              <li><a class="mega__link" href="#"><span class="mega__title">ER225HTR-M8</span><span class="mega__sub">2U · телеком, разъёмы спереди</span></a></li>
+            </ul>
+          </div>
+          <div class="mega__col mega__col--indent">
+            <p class="mega__heading"><span class="mega__slash">/</span>Серверы M7</p>
+            <ul class="mega__list">
+              <li><a class="mega__link" href="#"><span class="mega__title">ER225HR-M7</span><span class="mega__sub">2U · NVMe, общего назначения</span></a></li>
+              <li><a class="mega__link" href="#"><span class="mega__title">ER225HSR-M7</span><span class="mega__sub">2U · до 28 дисков, файловые<br>хранилища</span></a></li>
+              <li><a class="mega__link" href="#"><span class="mega__title">ER215HR-M7</span><span class="mega__sub">1U · задачи среднего уровня</span></a></li>
+            </ul>
+          </div>
+          <div class="mega__col">
+            <p class="mega__heading"><span class="mega__slash">/</span>GPU</p>
+            <ul class="mega__list">
+              <li><a class="mega__link" href="#"><span class="mega__title">Сервер Тринити GPU <span class="mega__badge">ИИ</span></span><span class="mega__sub">4U · Gen 4/5, высокая плотность</span></a></li>
+              <li><a class="mega__link" href="#"><span class="mega__title">GPU-конфигурации на 2U</span><span class="mega__sub">2U · до 28 дисков, файловые<br>хранилища</span></a></li>
+            </ul>
+          </div>
+          <div class="mega__col">
+            <p class="mega__heading"><span class="mega__slash">/</span>По задаче</p>
+            <ul class="mega__list">
+              <li><a class="mega__link" href="#"><span class="mega__title">Для КИИ и госсектора</span><span class="mega__sub">Реестр Минпромторга</span></a></li>
+              <li><a class="mega__link" href="#"><span class="mega__title">Для информационных<br>систем и ЦОД</span><span class="mega__sub">Виртуализация, СУБД, аналитика</span></a></li>
+              <li><a class="mega__link" href="#"><span class="mega__title">Для СХД, ИБ<br>и распределённых сервисов</span><span class="mega__sub">Хранилища, защита данных,<br>телеком</span></a></li>
+            </ul>
+          </div>
+          <aside class="mega__promo">
+            <img class="mega__promo-img" src="./assets/img/server-er225hr-m8.jpg" width="234" height="110" loading="lazy" alt="Сервер ER225HR-M8">
+            <p class="mega__promo-caption">Флагман для ИИ и Big Data</p>
+            <p class="mega__promo-title">ER225HR-M8</p>
+            <p class="mega__promo-sub">2U · до 24 NVMe · ИИ/ML, HPC</p>
+            <a class="mega__promo-btn" href="#configurators">Сконфигурировать</a>
+          </aside>
+        </div>
+        <div class="mega__panel mega__panel--stub" data-mega-panel="ai" hidden>
+          <p class="mega__stub">Структура подраздела</p>
+        </div>
+        <div class="mega__panel mega__panel--stub" data-mega-panel="integration" hidden>
+          <p class="mega__stub">Структура подраздела</p>
+        </div>
+        <div class="mega__panel mega__panel--stub" data-mega-panel="partners" hidden>
+          <p class="mega__stub">Структура подраздела</p>
+        </div>
+        <div class="mega__panel mega__panel--stub" data-mega-panel="company" hidden>
+          <p class="mega__stub">Структура подраздела</p>
+        </div>
+        <div class="mega__panel mega__panel--stub" data-mega-panel="configurators" hidden>
+          <p class="mega__stub">Структура подраздела</p>
+        </div>
+      </div>
+      <div class="mega-overlay" aria-hidden="true"></div>
     </header>
 
     <section class="hero__body container" aria-labelledby="hero-title">
