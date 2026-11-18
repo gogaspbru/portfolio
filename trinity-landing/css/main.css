@@ -360,9 +360,9 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
 .header--stuck .header__cell,
 .header--stuck .header__burger {
   height: var(--header-cell-height-stuck);
-  background-color: rgba(255, 255, 255, 0.9);
-  -webkit-backdrop-filter: blur(1px); /* Figma: background blur 2 */
-          backdrop-filter: blur(1px);
+  background-color: rgba(255, 255, 255, 0.95); /* Figma: 0.9 — сделано белее по просьбе */
+  -webkit-backdrop-filter: blur(12px);        /* Figma: blur 2 — размытие усилено по просьбе */
+          backdrop-filter: blur(12px);
 }
 .header--stuck .header__cell::before,
 .header--stuck .header__burger::before { opacity: 0; }
