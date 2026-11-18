@@ -4,6 +4,7 @@ import { initStickyHeader } from './header.js';
 import { initReveal } from './reveal.js';
 import { initSmoothScroll } from './smooth-scroll.js';
 import { initCountUp } from './count-up.js';
+import { initCardPixels } from './card-pixels.js';
 
 initReveal();
 initHeroVideo(document.querySelector('.hero__video'));
@@ -13,4 +14,5 @@ initMenu({
   nav: document.getElementById('site-nav'),
 });
 initCountUp();
+initCardPixels();
 initSmoothScroll();
