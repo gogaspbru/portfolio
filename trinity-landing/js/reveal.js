@@ -24,7 +24,10 @@ export function initReveal() {
   // Первый экран — после загрузки шрифтов, чтобы строки не прыгали
   const onLoad = els.filter((el) => el.dataset.reveal === 'load');
   const fontsReady = document.fonts ? document.fonts.ready : Promise.resolve();
-  fontsReady.then(() => requestAnimationFrame(() => onLoad.forEach(fire)));
+  fontsReady.then(() => requestAnimationFrame(() => {
+    document.documentElement.classList.add('is-loaded'); // запускает падение шапки и карточку новости (CSS)
+    onLoad.forEach(fire);
+  }));
 
   // Остальные — по скроллу
   const onScroll = els.filter((el) => el.dataset.reveal !== 'load');

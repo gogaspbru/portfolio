@@ -141,6 +141,34 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
 }
 .reveal-ready [data-reveal].is-in .reveal-line__inner { transform: translateY(0); }
 
+/* --- Появление при загрузке: шапка падает сверху, карточка новости выезжает снизу ---
+   fill-mode: backwards — стартовое состояние держится только до начала анимации (пока paused — тоже),
+   после неё ничего не остаётся (не мешает прилипанию шапки и бургер-меню). */
+@keyframes drop-in {
+  from { transform: translateY(calc(-100% - var(--header-top))); }
+  to   { transform: none; }
+}
+@keyframes rise-in {
+  from { opacity: 0; transform: translateY(48px); }
+  to   { opacity: 1; transform: none; }
+}
+.reveal-ready .header__cell,
+.reveal-ready .header__burger {
+  animation: drop-in 0.6s cubic-bezier(0.22, 1, 0.36, 1) backwards paused;
+}
+.reveal-ready .header__inner > :nth-child(2) { animation-delay: 0.04s; }
+.reveal-ready .header__inner > :nth-child(3) { animation-delay: 0.08s; }
+.reveal-ready .header__inner > :nth-child(4) { animation-delay: 0.12s; }
+.reveal-ready .header__inner > :nth-child(5) { animation-delay: 0.16s; }
+.reveal-ready .header__inner > :nth-child(6) { animation-delay: 0.20s; }
+.reveal-ready .news-card {
+  animation: rise-in 0.95s cubic-bezier(0.22, 1, 0.36, 1) 0.35s backwards paused; /* после строк заголовка */
+}
+/* стартуют вместе со строками заголовка — когда загрузились шрифты (js/reveal.js → .is-loaded) */
+.reveal-ready.is-loaded .header__cell,
+.reveal-ready.is-loaded .header__burger,
+.reveal-ready.is-loaded .news-card { animation-play-state: running; }
+
 /* строка с размытым «основу» — маске нужен запас справа под блюр */
 .hero__title .reveal-line { padding-right: 0.5em; margin-right: -0.5em; }
 .hero__title-line--accent .reveal-line__inner { position: relative; height: 100%; }

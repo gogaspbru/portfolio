@@ -68,7 +68,7 @@
   --radius-hero-corner: 60px;
 
   /* ---------- Высоты ---------- */
-  --hero-height: 712px;              /* было 838px по макету, уменьшено на 15% */
+  --hero-height: 786px;              /* по макету 838px; уменьшено по просьбе (≈ −6%) */
   --header-top: 31px;                /* шапка в начале страницы */
   --header-top-stuck: 6px;           /* прилипшая шапка (Figma «Frame 22») */
   --header-cell-height: 129px;
