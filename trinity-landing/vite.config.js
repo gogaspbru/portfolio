@@ -12,6 +12,13 @@ export default defineConfig({
   preview: { host: true, port: 4173 },
   build: {
     outDir: 'dist',
+    rollupOptions: {
+      // две страницы: основной вариант (видео) и вариант с «матрицей точек»
+      input: {
+        main: resolve(__dirname, 'index.html'),
+        matrix: resolve(__dirname, 'index-matrix.html'),
+      },
+    },
     // Шрифт woff2 встраиваем в CSS (data:) — Chrome не грузит шрифты с file://.
     assetsInlineLimit: (file) => file.endsWith('.woff2'),
   },

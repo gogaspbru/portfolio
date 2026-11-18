@@ -7,7 +7,9 @@
   'use strict';
 
   T.initReveal();
-  T.initHeroVideo(document.querySelector('.hero__video'));
+  // первый экран: видео (index.html) или «матрица точек» (index-matrix.html)
+  if (T.initHeroVideo) T.initHeroVideo(document.querySelector('.hero__video'));
+  if (T.initHeroMatrix) T.initHeroMatrix(document.querySelector('.hero__matrix'));
   T.initStickyHeader(document.querySelector('.header'));
   T.initMegaMenu(document.querySelector('.header'));
   T.initMenu({

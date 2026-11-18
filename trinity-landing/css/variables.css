@@ -75,6 +75,7 @@
   --header-cell-height: 129px;
   --header-cell-height-stuck: 54px;
   --sticky-top: 100px;               /* отступ липких блоков «О Тринити» от верха окна */
+  --matrix-scroll: 80vh;             /* index-matrix.html: сколько прокручиваем, пока знак поднимается */
 
   /* ---------- Анимации ---------- */
   --ease: cubic-bezier(0.2, 0.7, 0.3, 1);
