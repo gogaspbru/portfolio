@@ -213,8 +213,13 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
   letter-spacing: -0.01em;
 }
 
-/* --- CTA «Подобрать сервер» --- */
+/* --- CTA «Подобрать сервер» ---
+   Ховер — по мотивам Codrops «Button Hover Styles», №2 (button--hyperion, MIT):
+   контур заливается цветом слева направо, при уходе курсора заливка уезжает вправо;
+   текст и стрелка уходят вверх и заново въезжают снизу. */
 .cta {
+  position: relative;
+  isolation: isolate;
   display: grid;
   grid-template-columns: 211px 1fr;
   align-items: center;
@@ -224,10 +229,28 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
   background:
     url("../assets/img/icons/button-bracket.svg") left top / 278px 17px no-repeat,
     url("../assets/img/icons/button-bracket-bottom.svg") left bottom / 278px 17px no-repeat;
-  transition: background-color var(--duration) var(--ease);
+}
+
+/* слой заливки */
+.cta::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: var(--color-accent-lime);
+  transform: scale3d(0, 1, 1);
+  transform-origin: 100% 50%;   /* уходит вправо */
+  transition: transform 0.3s cubic-bezier(0.7, 0, 0.2, 1);
+}
+.cta:hover::before,
+.cta:focus-visible::before {
+  transform: scale3d(1, 1, 1);
+  transform-origin: 0% 50%;     /* приходит слева */
 }
 
 .cta__label {
+  display: block;
+  overflow: hidden;              /* маска для «перезахода» текста */
   padding-left: 33px;
   font-size: 12px;
   font-weight: 500;
@@ -235,17 +258,48 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
   letter-spacing: 0.16em; /* 1.92px */
   text-transform: uppercase;
   color: rgba(255, 255, 255, 0.9);
+  transition: color 0.2s linear;
 }
+.cta__label-text { display: block; }
 
 .cta__icon {
   display: flex;
   justify-content: center;
+  overflow: hidden;
   padding-top: 3px;
 }
-.cta__icon img { transition: transform var(--duration) var(--ease); }
+.cta__icon img { transition: filter 0.2s linear; }
 
-.cta:hover { background-color: rgba(255, 255, 255, 0.08); }
-.cta:hover .cta__icon img { transform: translate(2px, -2px); }
+.cta:hover .cta__label,
+.cta:focus-visible .cta__label {
+  color: var(--color-ink);
+  transition-delay: 0.15s;       /* темнеет, когда текст уже «за кадром» и под ним заливка */
+}
+.cta:hover .cta__icon img,
+.cta:focus-visible .cta__icon img {
+  filter: brightness(0) invert(0.1); /* белая стрелка → #191919 */
+  transition-delay: 0.15s;
+}
+
+.cta:hover .cta__label-text,
+.cta:focus-visible .cta__label-text {
+  animation: cta-move-up-out 0.2s forwards, cta-move-up-in 0.2s forwards 0.2s;
+}
+.cta:hover .cta__icon img,
+.cta:focus-visible .cta__icon img {
+  animation: cta-arrow-out 0.2s forwards, cta-arrow-in 0.2s forwards 0.2s;
+}
+
+@keyframes cta-move-up-out { to { transform: translate3d(0, -105%, 0); } }
+@keyframes cta-move-up-in {
+  from { transform: translate3d(0, 100%, 0); }
+  to   { transform: translate3d(0, 0, 0); }
+}
+@keyframes cta-arrow-out { to { transform: translate3d(130%, -130%, 0); } }
+@keyframes cta-arrow-in {
+  from { transform: translate3d(-130%, 130%, 0); }
+  to   { transform: translate3d(0, 0, 0); }
+}
 
 /* --- Карточка новости --- */
 .news-card {
