@@ -439,7 +439,8 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
   flex-wrap: nowrap;
   gap: 0 29.58px;
 }
-.nav__item:last-child { margin-left: 4.4px; } /* «Конфигураторы» — отдельный слой, x = 770 */
+.nav__item:nth-child(6) { margin-left: 4.4px; } /* «Конфигураторы» — отдельный слой, x = 770 */
+.nav__item--mobile { display: none; }           /* «Портал» в меню — только на мобильных */
 
 .nav__link {
   display: block;
@@ -472,7 +473,7 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
 }
 .header__icon-btn:hover { background-color: rgba(55, 55, 75, 0.06); }
 
-.header__partners {
+.header__portal {
   display: flex;
   align-items: center;
   gap: 10px;
@@ -484,12 +485,12 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
   color: var(--color-graphite-dark);
   transition: color var(--duration) var(--ease);
 }
-.header__partners-icon {
+.header__portal-icon {
   transform: scaleX(-1); /* в макете corner-up-left отражён → «corner-up-right» */
   transition: transform var(--duration) var(--ease);
 }
-.header__partners:hover { color: var(--color-blue); }
-.header__partners:hover .header__partners-icon { transform: scaleX(-1) translateX(-2px); }
+.header__portal:hover { color: var(--color-blue); }
+.header__portal:hover .header__portal-icon { transform: scaleX(-1) translateX(-2px); }
 
 /* --- Бургер --- */
 .header__burger {
@@ -794,7 +795,7 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
     flex-direction: column;
     gap: 0;
   }
-  .nav__item:last-child { margin-left: 0; }
+  .nav__item:nth-child(6) { margin-left: 0; }
   .nav__link {
     padding: 14px 0;
     border-bottom: 1px solid var(--color-line-dark);
@@ -865,7 +866,8 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
   }
   /* высоты ячеек — через --header-cell-height в variables.css */
   .header__cell--phone,                       /* TODO: телефон — в меню, когда будет номер */
-  .header__cell--partners { display: none; }  /* «Партнёрам» есть в меню */
+  .header__cell--portal { display: none; }  /* «Портал» есть в меню (.nav__item--mobile) */
+  .nav__item--mobile { display: block; }
   .header__burger { padding-top: 16px; }
   .header__logo { margin: 14px 0 0 16px; }
   .header__icon-btn { margin-top: 3px; }
