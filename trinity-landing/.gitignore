@@ -1,0 +1,7 @@
+node_modules/
+dist/
+# Conthrax: лицензия Typodermic (desktop EULA) запрещает распространение
+# файлов шрифта и не покрывает веб-использование — в репозиторий не кладём.
+assets/fonts/conthrax*
+# Видео тяжёлое — кладётся вручную
+assets/video/*.mp4

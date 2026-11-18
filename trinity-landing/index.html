@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Тринити — серверы и инфраструктура для ИИ</title>
+  <meta name="description" content="Производим серверы в России и строим на них инфраструктуру для ИИ — от системной платы до машинного зала.">
+
+  <!-- Onest — Google Fonts. Conthrax подключается локально в css/variables.css -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="preload" href="./assets/fonts/conthrax-sb.woff2" as="font" type="font/woff2" crossorigin>
+
+  <link rel="stylesheet" href="./css/main.css">
+</head>
+<body class="page">
+
+  <!-- ===================== HERO (первый экран, внутри — шапка) ===================== -->
+  <div class="hero" id="top">
+    <div class="hero__media" aria-hidden="true">
+      <!-- Источник видео подставляет js/hero-video.js (только десктоп и без prefers-reduced-motion).
+           Без JS / на мобильных показывается только poster. -->
+      <video class="hero__video"
+             muted loop playsinline
+             poster="./assets/video/poster.jpg"
+             preload="none"
+             data-src="assets/video/trinity-glass-waves-1080p.mp4"></video>
+    </div>
+
+    <div class="grid-lines grid-lines--light" aria-hidden="true"><span></span><span></span><span></span><span></span></div>
+
+    <!-- ===================== HEADER ===================== -->
+    <header class="header">
+      <div class="header__inner container">
+        <div class="header__cell header__cell--logo">
+          <a class="header__logo" href="/" aria-label="Тринити — на главную">
+            <img src="./assets/img/icons/logo-trinity.svg" width="149" height="25" alt="Тринити">
+          </a>
+        </div>
+
+        <nav class="header__cell header__cell--nav nav" id="site-nav" aria-label="Основное меню">
+          <ul class="nav__list">
+            <li class="nav__item"><a class="nav__link" href="#products">Продукты</a></li>
+            <li class="nav__item"><a class="nav__link" href="#ai">ИИ</a></li>
+            <li class="nav__item"><a class="nav__link" href="#integration">Интеграция</a></li>
+            <li class="nav__item"><a class="nav__link" href="#partners">Партнёрам</a></li>
+            <li class="nav__item"><a class="nav__link" href="#company">Компания</a></li>
+            <li class="nav__item"><a class="nav__link" href="#configurators">Конфигураторы</a></li>
+          </ul>
+        </nav>
+
+        <div class="header__cell header__cell--icon header__cell--phone">
+          <!-- TODO: номер телефона в макете не указан -->
+          <a class="header__icon-btn" href="#contacts" aria-label="Позвонить">
+            <img src="./assets/img/icons/phone.svg" width="18" height="18" alt="">
+          </a>
+        </div>
+
+        <div class="header__cell header__cell--icon header__cell--search">
+          <button class="header__icon-btn" type="button" aria-label="Поиск по сайту">
+            <img src="./assets/img/icons/search.svg" width="18" height="18" alt="">
+          </button>
+        </div>
+
+        <div class="header__cell header__cell--partners">
+          <a class="header__partners" href="#partners">
+            <img class="header__partners-icon" src="./assets/img/icons/corner-graphite.svg" width="24" height="24" alt="">
+            <span>Партнёрам</span>
+          </a>
+        </div>
+
+        <button class="header__burger" type="button"
+                aria-label="Открыть меню" aria-expanded="false" aria-controls="site-nav">
+          <span class="header__burger-line"></span>
+          <span class="header__burger-line"></span>
+          <span class="header__burger-line"></span>
+        </button>
+      </div>
+    </header>
+
+    <section class="hero__body container" aria-labelledby="hero-title">
+      <h1 class="hero__title" id="hero-title">
+        <span class="hero__title-line">Создаём</span>
+        <span class="hero__title-line hero__title-line--accent">
+          <span class="hero__title-sharp">основу</span>
+          <span class="hero__title-blur" aria-hidden="true">основу</span>
+        </span>
+        <span class="hero__title-line">будущего</span>
+      </h1>
+
+      <p class="hero__text">
+        Производим серверы в России и строим на них<br class="br-desktop">
+        инфраструктуру для ИИ — от системной платы до машинного зала.
+      </p>
+
+      <a class="cta" href="#configurators">
+        <span class="cta__label">Подобрать сервер</span>
+        <span class="cta__icon">
+          <img src="./assets/img/icons/arrow-right-up.svg" width="23" height="23" alt="">
+        </span>
+      </a>
+
+      <article class="news-card">
+        <div class="news-card__top">
+          <time class="news-card__date" datetime="2026-10-01">01.10.2026</time>
+          <a class="news-card__all" href="#news">все новости</a>
+        </div>
+        <a class="news-card__link" href="#news-1">
+          Эксперты Тринити Интеграции представили решения для ИИ-инфраструктуры на&nbsp;форуме
+          <span class="nowrap">«Амур-ИнфобезФорум 2026»</span>
+        </a>
+      </article>
+    </section>
+  </div>
+
+  <main class="main">
+    <div class="grid-lines grid-lines--dark" aria-hidden="true"><span></span><span></span><span></span><span></span></div>
+
+    <!-- ===================== О ТРИНИТИ ===================== -->
+    <section class="about container" id="about" aria-labelledby="about-title">
+      <div class="about__head">
+        <p class="about__label">О ТРИНИТИ</p>
+        <h2 class="about__title" id="about-title">
+          Нам доверяют<br class="br-desktop">
+          инфраструктуру,<br class="br-desktop">
+          которая не имеет<br class="br-desktop">
+          права остановиться
+        </h2>
+        <a class="link-more" href="#company">
+          <img class="link-more__icon" src="./assets/img/icons/corner-blue.svg" width="24" height="24" alt="">
+          <span class="link-more__text">Узнайте больше</span>
+        </a>
+      </div>
+
+      <div class="about__cards">
+        <a class="direction-card direction-card--production" href="#production">
+          <span class="direction-card__media">
+            <img class="direction-card__img" src="./assets/img/card-production.jpg"
+                 width="1600" height="1003" loading="lazy"
+                 alt="Серверное оборудование Тринити: передняя панель с сетевыми портами">
+          </span>
+          <span class="direction-card__caption">
+            <img class="direction-card__icon" src="./assets/img/icons/slash-blue.svg" width="27" height="24" alt="">
+            <span class="direction-card__title">производство</span>
+          </span>
+        </a>
+
+        <a class="direction-card direction-card--integration" href="#integration">
+          <span class="direction-card__media">
+            <img class="direction-card__img" src="./assets/img/card-integration.jpg"
+                 width="1600" height="1011" loading="lazy"
+                 alt="Специалист на синем фоне со светящимся логотипом Тринити">
+          </span>
+          <span class="direction-card__caption">
+            <img class="direction-card__icon" src="./assets/img/icons/slash-white.svg" width="27" height="24" alt="">
+            <span class="direction-card__title">интеграция</span>
+          </span>
+        </a>
+      </div>
+    </section>
+
+    <!-- ===================== ЦИФРЫ ===================== -->
+    <section class="stats container" aria-label="Тринити в цифрах">
+      <ul class="stats__list">
+        <li class="stats__item stats__item--blue">
+          <p class="stats__value">30+</p>
+          <p class="stats__text">лет на рынке<br class="br-desktop"> серверных решений</p>
+        </li>
+        <li class="stats__item stats__item--graphite">
+          <p class="stats__value">80&nbsp;000</p>
+          <p class="stats__text">серверов в год — мощность<br class="br-desktop"> собственного производства</p>
+        </li>
+        <li class="stats__item stats__item--gray">
+          <p class="stats__value">300+</p>
+          <p class="stats__text">сертифицированных инженеров<br class="br-desktop"> и экспертов</p>
+        </li>
+        <li class="stats__item stats__item--light">
+          <p class="stats__value">КИИ</p>
+          <p class="stats__text">В реестре Минпромторга,<br class="br-desktop"> для госсектора и КИИ</p>
+        </li>
+      </ul>
+      <div class="stats__ticks" aria-hidden="true"></div>
+    </section>
+  </main>
+
+  <!-- ===================== FOOTER =====================
+       В макете (фрейм 174:129) футера нет — это временный минимальный блок. -->
+  <footer class="footer">
+    <div class="footer__inner container">
+      <a class="footer__logo" href="/" aria-label="Тринити — на главную">
+        <img src="./assets/img/icons/logo-trinity.svg" width="149" height="25" alt="Тринити">
+      </a>
+      <p class="footer__copy">© Тринити, 2026</p>
+    </div>
+  </footer>
+
+  <script type="module" src="./js/main.js"></script>
+</body>
+</html>
