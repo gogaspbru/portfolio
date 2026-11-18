@@ -28,12 +28,12 @@
 
   const RIPPLES = 10;          // сколько волн одновременно
   const RIPPLE_SPEED = 9.5;    // скорость фронта, кубиков в секунду
-  const RIPPLE_WIDTH = 1.4;    // ширина фронта, кубиков
-  const RIPPLE_LIFE = 1.4;     // постоянная затухания, с (волна живёт ≈ 3× дольше)
-  const RIPPLE_PUSH = 0.6;     // насколько фронт выдвигает кубики
-  const RIPPLE_GLOW = 0.85;    // яркость фронта (0..1)
-  const SPAWN_STEP = 2.4;      // новая волна — каждые N кубиков пути курсора
-  const SPAWN_MIN_GAP = 0.12;  // но не чаще, с
+  const RIPPLE_WIDTH = 1.1;    // ширина фронта, кубиков
+  const RIPPLE_LIFE = 0.9;     // постоянная затухания, с (волна живёт ≈ 3× дольше)
+  const RIPPLE_PUSH = 0.4;     // насколько фронт выдвигает кубики
+  const RIPPLE_GLOW = 0.5;     // яркость фронта (0..1)
+  const SPAWN_STEP = 5;        // новая волна — каждые N кубиков пути курсора
+  const SPAWN_MIN_GAP = 0.35;  // но не чаще, с
 
   const EDGE_BLUR = 7;         // размытие у краёв кадра, px
   const ABERRATION = 0.006;    // сила цветных ореолов у краёв
@@ -60,7 +60,7 @@
         float band = exp(-d * d / (uWidth * uWidth));
         heat += band * r.w * exp(-r.z / uLife);
       }
-      heat = (1.0 - exp(-heat * 1.6)) * uGlow;   // мягкое насыщение при наложении волн
+      heat = (1.0 - exp(-heat * 1.2)) * uGlow;   // мягкое насыщение при наложении волн
       float z = w * uWave + (aInst.z - 0.5) * uJitter + heat * uPush;
       vec3 p = vec3(aPos.xy * uSize + o, (aPos.z - 0.5) * uDepth + z);
       vec4 wp = uM * vec4(p, 1.0);
@@ -394,7 +394,7 @@
         for (let i = 0; i < RIPPLES; i++) {
           const age = (now - born[i]) / 1000;
           rip[i * 4 + 2] = age;
-          if (age > RIPPLE_LIFE * 4) rip[i * 4 + 3] = 0;   // волна погасла — слот свободен
+          if (age > RIPPLE_LIFE * 5) rip[i * 4 + 3] = 0;   // волна погасла — слот свободен
         }
       }
 
