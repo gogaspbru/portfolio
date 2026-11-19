@@ -267,7 +267,10 @@ button.header__pill:hover { background-color: var(--color-light); }
   color: var(--color-text-muted);
 }
 
-/* --- CTA «Подобрать решение»: таблетка 210 × 47 + круг 47 (#1044BA) --- */
+/* --- CTA «Подобрать решение»: таблетка 210 × 47 + круг 47 (#1044BA) ---
+   Ховер — как в первой версии (Codrops «Button Hover Styles» №2, button--hyperion, MIT):
+   слева выезжает лаймовая заливка, при уходе курсора уезжает вправо; текст и стрелка
+   «перезаходят» и становятся тёмными. */
 .cta {
   display: inline-flex;
   margin: 91px 0 0 109px;             /* y = 623, x = 160 */
@@ -279,21 +282,64 @@ button.header__pill:hover { background-color: var(--color-light); }
 }
 .cta__label,
 .cta__icon {
+  position: relative;
+  isolation: isolate;
   display: inline-flex;
   align-items: center;
   height: 47px;
+  overflow: hidden;
   border-radius: var(--radius-pill);
   background: var(--color-blue-dark);
-  transition: background-color var(--duration) var(--ease), transform 0.3s var(--ease);
 }
-.cta__label { width: 210px; padding-left: 32px; }      /* текст с x = 192 */
+.cta__label::before,
+.cta__icon::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: var(--color-accent-lime);
+  transform: scale3d(0, 1, 1);
+  transform-origin: 100% 50%;          /* уходит вправо */
+  transition: transform 0.3s cubic-bezier(0.7, 0, 0.2, 1);
+}
+.cta__icon::before { transition-delay: 0.08s; }
+.cta:hover .cta__label::before,
+.cta:hover .cta__icon::before,
+.cta:focus-visible .cta__label::before,
+.cta:focus-visible .cta__icon::before {
+  transform: scale3d(1, 1, 1);
+  transform-origin: 0% 50%;            /* приходит слева */
+}
+.cta__label { width: 210px; padding-left: 32px; transition: color 0.2s linear; }  /* текст с x = 192 */
+.cta__label-text { display: block; }
 .cta__icon { justify-content: center; width: 47px; }
+.cta__icon img { transition: filter 0.2s linear; }
+
+/* когда заливка доехала — и сам фон лаймовый (без тёмного ободка по краю от сглаживания) */
 .cta:hover .cta__label,
 .cta:hover .cta__icon,
 .cta:focus-visible .cta__label,
-.cta:focus-visible .cta__icon { background-color: var(--color-blue); }
-.cta:hover .cta__icon,
-.cta:focus-visible .cta__icon { transform: rotate(45deg); }
+.cta:focus-visible .cta__icon { background-color: var(--color-accent-lime); transition: background-color 0s 0.3s, color 0.2s linear 0.15s; }
+.cta:hover .cta__label,
+.cta:focus-visible .cta__label { color: var(--color-ink); }
+.cta:hover .cta__icon img,
+.cta:focus-visible .cta__icon img { filter: brightness(0) invert(0.1); transition-delay: 0.15s; } /* белая → #191919 */
+
+.cta:hover .cta__label-text,
+.cta:focus-visible .cta__label-text { animation: cta-move-up-out 0.2s forwards, cta-move-up-in 0.2s forwards 0.2s; }
+.cta:hover .cta__icon img,
+.cta:focus-visible .cta__icon img { animation: cta-arrow-out 0.2s forwards, cta-arrow-in 0.2s forwards 0.2s; }
+
+@keyframes cta-move-up-out { to { transform: translate3d(0, -105%, 0); } }
+@keyframes cta-move-up-in {
+  from { transform: translate3d(0, 100%, 0); }
+  to   { transform: translate3d(0, 0, 0); }
+}
+@keyframes cta-arrow-out { to { transform: translate3d(130%, -130%, 0); } }
+@keyframes cta-arrow-in {
+  from { transform: translate3d(-130%, 130%, 0); }
+  to   { transform: translate3d(0, 0, 0); }
+}
 
 /* --- Фигуры справа: рамка 650 × 571 с x = 873.7, y = 176 (макет: 833.7, 136 + сдвиг 40px);
        уже 1600 — уменьшаются пропорционально ширине окна --- */
