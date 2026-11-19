@@ -229,7 +229,11 @@ button.header__pill:hover { background-color: var(--color-light); }
   height: 100vh;
   min-height: 640px;
   overflow: hidden;
-  background: var(--color-light);
+  /* фон — серый с сеткой мелких точек */
+  background-color: var(--color-light);
+  background-image: radial-gradient(circle, var(--hero-dot-color) 0 var(--hero-dot-size), transparent calc(var(--hero-dot-size) + 0.6px));
+  background-size: var(--hero-dot-step) var(--hero-dot-step);
+  background-position: center top;
 }
 .hero__inner {
   position: relative;
