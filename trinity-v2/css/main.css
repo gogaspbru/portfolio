@@ -1,0 +1,547 @@
+@import url("./variables.css");
+
+/* ==========================================================================
+   Base
+   ========================================================================== */
+*,
+*::before,
+*::after { box-sizing: border-box; }
+
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  font-family: var(--font-base);
+  font-size: 16px;
+  line-height: 1.4;
+  color: var(--color-graphite);
+  background: var(--color-white);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+h1, h2, p { margin: 0; }
+img, video { display: block; max-width: 100%; }
+a { color: inherit; text-decoration: none; }
+button { font: inherit; color: inherit; background: none; border: 0; padding: 0; cursor: pointer; }
+
+:focus-visible { outline: 2px solid var(--color-blue); outline-offset: 2px; }
+
+.page.is-menu-open { overflow: hidden; }
+.svg-defs { position: absolute; width: 0; height: 0; overflow: hidden; }
+
+@media (max-width: 1023px) { .br-desktop { display: none; } }
+
+.container {
+  width: 100%;
+  max-width: var(--page-max);
+  margin-inline: auto;
+  padding-left: var(--gutter-left);
+  padding-right: var(--gutter-right);
+}
+
+/* ==========================================================================
+   Построчное появление (js/reveal.js): строка — маска, внутренний span выезжает снизу.
+   Анимация включается только если скрипт в <head> добавил .reveal-ready.
+   ========================================================================== */
+.reveal-line {
+  display: block;
+  overflow: hidden;
+  padding: 0.26em 0.03em;   /* запас под выносные элементы, чтобы маска их не резала */
+  margin: -0.26em -0.03em;  /* ...и компенсация, позиция строки не меняется */
+}
+.reveal-line__inner { display: block; }
+[data-reveal] { display: flex; flex-direction: column; }
+.reveal-ready [data-reveal] .reveal-line__inner {
+  transform: translateY(120%);
+  transition: transform 0.95s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.reveal-ready [data-reveal].is-in .reveal-line__inner { transform: translateY(0); }
+
+/* шапка, текст и кнопка первого экрана — мягко проявляются после шрифтов (.is-loaded) */
+@keyframes rise-in {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: none; }
+}
+.reveal-ready .header__inner > *,
+.reveal-ready .hero__text,
+.reveal-ready .cta,
+.reveal-ready .hero__shapes {
+  animation: rise-in 0.8s var(--ease) both paused;
+}
+.reveal-ready .header__inner > :nth-child(2) { animation-delay: 0.06s; }
+.reveal-ready .header__inner > :nth-child(3) { animation-delay: 0.12s; }
+.reveal-ready .hero__text   { animation-delay: 0.35s; }
+.reveal-ready .cta          { animation-delay: 0.45s; }
+.reveal-ready .hero__shapes { animation-delay: 0.2s; animation-duration: 1.1s; }
+.reveal-ready.is-loaded .header__inner > *,
+.reveal-ready.is-loaded .hero__text,
+.reveal-ready.is-loaded .cta,
+.reveal-ready.is-loaded .hero__shapes { animation-play-state: running; }
+
+/* ==========================================================================
+   Header — «таблетки» (макет: y = 18, высота 61, радиус 100)
+   ========================================================================== */
+.header {
+  position: fixed;
+  top: var(--header-top);
+  left: 0;
+  right: 0;
+  z-index: 100;
+  pointer-events: none;                /* кликабельны только сами таблетки */
+}
+.header__inner {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+.header__group {
+  display: flex;
+  gap: 7px;                            /* 112 → 119 */
+  pointer-events: auto;
+}
+.header__group:last-child { gap: 5px; } /* 1410 → 1415 */
+
+.header__pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: var(--pill-height);
+  padding: 0 26px;
+  border-radius: var(--radius-pill);
+  background: var(--color-white);
+  box-shadow: var(--shadow-pill);
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 26px;
+  text-transform: uppercase;
+  color: var(--color-graphite);
+  white-space: nowrap;
+  transition: background-color var(--duration) var(--ease);
+}
+.header__pill--round { width: var(--pill-height); padding: 0; }
+a.header__pill:hover,
+button.header__pill:hover { background-color: var(--color-light); }
+.header__phone { width: 156px; padding: 0; }      /* текст с x = 145 */
+.header__partners { width: 135px; padding: 0; }   /* текст с x = 1444 */
+
+/* иконка-сетка: 4 квадрата 7 × 7, зазор 2, радиус 1 */
+.header__grid-icon {
+  display: grid;
+  grid-template-columns: repeat(2, 7px);
+  gap: 2px;
+}
+.header__grid-icon span {
+  width: 7px;
+  height: 7px;
+  border-radius: 1px;
+  background: var(--color-graphite);
+  transition: transform var(--duration) var(--ease);
+}
+.page.is-menu-open .header__grid-icon span:nth-child(1) { transform: translate(4.5px, 4.5px); }
+.page.is-menu-open .header__grid-icon span:nth-child(2) { transform: translate(-4.5px, 4.5px); }
+.page.is-menu-open .header__grid-icon span:nth-child(3) { transform: translate(4.5px, -4.5px); }
+.page.is-menu-open .header__grid-icon span:nth-child(4) { transform: translate(-4.5px, -4.5px); }
+
+/* центральная таблетка: 457 → 1153 (696), лого с x = 497 */
+.header__center {
+  position: absolute;
+  top: 0;
+  left: calc(50% - 343px);             /* 457 при ширине 1600: центр + 5px */
+  width: 696px;
+  justify-content: flex-start;
+  padding: 0 7px 0 40px;
+  pointer-events: auto;
+}
+.header__logo { flex: none; margin-right: 44px; }   /* меню с x = 692 */
+.header__logo img { width: 149px; height: 25px; }
+.header__nav {
+  display: flex;
+  align-items: center;
+  flex: 1;
+}
+.header__nav-link {
+  display: inline-flex;
+  align-items: center;
+  height: 48px;
+  padding: 0 17px;
+  border-radius: var(--radius-pill);
+  transition: background-color var(--duration) var(--ease), color var(--duration) var(--ease);
+}
+.header__nav-link:first-child { padding-left: 6px; }   /* «Продукты» с x ≈ 696 */
+.header__nav-link:hover { color: var(--color-blue); }
+/* «Конфигураторы» — подложка 174 × 48, x = 972 */
+.header__nav-link--accent {
+  width: 174px;
+  justify-content: center;
+  margin-left: auto;
+  padding: 0;
+  background: var(--color-light);
+}
+.header__nav-link--accent:hover { color: var(--color-graphite); background: #EDEDF0; }
+
+/* меню по кнопке-сетке */
+.site-menu {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  padding-top: calc(var(--header-top) + var(--pill-height) + 40px);
+  background: rgba(248, 248, 248, 0.97);
+  -webkit-backdrop-filter: blur(12px);
+          backdrop-filter: blur(12px);
+  pointer-events: auto;
+  overflow-y: auto;
+}
+.site-menu[hidden] { display: none; }
+.site-menu__inner {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding-left: calc(var(--gutter-left) + 103px);
+}
+.site-menu__link {
+  font-size: 40px;
+  font-weight: 500;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  transition: color var(--duration) var(--ease);
+}
+.site-menu__link:hover { color: var(--color-blue); }
+.site-menu__phone {
+  margin-top: 24px;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+/* ==========================================================================
+   Первый экран (макет: фон #F8F8F8 до y = 770)
+   ========================================================================== */
+.hero {
+  position: relative;
+  height: var(--hero-height);
+  overflow: hidden;
+  background: var(--color-light);
+}
+.hero__inner {
+  position: relative;
+  z-index: 2;
+  padding-top: 234px;                 /* «Создаём»: y = 234 */
+}
+
+.hero__title {
+  margin-left: 103px;                 /* x = 154 */
+  font-weight: 500;
+  font-size: 60px;
+  color: var(--color-graphite);
+}
+.hero__title-line { display: block; line-height: 53px; letter-spacing: -0.02em; }   /* -1.2px */
+.hero__title-line--accent {
+  margin-top: calc(-0.26em + 4px);    /* y = 291; −0.26em — компенсация поля маски .reveal-line */
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 64px;
+  line-height: 57px;
+  letter-spacing: -0.04em;            /* -2.56px */
+  color: var(--color-blue);
+}
+.hero__title-line--last { margin-top: calc(-0.26em + 5px); }   /* y = 353 */
+.hero__title-line--last,
+.hero__title-line--last + .hero__title-line { margin-left: calc(-0.03em - 2px); }   /* x = 152; −0.03em — поле маски .reveal-line */
+.hero__title-line--last,
+.hero__title-line--last + .hero__title-line { line-height: 56px; letter-spacing: -0.03em; } /* -1.8px */
+
+.hero__text {
+  max-width: 548px;
+  margin: 17px 0 0 108px;             /* y = 482, x = 159 */
+  font-size: 16px;
+  line-height: 25px;
+  letter-spacing: -0.01em;
+  color: var(--color-text-muted);
+}
+
+/* --- CTA «Подобрать решение»: таблетка 210 × 47 + круг 47 (#1044BA) --- */
+.cta {
+  display: inline-flex;
+  margin: 91px 0 0 109px;             /* y = 623, x = 160 */
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 26px;
+  text-transform: uppercase;
+  color: var(--color-white);
+}
+.cta__label,
+.cta__icon {
+  display: inline-flex;
+  align-items: center;
+  height: 47px;
+  border-radius: var(--radius-pill);
+  background: var(--color-blue-dark);
+  transition: background-color var(--duration) var(--ease), transform 0.3s var(--ease);
+}
+.cta__label { width: 210px; padding-left: 32px; }      /* текст с x = 192 */
+.cta__icon { justify-content: center; width: 47px; }
+.cta:hover .cta__label,
+.cta:hover .cta__icon,
+.cta:focus-visible .cta__label,
+.cta:focus-visible .cta__icon { background-color: var(--color-blue); }
+.cta:hover .cta__icon,
+.cta:focus-visible .cta__icon { transform: rotate(45deg); }
+
+/* --- Фигуры справа: рамка 650 × 571 с x = 833.7, y = 136 (на ширине 1600);
+       уже 1600 — уменьшаются пропорционально ширине окна --- */
+.hero__shapes {
+  position: absolute;
+  z-index: 1;
+  top: min(136px, 8.5vw);
+  left: calc(50% + min(33.7px, 2.106vw));
+  width: min(650px, 40.625vw);
+  aspect-ratio: 650 / 571;
+}
+.hero__plane { position: absolute; inset: 0; }
+.hero__plane-media {
+  position: absolute;
+  inset: 0;
+  clip-path: url(#clip-plane);
+  background: var(--color-blue) url("../assets/video/poster.jpg") 0 0 / 100% 100% no-repeat;
+}
+/* в макете кадр видео растянут на всю фигуру (preserveAspectRatio="none") */
+.hero__video { width: 100%; height: 100%; object-fit: fill; }
+.hero__plane-logo {
+  position: absolute;
+  left: 17.28%;                        /* 115 − 2.7 (сдвиг фигуры в рамке 652) = 112.3 / 650 */
+  top: 85.81%;                         /* 490 / 571 */
+  width: 26.62%;                       /* 173 / 650 */
+  height: auto;
+}
+/* «стекло»: 328 × 287 с x = 1136, y = 332; размытие фона 50px, белый градиент 0.4 → 0.01, прозрачность 0.2 */
+.hero__glass {
+  position: absolute;
+  left: 46.51%;                        /* (1136 − 833.7) / 650 */
+  top: 34.33%;                         /* (332 − 136) / 571 */
+  width: 50.46%;                       /* 328 / 650 */
+  height: 50.26%;                      /* 287 / 571 */
+  clip-path: url(#clip-glass);
+  -webkit-backdrop-filter: blur(50px);
+          backdrop-filter: blur(50px);
+  background: linear-gradient(114deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.002) 100%);
+}
+
+/* линия: слой во весь первый экран, форму (clip-path: polygon) задаёт js/line-hero.js */
+.hero__line {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: var(--color-blue);
+  clip-path: polygon(0 0, 0 0, 0 0);
+  pointer-events: none;
+}
+
+/* ==========================================================================
+   Синий блок: направления + «О Тринити» (макет: с y = 770 до 1858)
+   ========================================================================== */
+.main {
+  position: relative;
+  background: var(--color-blue);
+  color: var(--color-white);
+  padding: 53px 0 114px;               /* карточки y = 823; низ блока 1858 */
+}
+
+.directions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1px;                            /* 51 → 800, 801 → 1550 */
+}
+.direction-card {
+  position: relative;
+  display: block;
+  aspect-ratio: 749 / 529;
+  border-radius: var(--radius-card);
+  overflow: hidden;
+  isolation: isolate;
+  background: #0E3C8C;
+}
+.direction-card__media,
+.direction-card__img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+.direction-card__img {
+  object-fit: cover;
+  transition: transform 0.8s var(--ease);
+}
+.direction-card--production  .direction-card__img { object-position: 50% 50%; }
+.direction-card--integration .direction-card__img { object-position: 94.7% 50%; } /* left −9.53%, ширина 109.99% */
+.direction-card:hover .direction-card__img { transform: scale(1.03); }
+
+/* «Пиксельный прожектор» (js/card-pixels.js) — между фото и подписью */
+.direction-card__pixels {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.direction-card__caption {
+  position: absolute;
+  z-index: 1;
+  left: 48px;                          /* иконка x = 99 */
+  bottom: 32px;                        /* строка текста 1263 + 57 = 1320 → 1352 − 1320 */
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.direction-card--integration .direction-card__caption { left: 55px; } /* иконка x = 856 */
+.direction-card__icon { flex: none; width: 27px; height: 24px; }
+.direction-card__title {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 34px;
+  line-height: 57px;
+  letter-spacing: -0.04em;             /* -1.36px */
+  color: var(--color-white);
+}
+
+/* --- О Тринити --- */
+.about { margin-top: 111px; }          /* заголовок y = 1463 */
+.about__body {
+  position: relative;
+  max-width: 551px;
+  margin-left: calc(50% + 0.5px);      /* x = 801 — начало второй карточки */
+}
+.about__label {
+  position: absolute;
+  top: -1px;                           /* y = 1462 */
+  left: 5px;                           /* x = 806 */
+  font-size: 12px;
+  line-height: 23px;
+  letter-spacing: 0.29em;              /* 3.48px */
+  color: var(--color-label);
+}
+.about__title {
+  font-size: 47px;
+  font-weight: 500;
+  line-height: 45px;
+  letter-spacing: -0.03em;             /* -1.41px */
+  text-transform: uppercase;
+}
+.about__title .reveal-line:first-child { padding-left: calc(180px + 0.03em); } /* «НАМ ДОВЕРЯЮТ» с x = 981 */
+
+/* «Узнайте больше»: иконка x = 806, y = 1714; текст x = 844 */
+.link-more {
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
+  margin: 71px 0 0 5px;
+  font-size: 14px;
+  line-height: 23px;
+  letter-spacing: -0.01em;
+  color: var(--color-white);
+}
+.link-more__icon {
+  transform: scaleX(-1);               /* в макете: rotate(180°) + отражение по Y */
+  transition: transform var(--duration) var(--ease);
+}
+.link-more:hover .link-more__icon { transform: scaleX(-1) translateX(-3px); }
+/* Ховер — Codrops «Line Hover Styles», №8 (link--kale), MIT © Codrops */
+.link-more__text { position: relative; white-space: nowrap; }
+.link-more__text::before,
+.link-more__text::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  height: 1px;
+  background: currentColor;
+  pointer-events: none;
+}
+.link-more__text::before { height: 10px; opacity: 0; }
+.link-more:hover .link-more__text::before,
+.link-more:focus-visible .link-more__text::before {
+  opacity: 1;
+  animation: link-line-up 0.3s ease forwards;
+}
+.link-more__text::after { opacity: 0; transition: opacity 0.3s; }
+.link-more:hover .link-more__text::after,
+.link-more:focus-visible .link-more__text::after { opacity: 1; transition-delay: 0.3s; }
+@keyframes link-line-up {
+  0%   { transform-origin: 50% 100%; transform: scale3d(1, 0.045, 1); }
+  50%  { transform-origin: 50% 100%; transform: scale3d(1, 1, 1); }
+  51%  { transform-origin: 50% 0%;   transform: scale3d(1, 1, 1); }
+  100% { transform-origin: 50% 0%;   transform: scale3d(1, 0.045, 1); }
+}
+
+/* ==========================================================================
+   Адаптив
+   ========================================================================== */
+@media (max-width: 1399px) {
+  /* центральная таблетка не помещается вместе с боковыми — убираем телефон и «Партнёрам» в меню */
+  .header__phone,
+  .header__partners { display: none; }
+}
+
+@media (max-width: 1199px) {
+  .header__nav { display: none; }
+  .header__center { left: 50%; width: auto; padding: 0 32px; translate: -50% 0; }
+  .header__logo { margin-right: 0; }
+
+  .hero { height: auto; min-height: var(--hero-height); padding-bottom: 80px; }
+  .hero__inner { padding-top: 180px; }
+  /* фигуры — под текстом, справа */
+  .hero__shapes { left: auto; right: -4vw; top: auto; bottom: 40px; width: 56vw; }
+  .hero__inner { padding-bottom: calc(49vw + 80px); }   /* место под фигуры (56vw × 571/650) */
+  .site-menu__inner { padding-left: var(--gutter-left); }
+}
+
+@media (max-width: 1023px) {
+  .hero__title { margin-left: 0; font-size: 48px; }
+  .hero__title-line { line-height: 46px; }
+  .hero__title-line--accent { font-size: 50px; line-height: 50px; }
+  .hero__title-line--last,
+  .hero__title-line--last + .hero__title-line { line-height: 46px; }
+  .hero__text { margin-left: 0; }
+  .cta { margin-left: 0; margin-top: 48px; }
+
+  .directions { grid-template-columns: 1fr; gap: 8px; }
+  .direction-card__caption,
+  .direction-card--integration .direction-card__caption { left: 28px; bottom: 16px; }
+  .about__body { margin-left: 0; }
+}
+
+@media (max-width: 767px) {
+  .header__center { padding: 0 20px; }
+  .header__logo img { width: 120px; height: auto; }
+
+  .hero { padding-bottom: 0; min-height: 0; }
+  .hero__inner { padding-top: 120px; padding-bottom: calc(70vw + 48px); }   /* фигуры 80vw × 571/650 */
+  .hero__title { font-size: 34px; }
+  .hero__title-line { line-height: 36px; }
+  .hero__title-line--accent { font-size: 8vw; line-height: 40px; }   /* «пространство» ≈ 11.3em по ширине */
+  .hero__title-line--last,
+  .hero__title-line--last + .hero__title-line { line-height: 36px; }
+  .hero__text { margin-top: 16px; font-size: 15px; line-height: 22px; }
+  .cta { margin-top: 28px; }
+  .hero__shapes { bottom: 24px; right: -8vw; width: 80vw; }
+
+  .main { padding: 16px 0 72px; }
+  .direction-card__title { font-size: 24px; line-height: 40px; }
+  .about { margin-top: 64px; }
+  .about__title { font-size: 30px; line-height: 31px; }
+  .about__title .reveal-line:first-child { padding-left: 0.03em; }
+  .about__label { position: static; margin-bottom: 16px; }
+  .link-more { margin-top: 32px; }
+  .site-menu__link { font-size: 30px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+  }
+}

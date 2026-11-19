@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Тринити — серверы и инфраструктура для ИИ</title>
+  <meta name="description" content="Производим серверы в России и строим на них инфраструктуру для ИИ — от системной платы до машинного зала.">
+
+  <!-- Onest — Google Fonts. Conthrax подключается локально в css/variables.css -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="./css/main.css">
+  <script>
+    /* Построчная анимация заголовков включается до первой отрисовки (без мигания текста).
+       Страховка: если основной JS не запустился, через 2.5 с показываем всё. */
+    (function () {
+      if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      var root = document.documentElement;
+      root.classList.add('reveal-ready');
+      setTimeout(function () { if (!window.__revealInit) root.classList.remove('reveal-ready'); }, 2500);
+    })();
+  </script>
+</head>
+<body class="page">
+
+  <!-- Контуры фигур (параллелограммы со скруглёнными углами) из макета Figma «Frame 42» (327:2935),
+       в долях блока — масштабируются вместе с ним -->
+  <svg class="svg-defs" width="0" height="0" aria-hidden="true" focusable="false">
+    <defs>
+      <!-- 327:2950, 650 × 571 -->
+      <clipPath id="clip-plane" clipPathUnits="objectBoundingBox">
+        <path transform="scale(0.0015385 0.0017513)" d="M323.53 567.363L649.26 10.9108C652.88 7.27389 649.26 0 642.022 0H330.769C330.769 0 327.15 0 327.15 3.63694L1.41984 560.089C-2.19938 563.726 1.41984 571 8.65828 571H319.911C319.911 571 323.53 571 323.53 567.363Z"/>
+      </clipPath>
+      <!-- 327:2986, 328 × 287 -->
+      <clipPath id="clip-glass" clipPathUnits="objectBoundingBox">
+        <path transform="scale(0.0030488 0.0034843)" d="M164.136 285.172L328 5.48408C329.821 3.65605 328 0 324.359 0H167.777C167.777 0 165.957 0 165.957 1.82803L2.09259 281.516C0.271876 283.344 2.09259 287 5.73401 287H162.315C162.315 287 164.136 287 164.136 285.172Z"/>
+      </clipPath>
+    </defs>
+  </svg>
+
+  <!-- ===================== HEADER ===================== -->
+  <header class="header">
+    <div class="header__inner container">
+      <div class="header__group">
+        <button class="header__pill header__pill--round header__menu-btn" type="button"
+                aria-controls="site-menu" aria-expanded="false" aria-label="Открыть меню">
+          <span class="header__grid-icon" aria-hidden="true"><span></span><span></span><span></span><span></span></span>
+        </button>
+        <a class="header__pill header__phone" href="tel:88007758746">8 (800) 775 87 46</a>
+      </div>
+
+      <div class="header__center header__pill">
+        <a class="header__logo" href="#top" aria-label="Тринити — на главную">
+          <img src="./assets/img/icons/logo-trinity.svg" width="149" height="25" alt="Тринити">
+        </a>
+        <nav class="header__nav" aria-label="Основное меню">
+          <a class="header__nav-link" href="#products">Продукты</a>
+          <a class="header__nav-link" href="#ai">ИИ</a>
+          <a class="header__nav-link" href="#integration">Интеграция</a>
+          <a class="header__nav-link header__nav-link--accent" href="#configurators">Конфигураторы</a>
+        </nav>
+      </div>
+
+      <div class="header__group">
+        <a class="header__pill header__pill--round" href="#search" aria-label="Поиск">
+          <img src="./assets/img/icons/search.svg" width="18" height="18" alt="">
+        </a>
+        <a class="header__pill header__partners" href="#partners">Партнёрам</a>
+      </div>
+    </div>
+
+    <!-- Меню по кнопке-сетке (на всех экранах; на мобильных — единственная навигация) -->
+    <div class="site-menu" id="site-menu" hidden>
+      <nav class="site-menu__inner container" aria-label="Меню">
+        <a class="site-menu__link" href="#products">Продукты</a>
+        <a class="site-menu__link" href="#ai">ИИ</a>
+        <a class="site-menu__link" href="#integration">Интеграция</a>
+        <a class="site-menu__link" href="#configurators">Конфигураторы</a>
+        <a class="site-menu__link" href="#partners">Партнёрам</a>
+        <a class="site-menu__phone" href="tel:88007758746">8 (800) 775 87 46</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ===================== ПЕРВЫЙ ЭКРАН =====================
+       Линия (js/line-hero.js): при прокрутке поворачивается вокруг точки на границе синего блока
+       и «закрывает» параллелограмм; к горизонтали ложится на верхний край синего блока. -->
+  <section class="hero" id="top" aria-labelledby="hero-title">
+    <div class="hero__inner container">
+      <h1 class="hero__title" id="hero-title" data-reveal="load">
+        <span class="hero__title-line reveal-line"><span class="reveal-line__inner">Создаём</span></span>
+        <span class="hero__title-line hero__title-line--accent reveal-line"><span class="reveal-line__inner">пространство</span></span>
+        <span class="hero__title-line hero__title-line--last reveal-line"><span class="reveal-line__inner">для прорывных</span></span>
+        <span class="hero__title-line reveal-line"><span class="reveal-line__inner">технологий</span></span>
+      </h1>
+
+      <p class="hero__text">
+        Производим серверы в России и строим на них<br class="br-desktop">
+        инфраструктуру для ИИ — от системной платы до машинного зала.
+      </p>
+
+      <a class="cta" href="#configurators">
+        <span class="cta__label">Подобрать решение</span>
+        <span class="cta__icon"><img src="./assets/img/icons/arrow-right-up.svg" width="19" height="19" alt=""></span>
+      </a>
+    </div>
+
+    <!-- Параллелограмм: видео (кадр из макета — постер) + логотип Минпромторга; поверх — «стекло» -->
+    <div class="hero__shapes" aria-hidden="true">
+      <div class="hero__plane">
+        <div class="hero__plane-media">
+          <video class="hero__video"
+                 muted loop playsinline
+                 poster="./assets/video/poster.jpg"
+                 preload="none"
+                 data-src="assets/video/trinity-glass-waves-1080p.mp4"></video>
+        </div>
+        <img class="hero__plane-logo" src="./assets/img/icons/logo-minpromtorg.svg" width="173" height="42" alt="">
+      </div>
+      <div class="hero__glass"></div>
+    </div>
+
+    <span class="hero__line" aria-hidden="true"></span>
+  </section>
+
+  <!-- ===================== НА СИНЕМ: НАПРАВЛЕНИЯ + О ТРИНИТИ ===================== -->
+  <main class="main">
+    <section class="directions container" aria-label="Направления">
+      <a class="direction-card direction-card--production" href="#production" data-pixels="255,255,255">
+        <span class="direction-card__media">
+          <img class="direction-card__img" src="./assets/img/card-production.jpg"
+               width="1500" height="837" loading="lazy"
+               alt="Серверное оборудование Тринити: передняя панель с сетевыми портами">
+        </span>
+        <span class="direction-card__caption">
+          <img class="direction-card__icon" src="./assets/img/icons/slash-white.svg" width="27" height="24" alt="">
+          <span class="direction-card__title">производство</span>
+        </span>
+      </a>
+
+      <a class="direction-card direction-card--integration" href="#integration" data-pixels="206,224,109">
+        <span class="direction-card__media">
+          <img class="direction-card__img" src="./assets/img/card-integration.jpg"
+               width="1500" height="963" loading="lazy"
+               alt="Специалист на синем фоне со светящимся логотипом Тринити">
+        </span>
+        <span class="direction-card__caption">
+          <img class="direction-card__icon" src="./assets/img/icons/slash-white.svg" width="27" height="24" alt="">
+          <span class="direction-card__title">интеграция</span>
+        </span>
+      </a>
+    </section>
+
+    <section class="about container" id="about" aria-labelledby="about-title">
+      <div class="about__body">
+        <p class="about__label">О ТРИНИТИ</p>
+        <h2 class="about__title" id="about-title" data-reveal>
+          <span class="reveal-line"><span class="reveal-line__inner">Нам доверяют</span></span>
+          <span class="reveal-line"><span class="reveal-line__inner">инфраструктуру,</span></span>
+          <span class="reveal-line"><span class="reveal-line__inner">которая не имеет</span></span>
+          <span class="reveal-line"><span class="reveal-line__inner">права остановиться</span></span>
+        </h2>
+        <a class="link-more" href="#company">
+          <img class="link-more__icon" src="./assets/img/icons/corner-up-left.svg" width="24" height="24" alt="">
+          <span class="link-more__text">Узнайте больше</span>
+        </a>
+      </div>
+    </section>
+  </main>
+
+  <!-- Обычные скрипты (не модули) — страница работает и при открытии файла с диска.
+       Порядок важен: модули → main.js. -->
+  <script defer src="./js/reveal.js"></script>
+  <script defer src="./js/hero-video.js"></script>
+  <script defer src="./js/line-hero.js"></script>
+  <script defer src="./js/menu.js"></script>
+  <script defer src="./js/card-pixels.js"></script>
+  <script defer src="./js/smooth-scroll.js"></script>
+  <script defer src="./js/main.js"></script>
+</body>
+</html>
