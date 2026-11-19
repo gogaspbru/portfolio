@@ -397,17 +397,20 @@ button.header__pill:hover { background-color: var(--color-light); }
    ========================================================================== */
 .hero-track.is-band .hero__line { z-index: 3; }
 
-/* блик на линии: короткий светящийся отрезок, положение и наклон задаёт JS */
+/* блик на линии: светлый отрезок внутри слоя линии (обрезается её контуром);
+   положение и наклон задаёт JS. Высота с запасом — видимая толщина = толщине линии. */
 .hero__line-glow {
   position: absolute;
   top: 0;
   left: 0;
-  z-index: 1;
-  width: 280px;
-  height: 5px;
-  border-radius: 5px;
-  background: linear-gradient(90deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.95) 55%, #FFFFFF 70%, rgba(255, 255, 255, 0) 100%);
-  box-shadow: 0 0 12px 3px rgba(120, 180, 255, 0.55), 0 0 28px 6px rgba(30, 110, 243, 0.35);
+  width: 420px;
+  height: 12px;
+  background: linear-gradient(90deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(214, 230, 255, 0.55) 45%,
+    rgba(255, 255, 255, 0.95) 78%,
+    #FFFFFF 86%,
+    rgba(255, 255, 255, 0) 100%);
   opacity: 0;
   pointer-events: none;
   will-change: transform, opacity;
