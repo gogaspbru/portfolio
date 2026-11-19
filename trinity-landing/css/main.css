@@ -487,18 +487,8 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
 }
 .line-scene.is-band .line-scene__line { z-index: 3; } /* раскрываясь в полосу, накрывает всё */
 
-/* «прорезь»: линия цвета фона, видна только в пределах параллелограмма
-   (внешний слой обрезан по параллелограмму, внутренний — по линии; оба задаёт JS) */
-.line-scene__cut,
-.line-scene__cut span {
-  position: absolute;
-  inset: 0;
-  clip-path: polygon(0 0, 0 0, 0 0);
-}
-.line-scene__cut { z-index: 2; pointer-events: none; }
-.line-scene__cut span { background: var(--color-light); }
-
-/* параллелограмм стоит на месте; внутренний span скошен под наклон линии */
+/* параллелограмм стоит на месте. Внешний слой (bbox) JS обрезает по линии — часть над линией
+   скрывается по мере того, как линия в него заходит; внутренний — сама форма с видео. */
 .line-scene__plane {
   position: absolute;
   left: 56.2%;                         /* x = 899 / 1600 */
@@ -507,19 +497,20 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
   width: 36.7vw;                       /* 587 / 1600 */
   height: 32.3vw;                      /* 517 / 1600 */
   max-height: 58vh;
-  clip-path: inset(100% 0 0 0);
-  transition: clip-path 1s cubic-bezier(0.7, 0, 0.2, 1) 0.35s;
+  opacity: 0;
+  transform: translateY(40px);
+  transition: opacity 0.8s var(--ease) 0.35s, transform 1s var(--ease) 0.35s;
 }
-.line-scene__plane span {
+.line-scene__plane-shape {
   position: absolute;
-  inset: 0 0 0 auto;
-  width: 49.4%;                        /* верхняя грань 290 из 587 */
-  border-radius: 6px;
-  background: var(--color-blue);
-  transform-origin: 100% 0;
-  transform: skewX(-30deg);
+  inset: 0;
+  overflow: hidden;
+  background: var(--color-blue) url("../assets/video/poster.jpg") center / cover no-repeat;
+  /* скос граней 30° от вертикали; точную форму под текущий размер задаёт JS */
+  clip-path: polygon(50.6% 0, 100% 0, 49.2% 100%, 0 100%);
 }
-.line-scene.is-ready .line-scene__plane { clip-path: inset(0 0 0 0); }
+.line-scene__video { display: block; width: 100%; height: 100%; object-fit: cover; }
+.line-scene.is-ready .line-scene__plane { opacity: 1; transform: none; }
 
 /* синий заполнил экран — заголовок больше не нужен (и не ловит выделение) */
 .line-scene.is-filled .line-scene__content { visibility: hidden; }
@@ -527,31 +518,42 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
 /* без анимации (prefers-reduced-motion): обычный экран, синяя секция идёт следом */
 .line-scene--static { height: auto; }
 .line-scene--static .line-scene__stage { position: relative; }
-.line-scene--static .line-scene__plane { clip-path: none; transition: none; }
+.line-scene--static .line-scene__plane { opacity: 1; transform: none; transition: none; }
 
 /* секция на синем: тот же цвет, что у залитого экрана — переход бесшовный */
+/* Секция наезжает на залипший экран (margin-top: −100vh), чтобы после заливки не было
+   пустого синего экрана: её верхние 100vh прозрачны, а блоки проявляются, как только
+   синий заполнил экран (.line-scene.is-filled). */
 .blue-section {
   position: relative;
-  z-index: 1;
-  min-height: 100vh;
-  background: var(--color-blue);
+  z-index: 3;                          /* над залипшим экраном */
+  margin-top: -100vh;
+  padding-bottom: 120px;
+  background: linear-gradient(transparent 100vh, var(--color-blue) 100vh);
   color: var(--color-white);
+  pointer-events: none;
 }
-.blue-section__inner {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 100vh;
+.blue-section .about {
+  padding-top: 120px;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(40px);
+  transition: opacity 0.5s var(--ease), transform 0.7s var(--ease), visibility 0s 0.5s;
 }
-.blue-section__stub {
-  margin: 0;
-  padding: 24px 32px;
-  border: 1px dashed rgba(255, 255, 255, 0.5);
-  border-radius: var(--radius-m);
-  font-size: 16px;
-  letter-spacing: 0.04em;
-  opacity: 0.8;
+.line-scene.is-filled + .blue-section .about {
+  opacity: 1;
+  visibility: visible;
+  transform: none;
+  pointer-events: auto;
+  transition: opacity 0.5s var(--ease), transform 0.7s var(--ease), visibility 0s;
 }
+/* без анимации — обычный поток */
+.line-scene--static + .blue-section { margin-top: 0; background: var(--color-blue); }
+.line-scene--static + .blue-section .about { opacity: 1; visibility: visible; transform: none; pointer-events: auto; }
+.blue-section .about__label { color: rgba(255, 255, 255, 0.6); }
+.blue-section .about__title,
+.blue-section .link-more { color: var(--color-white); }
+.blue-section .link-more__icon { filter: brightness(0) invert(1); }
 
 @media (max-width: 1023px) {
   .line-scene__title { font-size: 44px; margin-left: 0; }

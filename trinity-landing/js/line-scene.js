@@ -1,8 +1,9 @@
 /**
  * «Линия» на первом экране (index-line.html) — по мотивам santalarch.com.
  * Экран «залипает»; по мере прокрутки синяя диагональ (наклон как у слэша «/»)
- * поворачивается к горизонтали. Синий параллелограмм стоит на месте, а линия,
- * проходя по нему, выглядит «прорезью» цвета фона. Когда линия легла горизонтально,
+ * поворачивается к горизонтали. Синий параллелограмм (с видео) стоит на месте; когда линия
+ * заходит в него, часть над линией скрывается — линия «закрывает» блок по мере движения,
+ * между линией и блоком тонкий зазор цвета фона. Когда линия легла горизонтально,
  * она раскрывается в полосу и заливает экран фирменным синим; дальше идёт секция
  * на синем (.blue-section) того же цвета — переход бесшовный.
  *
@@ -14,8 +15,9 @@
  *   <section class="line-scene" data-line-scene>          — «дорожка» прокрутки (высота в CSS)
  *     <div class="line-scene__stage">                     — залипающий экран
  *       <div class="line-scene__content">…</div>
- *       <span class="line-scene__plane"><span></span></span>   — параллелограмм (скос в CSS)
- *       <span class="line-scene__cut"><span></span></span>     — «прорезь» линии по параллелограмму
+ *       <span class="line-scene__plane">                     — рамка блока (обрезка по линии — JS)
+ *         <span class="line-scene__plane-shape"><video…></span>  — форма параллелограмма
+ *       </span>
  *       <span class="line-scene__line"></span>                 — линия / полоса заливки
  */
 (function (Trinity) {
@@ -31,6 +33,7 @@
   const INTRO_MS = 1100;           // «прорисовка» линии при загрузке
   const PLANE_SIDE = 0.494;        // верхняя грань параллелограмма — доля ширины (290 / 587)
   const PLANE_SKEW = Math.tan((30 * Math.PI) / 180); // скос граней: 30° от вертикали
+  const PLANE_GAP = 6;             // зазор между линией и блоком, px
 
   const clamp = (v, a = 0, b = 1) => Math.min(b, Math.max(a, v));
   const range = (p, [a, b]) => clamp((p - a) / (b - a));
@@ -57,8 +60,7 @@
     const stage = scene.querySelector('.line-scene__stage');
     const line = scene.querySelector('.line-scene__line');
     const plane = scene.querySelector('.line-scene__plane');
-    const cut = scene.querySelector('.line-scene__cut');
-    const cutBand = cut && cut.firstElementChild;
+    const shapeEl = plane && plane.querySelector('.line-scene__plane-shape');
     const content = scene.querySelector('.line-scene__content');
     if (!stage || !line) return;
 
@@ -89,24 +91,35 @@
       line.style.clipPath = shape;
       line.style.webkitClipPath = shape;
 
-      // «прорезь»: та же полоса цвета фона, но видна только внутри параллелограмма
-      if (plane && cut && cutBand) {
-        const s = stage.getBoundingClientRect();
-        const b = plane.getBoundingClientRect();
-        const x = b.left - s.left, y = b.top - s.top, w = b.width, h = b.height;
-        const k = PLANE_SKEW * h;
-        const planeShape = poly([[x + w - w * PLANE_SIDE, y], [x + w, y], [x + w - k, y + h], [x + w - w * PLANE_SIDE - k, y + h]]);
-        cut.style.clipPath = planeShape;
-        cut.style.webkitClipPath = planeShape;
-        cutBand.style.clipPath = shape;
-        cutBand.style.webkitClipPath = shape;
+      // блок: точная форма параллелограмма + обрезка по линии (видна только сторона «под» линией)
+      if (plane && shapeEl) {
+        const x = plane.offsetLeft, y = plane.offsetTop;   // без учёта transform появления
+        const w = plane.offsetWidth, h = plane.offsetHeight;
+        const k = PLANE_SKEW * h, side = w * PLANE_SIDE;
+        const shape2 = poly([[w - side, 0], [w, 0], [w - k, h], [w - side - k, h]]);
+        shapeEl.style.clipPath = shape2;
+        shapeEl.style.webkitClipPath = shape2;
+
+        const a = (deg * Math.PI) / 180;
+        const dx = Math.cos(a), dy = Math.sin(a), nx = -dy, ny = dx; // n — «под» линией
+        const off = half + PLANE_GAP, far = 2 * (W + H);
+        const lx = cx - x, ly = cy - y;                    // центр линии в координатах блока
+        const keep = poly([
+          [lx - dx * far + nx * off, ly - dy * far + ny * off],
+          [lx + dx * far + nx * off, ly + dy * far + ny * off],
+          [lx + dx * far + nx * (off + far), ly + dy * far + ny * (off + far)],
+          [lx - dx * far + nx * (off + far), ly - dy * far + ny * (off + far)],
+        ]);
+        plane.style.clipPath = keep;
+        plane.style.webkitClipPath = keep;
       }
 
       // заголовок чуть уходит вверх, пока его накрывает синий
       if (content) content.style.transform = `translateY(${-band * 60}px)`;
 
       scene.classList.toggle('is-band', band > 0);       // полоса растёт — поверх всего
-      scene.classList.toggle('is-filled', band >= 0.999);
+      // экран залит целиком (полоса шире экрана) — показываем блоки на синем
+      scene.classList.toggle('is-filled', half >= H * 0.52);
 
       if (intro < 1) request();
     }

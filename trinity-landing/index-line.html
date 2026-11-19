@@ -158,22 +158,23 @@
         </p>
       </div>
 
-      <span class="line-scene__plane" aria-hidden="true"><span></span></span>
-      <span class="line-scene__cut" aria-hidden="true"><span></span></span>
+      <!-- Параллелограмм с видео: внешний слой JS обрезает по линии (часть над линией скрывается),
+           внутренний — форма параллелограмма. Видео подставляет js/hero-video.js (десктоп). -->
+      <span class="line-scene__plane" aria-hidden="true">
+        <span class="line-scene__plane-shape">
+          <video class="line-scene__video hero__video"
+                 muted loop playsinline
+                 poster="./assets/video/poster.jpg"
+                 preload="none"
+                 data-src="assets/video/trinity-glass-waves-1080p.mp4"></video>
+        </span>
+      </span>
       <span class="line-scene__line" aria-hidden="true"></span>
     </div>
   </section>
 
-  <!-- ===================== НА СИНЕМ (контент ещё не нарисован — заглушка) ===================== -->
-  <section class="blue-section" aria-label="Контент на синем фоне">
-    <div class="blue-section__inner container">
-      <p class="blue-section__stub">Здесь будет контент на синем фоне</p>
-    </div>
-  </section>
-
-  <main class="main">
-    <div class="grid-lines grid-lines--dark" aria-hidden="true"><span></span><span></span><span></span><span></span></div>
-
+  <!-- ===================== НА СИНЕМ: пока — секция «О Тринити» с карточками (черновая раскладка) ===================== -->
+  <section class="blue-section" aria-label="О Тринити">
     <!-- ===================== О ТРИНИТИ ===================== -->
     <section class="about container" id="about" aria-labelledby="about-title">
       <div class="about__head">
@@ -218,6 +219,10 @@
         </a>
       </div>
     </section>
+  </section>
+
+  <main class="main">
+    <div class="grid-lines grid-lines--dark" aria-hidden="true"><span></span><span></span><span></span><span></span></div>
 
     <!-- ===================== ЦИФРЫ ===================== -->
     <section class="stats" aria-label="Тринити в цифрах">
@@ -247,6 +252,7 @@
   <!-- Обычные скрипты (не модули) — страница работает и при открытии файла с диска.
        Порядок важен: модули → main.js. -->
   <script defer src="./js/reveal.js"></script>
+  <script defer src="./js/hero-video.js"></script>
   <script defer src="./js/line-scene.js"></script>
   <script defer src="./js/header.js"></script>
   <script defer src="./js/mega-menu.js"></script>
