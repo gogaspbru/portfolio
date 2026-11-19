@@ -7,7 +7,15 @@
   'use strict';
 
   T.initReveal();
-  T.initHeroVideo(document.querySelector('.hero__video'));
+  // видео в параллелограмме и его размытая копия в «стекле» — держим их кадр в кадр
+  const videos = document.querySelectorAll('.hero__video');
+  videos.forEach((v) => T.initHeroVideo(v));
+  if (videos.length > 1) {
+    const [main, copy] = videos;
+    main.addEventListener('timeupdate', () => {
+      if (!copy.paused && Math.abs(copy.currentTime - main.currentTime) > 0.08) copy.currentTime = main.currentTime;
+    });
+  }
   T.initLineHero(document.querySelector('[data-hero-track]'));
   T.initMenu(document.querySelector('.header__menu-btn'), document.getElementById('site-menu'));
   T.initCardPixels();

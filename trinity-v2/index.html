@@ -121,7 +121,19 @@
         </div>
         <img class="hero__plane-logo" src="./assets/img/icons/logo-minpromtorg.svg" width="173" height="42" alt="">
       </div>
-      <div class="hero__glass"></div>
+      <!-- «стекло»: внутри — размытая копия того, что под ним (фон + параллелограмм с тем же видео).
+           Так размытие работает в любом браузере, без backdrop-filter. -->
+      <div class="hero__glass">
+        <span class="hero__glass-backdrop">
+          <span class="hero__glass-plane">
+            <video class="hero__video hero__video--blur"
+                   muted loop playsinline
+                   poster="./assets/video/poster.jpg"
+                   preload="none"
+                   data-src="assets/video/trinity-glass-waves-1080p.mp4"></video>
+          </span>
+        </span>
+      </div>
     </div>
 
     <!-- линия; внутри — блик, который пробегает по ней, пока она стоит (js/line-hero.js).

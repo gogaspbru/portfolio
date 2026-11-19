@@ -373,16 +373,39 @@ button.header__pill:hover { background-color: var(--color-light); }
   width: 26.62%;                       /* 173 / 650 */
   height: auto;
 }
-/* «стекло»: 328 × 287 с x = 1136, y = 332; размытие фона 50px, белый градиент 0.4 → 0.01, прозрачность 0.2 */
+/* «стекло»: 328 × 287 с x = 1136, y = 332 (макет) — размытие фона 50px,
+   поверх белый градиент 0.4 → 0.01 с прозрачностью 0.2.
+   Размытие — не backdrop-filter (он не видит фигуру под собой из-за обрезки по линии
+   и анимации появления), а размытая копия фона и параллелограмма внутри «стекла». */
 .hero__glass {
   position: absolute;
   left: 46.51%;                        /* (1136 − 833.7) / 650 */
   top: 34.33%;                         /* (332 − 136) / 571 */
   width: 50.46%;                       /* 328 / 650 */
   height: 50.26%;                      /* 287 / 571 */
+  overflow: hidden;
   clip-path: url(#clip-glass);
-  -webkit-backdrop-filter: blur(50px);
-          backdrop-filter: blur(50px);
+}
+/* копия рамки фигур (650 × 571) в координатах «стекла» */
+.hero__glass-backdrop {
+  position: absolute;
+  left: -92.17%;                       /* −46.51 / 50.46 */
+  top: -68.31%;                        /* −34.33 / 50.26 */
+  width: 198.18%;                      /* 100 / 50.46 */
+  height: 198.97%;                     /* 100 / 50.26 */
+  background: var(--color-light);
+  filter: blur(50px);
+}
+.hero__glass-plane {
+  position: absolute;
+  inset: 0;
+  clip-path: url(#clip-plane);
+  background: var(--color-blue) url("../assets/video/poster.jpg") 0 0 / 100% 100% no-repeat;
+}
+.hero__glass::after {
+  content: "";
+  position: absolute;
+  inset: 0;
   background: linear-gradient(114deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.002) 100%);
 }
 
