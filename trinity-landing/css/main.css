@@ -476,31 +476,37 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
   letter-spacing: -0.01em;
 }
 
-/* линия: длинная тонкая полоса; положение, поворот и толщину задаёт JS */
+/* линия / полоса заливки: слой во весь экран, форму (clip-path: polygon) задаёт JS.
+   Пока линия поворачивается — она под заголовком и параллелограммом. */
 .line-scene__line {
   position: absolute;
-  top: 0;
-  left: 0;
-  z-index: 0;                          /* пока поворачивается — под заголовком */
-  width: 300vmax;
-  height: 8px;
+  inset: 0;
+  z-index: 0;
   background: var(--color-blue);
-  transform-origin: 50% 50%;
-  transform: translate(51vw, 58vh) translate(-50%, -50%) rotate(-59deg);
-  will-change: transform;
-  clip-path: inset(0 50% 0 50%);       /* появление: «прорисовывается» из центра */
-  transition: clip-path 1.1s cubic-bezier(0.7, 0, 0.2, 1);
+  clip-path: polygon(0 0, 0 0, 0 0);   /* до первого кадра JS линии не видно */
 }
-/* параллелограмм: внешний блок двигает JS, внутренний скошен под наклон линии */
+.line-scene.is-band .line-scene__line { z-index: 3; } /* раскрываясь в полосу, накрывает всё */
+
+/* «прорезь»: линия цвета фона, видна только в пределах параллелограмма
+   (внешний слой обрезан по параллелограмму, внутренний — по линии; оба задаёт JS) */
+.line-scene__cut,
+.line-scene__cut span {
+  position: absolute;
+  inset: 0;
+  clip-path: polygon(0 0, 0 0, 0 0);
+}
+.line-scene__cut { z-index: 2; pointer-events: none; }
+.line-scene__cut span { background: var(--color-light); }
+
+/* параллелограмм стоит на месте; внутренний span скошен под наклон линии */
 .line-scene__plane {
   position: absolute;
   left: 56.2%;                         /* x = 899 / 1600 */
   top: 32%;
-  z-index: 0;
+  z-index: 1;
   width: 36.7vw;                       /* 587 / 1600 */
   height: 32.3vw;                      /* 517 / 1600 */
   max-height: 58vh;
-  will-change: transform, opacity;
   clip-path: inset(100% 0 0 0);
   transition: clip-path 1s cubic-bezier(0.7, 0, 0.2, 1) 0.35s;
 }
@@ -513,8 +519,6 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
   transform-origin: 100% 0;
   transform: skewX(-30deg);
 }
-.line-scene.is-ready .line-scene__line { clip-path: inset(0 0 0 0); }
-.line-scene.is-band .line-scene__line { z-index: 2; } /* раскрываясь в полосу, накрывает заголовок */
 .line-scene.is-ready .line-scene__plane { clip-path: inset(0 0 0 0); }
 
 /* синий заполнил экран — заголовок больше не нужен (и не ловит выделение) */
@@ -523,7 +527,6 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
 /* без анимации (prefers-reduced-motion): обычный экран, синяя секция идёт следом */
 .line-scene--static { height: auto; }
 .line-scene--static .line-scene__stage { position: relative; }
-.line-scene--static .line-scene__line,
 .line-scene--static .line-scene__plane { clip-path: none; transition: none; }
 
 /* секция на синем: тот же цвет, что у залитого экрана — переход бесшовный */

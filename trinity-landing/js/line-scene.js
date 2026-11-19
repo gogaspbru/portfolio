@@ -1,90 +1,126 @@
 /**
  * «Линия» на первом экране (index-line.html) — по мотивам santalarch.com.
  * Экран «залипает»; по мере прокрутки синяя диагональ (наклон как у слэша «/»)
- * поворачивается к горизонтали, параллелограмм улетает вверх-вправо, а когда линия
- * легла горизонтально — она раскрывается в полосу и заливает экран фирменным синим.
- * Дальше идёт секция на синем (.blue-section) того же цвета — переход бесшовный.
+ * поворачивается к горизонтали. Синий параллелограмм стоит на месте, а линия,
+ * проходя по нему, выглядит «прорезью» цвета фона. Когда линия легла горизонтально,
+ * она раскрывается в полосу и заливает экран фирменным синим; дальше идёт секция
+ * на синем (.blue-section) того же цвета — переход бесшовный.
  *
- * Только transform — без WebGL и библиотек; работает с file://.
+ * Линия и полоса — это clip-path: polygon(...) у слоёв размером с экран: многоугольник
+ * пересчитывается каждый кадр. Огромных повёрнутых/растянутых слоёв нет — линия
+ * не «ломается» на тайлы. Без WebGL и библиотек; работает с file://.
  *
  * Разметка:
- *   <section class="line-scene" data-line-scene>        — «дорожка» прокрутки (высота в CSS)
- *     <div class="line-scene__stage">                   — залипающий экран
- *       <span class="line-scene__line"></span>
- *       <span class="line-scene__plane"><span></span></span>  — внутренний span скошен (CSS)
+ *   <section class="line-scene" data-line-scene>          — «дорожка» прокрутки (высота в CSS)
+ *     <div class="line-scene__stage">                     — залипающий экран
  *       <div class="line-scene__content">…</div>
+ *       <span class="line-scene__plane"><span></span></span>   — параллелограмм (скос в CSS)
+ *       <span class="line-scene__cut"><span></span></span>     — «прорезь» линии по параллелограмму
+ *       <span class="line-scene__line"></span>                 — линия / полоса заливки
  */
 (function (Trinity) {
   'use strict';
 
-  // ---------- таймлайн (доли прогресса прокрутки 0..1) ----------
-  const ANGLE_FROM = -59;        // наклон линии в начале, ° (как в эскизе Figma «Frame 31»)
-  const ROTATE = [0, 0.55];      // поворот линии к горизонтали
-  const PLANE_FLY = [0.04, 0.4]; // параллелограмм улетает
-  const BAND = [0.55, 1];        // линия раскрывается в полосу и заливает экран
-  // точка вращения линии: в начале — как в эскизе, к горизонтали — центр экрана
-  const PIVOT_FROM = [0.51, 0.58];
-  const PIVOT_TO = [0.5, 0.5];
+  // ---------- параметры ----------
+  const ANGLE_FROM = -59;          // наклон линии в начале, ° (эскиз Figma «Frame 31»)
+  const LINE_WIDTH = 8;            // толщина линии, px
+  const ROTATE = [0, 0.55];        // поворот к горизонтали (доли прогресса прокрутки)
+  const BAND = [0.55, 1];          // раскрытие в полосу на весь экран
+  const PIVOT_FROM = [0.51, 0.58]; // точка вращения в начале (доли экрана) — как в эскизе
+  const PIVOT_TO = [0.5, 0.5];     // к горизонтали — центр экрана
+  const INTRO_MS = 1100;           // «прорисовка» линии при загрузке
+  const PLANE_SIDE = 0.494;        // верхняя грань параллелограмма — доля ширины (290 / 587)
+  const PLANE_SKEW = Math.tan((30 * Math.PI) / 180); // скос граней: 30° от вертикали
 
   const clamp = (v, a = 0, b = 1) => Math.min(b, Math.max(a, v));
   const range = (p, [a, b]) => clamp((p - a) / (b - a));
   const lerp = (a, b, t) => a + (b - a) * t;
   const easeInOut = (t) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2);
-  const easeIn = (t) => t * t * t;
+  const easeOut = (t) => 1 - Math.pow(1 - t, 3);
+  const poly = (pts) => `polygon(${pts.map(([x, y]) => `${x.toFixed(1)}px ${y.toFixed(1)}px`).join(', ')})`;
+
+  // полоса шириной 2·half вдоль прямой через (cx, cy) под углом deg, длиной 2·len
+  function bandPolygon(cx, cy, deg, half, len) {
+    const a = (deg * Math.PI) / 180;
+    const dx = Math.cos(a), dy = Math.sin(a);   // вдоль линии
+    const nx = -dy, ny = dx;                    // поперёк
+    return poly([
+      [cx - dx * len + nx * half, cy - dy * len + ny * half],
+      [cx + dx * len + nx * half, cy + dy * len + ny * half],
+      [cx + dx * len - nx * half, cy + dy * len - ny * half],
+      [cx - dx * len - nx * half, cy - dy * len - ny * half],
+    ]);
+  }
 
   function initLineScene(scene) {
     if (!scene) return;
     const stage = scene.querySelector('.line-scene__stage');
     const line = scene.querySelector('.line-scene__line');
     const plane = scene.querySelector('.line-scene__plane');
+    const cut = scene.querySelector('.line-scene__cut');
+    const cutBand = cut && cut.firstElementChild;
     const content = scene.querySelector('.line-scene__content');
     if (!stage || !line) return;
 
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-      scene.classList.add('line-scene--static');
-      return;
-    }
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reduce) scene.classList.add('line-scene--static');
 
     let ticking = false;
+    let introStart = null;
 
-    function update() {
+    function update(now) {
       ticking = false;
+      if (introStart === null) introStart = now;
+      const intro = reduce ? 1 : easeOut(clamp((now - introStart) / INTRO_MS));
+
       const r = scene.getBoundingClientRect();
       const W = stage.clientWidth, H = stage.clientHeight;
-      const p = clamp(-r.top / Math.max(1, r.height - H));
-
+      const p = reduce ? 0 : clamp(-r.top / Math.max(1, r.height - H));
       const rot = easeInOut(range(p, ROTATE));
-      const fly = easeIn(range(p, PLANE_FLY));
       const band = easeInOut(range(p, BAND));
 
-      // линия: поворот вокруг точки, которая сползает к центру экрана
-      const px = lerp(PIVOT_FROM[0], PIVOT_TO[0], rot) * W;
-      const py = lerp(PIVOT_FROM[1], PIVOT_TO[1], rot) * H;
-      const thick = line.offsetHeight || 8;
-      const scaleY = 1 + band * ((H * 1.15) / thick);   // до толщины больше экрана
-      line.style.transform =
-        `translate(${px}px, ${py}px) translate(-50%, -50%) rotate(${lerp(ANGLE_FROM, 0, rot)}deg) scaleY(${scaleY})`;
+      const cx = lerp(PIVOT_FROM[0], PIVOT_TO[0], rot) * W;
+      const cy = lerp(PIVOT_FROM[1], PIVOT_TO[1], rot) * H;
+      const deg = lerp(ANGLE_FROM, 0, rot);
+      const half = lerp(LINE_WIDTH / 2, H * 0.6, band);
+      const len = (W + H) * intro;               // при загрузке линия растёт из центра
+      const shape = bandPolygon(cx, cy, deg, half, len);
 
-      // параллелограмм улетает вдоль своего наклона (вверх-вправо)
-      if (plane) {
-        plane.style.transform = `translate(${fly * W * 0.45}px, ${-fly * H * 0.8}px)`;
-        plane.style.opacity = String(1 - clamp((fly - 0.6) / 0.4));
+      line.style.clipPath = shape;
+      line.style.webkitClipPath = shape;
+
+      // «прорезь»: та же полоса цвета фона, но видна только внутри параллелограмма
+      if (plane && cut && cutBand) {
+        const s = stage.getBoundingClientRect();
+        const b = plane.getBoundingClientRect();
+        const x = b.left - s.left, y = b.top - s.top, w = b.width, h = b.height;
+        const k = PLANE_SKEW * h;
+        const planeShape = poly([[x + w - w * PLANE_SIDE, y], [x + w, y], [x + w - k, y + h], [x + w - w * PLANE_SIDE - k, y + h]]);
+        cut.style.clipPath = planeShape;
+        cut.style.webkitClipPath = planeShape;
+        cutBand.style.clipPath = shape;
+        cutBand.style.webkitClipPath = shape;
       }
 
       // заголовок чуть уходит вверх, пока его накрывает синий
       if (content) content.style.transform = `translateY(${-band * 60}px)`;
 
-      scene.classList.toggle('is-band', band > 0);   // полоса растёт — линия поверх заголовка
+      scene.classList.toggle('is-band', band > 0);       // полоса растёт — поверх всего
       scene.classList.toggle('is-filled', band >= 0.999);
+
+      if (intro < 1) request();
     }
 
-    const request = () => {
+    function request() {
       if (!ticking) { ticking = true; requestAnimationFrame(update); }
-    };
-    window.addEventListener('scroll', request, { passive: true });
+    }
+
+    if (!reduce) {
+      window.addEventListener('scroll', request, { passive: true });
+    }
     window.addEventListener('resize', request);
-    update();
-    // появление при загрузке (линия «прорисовывается», параллелограмм выезжает) — в CSS
+    request();
+    // появление параллелограмма при загрузке — в CSS
     requestAnimationFrame(() => scene.classList.add('is-ready'));
   }
 
