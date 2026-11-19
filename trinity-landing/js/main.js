@@ -7,10 +7,11 @@
   'use strict';
 
   T.initReveal();
-  // первый экран: видео (index.html), «матрица точек» (index-matrix.html) или кубики (index-cubes.html)
+  // первый экран: видео (index.html), «матрица точек» (index-matrix.html) кубики (index-cubes.html) или «линия» (index-line.html)
   if (T.initHeroVideo) T.initHeroVideo(document.querySelector('.hero__video'));
   if (T.initHeroMatrix) T.initHeroMatrix(document.querySelector('.hero__matrix'));
   if (T.initHeroCubes) T.initHeroCubes(document.querySelector('.hero__cubes'));
+  if (T.initLineScene) T.initLineScene(document.querySelector('[data-line-scene]'));
   T.initStickyHeader(document.querySelector('.header'));
   T.initMegaMenu(document.querySelector('.header'));
   T.initMenu({

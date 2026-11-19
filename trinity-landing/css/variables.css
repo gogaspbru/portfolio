@@ -76,6 +76,8 @@
   --header-cell-height: 129px;
   --header-cell-height-stuck: 54px;
   --sticky-top: 100px;               /* отступ липких блоков «О Тринити» от верха окна */
+  --line-scroll: 300vh;              /* index-line.html: высота «дорожки» (200vh — сама анимация) */
+  --line-scroll-mobile: 220vh;
   --matrix-scroll: 80vh;             /* index-matrix.html: сколько прокручиваем, пока знак поднимается */
 
   /* ---------- Анимации ---------- */

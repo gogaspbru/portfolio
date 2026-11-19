@@ -18,6 +18,7 @@ export default defineConfig({
         main: resolve(__dirname, 'index.html'),
         matrix: resolve(__dirname, 'index-matrix.html'),
         cubes: resolve(__dirname, 'index-cubes.html'),
+        line: resolve(__dirname, 'index-line.html'),
       },
     },
     // Шрифт woff2 встраиваем в CSS (data:) — Chrome не грузит шрифты с file://.
