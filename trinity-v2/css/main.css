@@ -274,7 +274,7 @@ button.header__pill:hover { background-color: var(--color-light); }
    «перезаходят» и становятся тёмными. */
 .cta {
   display: inline-flex;
-  margin: 91px 0 0 109px;             /* y = 623, x = 160 */
+  margin: 60px 0 0 109px;             /* x = 160; по макету y = 623 (отступ 91px) — уменьшено по просьбе */
   font-size: 13px;
   font-weight: 700;
   line-height: 26px;
