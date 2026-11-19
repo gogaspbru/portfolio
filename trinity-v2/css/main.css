@@ -194,6 +194,7 @@ button.header__pill:hover { background-color: var(--color-light); }
   overflow-y: auto;
 }
 .site-menu[hidden] { display: none; }
+@media (min-width: 1200px) { .site-menu { display: none; } }   /* на десктопе меню по кнопке нет */
 .site-menu__inner {
   display: flex;
   flex-direction: column;
