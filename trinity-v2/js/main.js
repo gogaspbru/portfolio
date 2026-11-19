@@ -8,7 +8,7 @@
 
   T.initReveal();
   T.initHeroVideo(document.querySelector('.hero__video'));
-  T.initLineHero(document.querySelector('.hero'));
+  T.initLineHero(document.querySelector('[data-hero-track]'));
   T.initMenu(document.querySelector('.header__menu-btn'), document.getElementById('site-menu'));
   T.initCardPixels();
   T.initSmoothScroll();

@@ -40,6 +40,7 @@
   --header-top: 18px;
   --pill-height: 61px;
   --hero-height: 770px;           /* синий блок начинается с y = 770 */
+  --hero-scroll: 130vh;           /* сколько прокручиваем, пока линия поворачивается и заливает экран */
   --radius-pill: 100px;
   --radius-card: 5px;
 

@@ -217,9 +217,16 @@ button.header__pill:hover { background-color: var(--color-light); }
 /* ==========================================================================
    Первый экран (макет: фон #F8F8F8 до y = 770)
    ========================================================================== */
-.hero {
+/* «дорожка» прокрутки: экран залипает, пока идёт анимация линии */
+.hero-track {
   position: relative;
-  height: var(--hero-height);
+  height: calc(100vh + var(--hero-scroll));
+}
+.hero {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  min-height: 640px;
   overflow: hidden;
   background: var(--color-light);
 }
@@ -327,7 +334,8 @@ button.header__pill:hover { background-color: var(--color-light); }
   background: linear-gradient(114deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.002) 100%);
 }
 
-/* линия: слой во весь первый экран, форму (clip-path: polygon) задаёт js/line-hero.js */
+/* линия / синяя заливка: слой во весь экран, форму (clip-path: polygon) задаёт js/line-hero.js.
+   Пока линия поворачивается — под текстом; раскрываясь в полосу — поверх всего. */
 .hero__line {
   position: absolute;
   inset: 0;
@@ -340,12 +348,40 @@ button.header__pill:hover { background-color: var(--color-light); }
 /* ==========================================================================
    Синий блок: направления + «О Тринити» (макет: с y = 770 до 1858)
    ========================================================================== */
+.hero-track.is-band .hero__line { z-index: 3; }
+
+/* Синий блок наезжает на залипший экран (margin-top: −100vh): верхние 100vh прозрачны,
+   блоки проявляются, как только синий заполнил экран (.hero-track.is-filled).
+   Отступы внутри — из макета: карточки на 53px ниже края синего блока, низ — 114px. */
 .main {
   position: relative;
-  background: var(--color-blue);
+  z-index: 3;
+  margin-top: -100vh;
+  padding: calc(var(--header-top) + var(--pill-height) + 53px) 0 114px;
+  background: linear-gradient(transparent 100vh, var(--color-blue) 100vh);
   color: var(--color-white);
-  padding: 53px 0 114px;               /* карточки y = 823; низ блока 1858 */
+  pointer-events: none;
 }
+.main > * {
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(40px);
+  transition: opacity 0.5s var(--ease), transform 0.7s var(--ease), visibility 0s 0.5s;
+}
+.hero-track.is-filled + .main > * {
+  opacity: 1;
+  visibility: visible;
+  transform: none;
+  pointer-events: auto;
+  transition: opacity 0.5s var(--ease), transform 0.7s var(--ease), visibility 0s;
+}
+.hero-track.is-filled + .main > .about { transition-delay: 0.12s; }
+
+/* без анимации (prefers-reduced-motion): обычный поток — первый экран, затем синий блок */
+.hero-track--static { height: auto; }
+.hero-track--static .hero { position: relative; height: auto; min-height: var(--hero-height); }
+.hero-track--static + .main { margin-top: 0; padding-top: 53px; background: var(--color-blue); pointer-events: auto; }
+.hero-track--static + .main > * { opacity: 1; visibility: visible; transform: none; }
 
 .directions {
   display: grid;
@@ -489,11 +525,16 @@ button.header__pill:hover { background-color: var(--color-light); }
   .header__center { left: 50%; width: auto; padding: 0 32px; translate: -50% 0; }
   .header__logo { margin-right: 0; }
 
-  .hero { height: auto; min-height: var(--hero-height); padding-bottom: 80px; }
+  .hero { min-height: 0; }
   .hero__inner { padding-top: 180px; }
-  /* фигуры — под текстом, справа */
-  .hero__shapes { left: auto; right: -4vw; top: auto; bottom: 40px; width: 56vw; }
-  .hero__inner { padding-bottom: calc(49vw + 80px); }   /* место под фигуры (56vw × 571/650) */
+  /* фигуры — под текстом, справа; размер — чтобы поместились по высоте экрана */
+  .hero__shapes {
+    left: auto;
+    right: -4vw;
+    top: auto;
+    bottom: 32px;
+    width: clamp(200px, (100vh - 520px) * 1.14, 56vw);
+  }
   .site-menu__inner { padding-left: var(--gutter-left); }
 }
 
@@ -516,8 +557,7 @@ button.header__pill:hover { background-color: var(--color-light); }
   .header__center { padding: 0 20px; }
   .header__logo img { width: 120px; height: auto; }
 
-  .hero { padding-bottom: 0; min-height: 0; }
-  .hero__inner { padding-top: 120px; padding-bottom: calc(70vw + 48px); }   /* фигуры 80vw × 571/650 */
+  .hero__inner { padding-top: 110px; }
   .hero__title { font-size: 34px; }
   .hero__title-line { line-height: 36px; }
   .hero__title-line--accent { font-size: 8vw; line-height: 40px; }   /* «пространство» ≈ 11.3em по ширине */
@@ -525,9 +565,9 @@ button.header__pill:hover { background-color: var(--color-light); }
   .hero__title-line--last + .hero__title-line { line-height: 36px; }
   .hero__text { margin-top: 16px; font-size: 15px; line-height: 22px; }
   .cta { margin-top: 28px; }
-  .hero__shapes { bottom: 24px; right: -8vw; width: 80vw; }
+  .hero__shapes { bottom: 20px; right: -8vw; width: clamp(180px, (100vh - 450px) * 1.14, 80vw); }
 
-  .main { padding: 16px 0 72px; }
+  .main { padding-bottom: 72px; }
   .direction-card__title { font-size: 24px; line-height: 40px; }
   .about { margin-top: 64px; }
   .about__title { font-size: 30px; line-height: 31px; }

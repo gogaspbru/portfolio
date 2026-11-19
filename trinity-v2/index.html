@@ -85,8 +85,10 @@
   </header>
 
   <!-- ===================== ПЕРВЫЙ ЭКРАН =====================
-       Линия (js/line-hero.js): при прокрутке поворачивается вокруг точки на границе синего блока
-       и «закрывает» параллелограмм; к горизонтали ложится на верхний край синего блока. -->
+       Экран «залипает» внутри .hero-track (js/line-hero.js): при прокрутке линия поворачивается,
+       «закрывает» фигуры и ложится горизонтально; затем раскрывается и заливает экран синим —
+       и только тогда появляются блоки на синем (.main). -->
+  <div class="hero-track" data-hero-track>
   <section class="hero" id="top" aria-labelledby="hero-title">
     <div class="hero__inner container">
       <h1 class="hero__title" id="hero-title" data-reveal="load">
@@ -124,8 +126,10 @@
 
     <span class="hero__line" aria-hidden="true"></span>
   </section>
+  </div>
 
-  <!-- ===================== НА СИНЕМ: НАПРАВЛЕНИЯ + О ТРИНИТИ ===================== -->
+  <!-- ===================== НА СИНЕМ: НАПРАВЛЕНИЯ + О ТРИНИТИ =====================
+       Наезжает на залипший экран; блоки проявляются, когда синий заполнил экран. -->
   <main class="main">
     <section class="directions container" aria-label="Направления">
       <a class="direction-card direction-card--production" href="#production" data-pixels="255,255,255">
