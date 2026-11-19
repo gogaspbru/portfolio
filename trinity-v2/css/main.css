@@ -295,13 +295,14 @@ button.header__pill:hover { background-color: var(--color-light); }
 .cta:hover .cta__icon,
 .cta:focus-visible .cta__icon { transform: rotate(45deg); }
 
-/* --- Фигуры справа: рамка 650 × 571 с x = 833.7, y = 136 (на ширине 1600);
+/* --- Фигуры справа: рамка 650 × 571 с x = 873.7, y = 176 (макет: 833.7, 136 + сдвиг 40px);
        уже 1600 — уменьшаются пропорционально ширине окна --- */
 .hero__shapes {
   position: absolute;
   z-index: 1;
-  top: min(136px, 8.5vw);
-  left: calc(50% + min(33.7px, 2.106vw));
+  /* по макету y = 136, x = 833.7; сдвинуто на 40px ниже и правее (по просьбе) */
+  top: min(176px, 11vw);
+  left: calc(50% + min(73.7px, 4.606vw));
   width: min(650px, 40.625vw);
   aspect-ratio: 650 / 571;
 }
