@@ -397,6 +397,22 @@ button.header__pill:hover { background-color: var(--color-light); }
    ========================================================================== */
 .hero-track.is-band .hero__line { z-index: 3; }
 
+/* блик на линии: короткий светящийся отрезок, положение и наклон задаёт JS */
+.hero__line-glow {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1;
+  width: 280px;
+  height: 5px;
+  border-radius: 5px;
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.95) 55%, #FFFFFF 70%, rgba(255, 255, 255, 0) 100%);
+  box-shadow: 0 0 12px 3px rgba(120, 180, 255, 0.55), 0 0 28px 6px rgba(30, 110, 243, 0.35);
+  opacity: 0;
+  pointer-events: none;
+  will-change: transform, opacity;
+}
+
 /* Синий блок наезжает на залипший экран (margin-top: −100vh): верхние 100vh прозрачны,
    блоки проявляются, как только синий заполнил экран (.hero-track.is-filled).
    Отступы внутри — из макета: карточки на 53px ниже края синего блока, низ — 114px. */
