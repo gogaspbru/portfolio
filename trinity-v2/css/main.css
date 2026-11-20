@@ -362,10 +362,10 @@ button.header__pill:hover { background-color: var(--color-light); }
   position: absolute;
   inset: 0;
   clip-path: url(#clip-plane);
-  background: var(--color-blue) url("../assets/video/poster.jpg") 0 0 / 100% 100% no-repeat;
+  background: var(--color-blue) url("../assets/video/poster.jpg") var(--hero-video-pos) / cover no-repeat;
 }
-/* в макете кадр видео растянут на всю фигуру (preserveAspectRatio="none") */
-.hero__video { width: 100%; height: 100%; object-fit: fill; }
+/* видео — без растягивания (фигуры в кадре не должны сплющиваться), кадрирование — по фигуре */
+.hero__video { width: 100%; height: 100%; object-fit: cover; object-position: var(--hero-video-pos); }
 .hero__plane-logo {
   position: absolute;
   left: 17.28%;                        /* 115 − 2.7 (сдвиг фигуры в рамке 652) = 112.3 / 650 */
@@ -400,7 +400,7 @@ button.header__pill:hover { background-color: var(--color-light); }
   position: absolute;
   inset: 0;
   clip-path: url(#clip-plane);
-  background: var(--color-blue) url("../assets/video/poster.jpg") 0 0 / 100% 100% no-repeat;
+  background: var(--color-blue) url("../assets/video/poster.jpg") var(--hero-video-pos) / cover no-repeat;
 }
 .hero__glass::after {
   content: "";
