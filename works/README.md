@@ -10,6 +10,10 @@ works/
     index.html     — страница кейса (откроется как /works/kulturadoma/)
     img/           — картинки из макета Figma (webp, 2x)
     video/         — видео кейса (см. ниже)
+  lindera/
+    index.html     — кейс Lindera (/works/lindera/)
+    lindera.css    — стили, нужные только этому кейсу
+    img/, video/   — картинки 2x из Figma и запись прокрутки сайта (screen.webm/mp4)
 ```
 
 ## Видео
@@ -34,5 +38,9 @@ ffmpeg -i source.mov -vf "scale=1920:-2,fps=25" -an -c:v libx264 -crf 24 -preset
 
 Скопируйте папку `kulturadoma`, поменяйте тексты и картинки. Классы `c-*` и атрибуты
 `data-in` (появление текста), `.c-reveal` (раскрытие картинки), `data-speed` (параллакс),
-`data-marquee` (бегущие ленты), `data-video` (видео по скроллу) работают на любой странице,
+`data-marquee` (бегущие ленты), `data-video` (видео по скроллу), `data-count` (числа считаются
+при появлении) работают на любой странице,
 которая подключает `../_case/case.css` и `../_case/case.js`.
+
+Цвет, в который плавно перекрашивается страница у блока `.c-dark`, задаётся атрибутом
+`data-tint="r,g,b"` (по умолчанию тёмный 18,19,23; у Lindera зелёный 93,109,99).

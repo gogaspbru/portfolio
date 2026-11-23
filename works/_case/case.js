@@ -46,6 +46,28 @@
     });
   });
 
+  /* ---------- numbers that count up once they come into view ([data-count]) ---------- */
+  if (!REDUCE && "IntersectionObserver" in window) {
+    var countIo = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (!e.isIntersecting) return;
+        countIo.unobserve(e.target);
+        var el = e.target, to = parseFloat(el.getAttribute("data-count")) || 0, t0 = null, dur = 1400;
+        var step = function (now) {
+          if (t0 === null) t0 = now;
+          var p = Math.min(1, (now - t0) / dur);
+          el.textContent = String(Math.round(to * (1 - Math.pow(1 - p, 3))));
+          if (p < 1) requestAnimationFrame(step);
+        };
+        requestAnimationFrame(step);
+      });
+    }, { rootMargin: "0px 0px -15% 0px" });
+    Array.prototype.forEach.call(document.querySelectorAll("[data-count]"), function (el) {
+      if (parseFloat(el.getAttribute("data-count")) > 1) el.textContent = "0";
+      countIo.observe(el);
+    });
+  }
+
   /* ---------- videos: play on screen, pause off screen ---------- */
   Array.prototype.forEach.call(document.querySelectorAll("[data-video]"), function (box) {
     var v = box.querySelector("video");
@@ -247,6 +269,8 @@
   var dark = document.querySelector(".c-dark");
   var pageEl = document.querySelector(".page");
   if (dark && pageEl) doc.classList.add("js-fade");
+  // colour the page fades to: data-tint="r,g,b" on .c-dark (default: night)
+  var tint = ((dark && dark.getAttribute("data-tint")) || "18,19,23").split(",").map(Number);
   if (dark && "IntersectionObserver" in window) {
     new IntersectionObserver(function (es) { darkVisible = es[0].isIntersecting; }, { rootMargin: "200px 0px" }).observe(dark);
   }
@@ -285,7 +309,7 @@
       if (tk !== dark._t) {
         dark._t = tk;
         var c = function (a, b) { return Math.round(a + (b - a) * t); };
-        pageEl.style.backgroundColor = "rgb(" + c(255, 18) + "," + c(255, 19) + "," + c(255, 23) + ")";
+        pageEl.style.backgroundColor = "rgb(" + c(255, tint[0]) + "," + c(255, tint[1]) + "," + c(255, tint[2]) + ")";
       }
     }
 

@@ -13,7 +13,7 @@ window.__WORKS__ = [
     "type": "video",
     "title": "Lindera",
     "preview": "assets/works/02_lindera.webp",
-    "link": "https://lindera.ru/",
+    "link": "works/lindera/",
     "video": "assets/works/02_lindera.webm"
   },
   {
