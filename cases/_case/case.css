@@ -250,7 +250,7 @@ h1, h2, h3, p, dl, dd { margin: 0; }
   padding: calc(125 * var(--k)) 0 0;
   overflow-x: clip;   /* not hidden: the shapes block inside is sticky */
   position: relative;
-  padding-bottom: calc(130 * var(--k));
+  padding-bottom: calc(20 * var(--k));
 }
 /* soft entry: with JS the block itself is see-through and the whole page
    background fades white → night as it comes up, and back to white as it
@@ -283,7 +283,7 @@ h1, h2, h3, p, dl, dd { margin: 0; }
 
 /* figures: the screen holds, the figure swaps as you scroll, then the page moves on */
 /* the pinned area is just the figure plus a little air, held in the middle of the screen */
-.c-shapes { --sh: calc(320 * var(--k)); position: relative; height: calc(var(--sh) + var(--n, 8) * 5vh); margin-top: calc(100 * var(--k)); }
+.c-shapes { --sh: calc(250 * var(--k)); position: relative; height: calc(var(--sh) + var(--n, 8) * 5vh); margin-top: calc(100 * var(--k)); }
 .c-shapes__sticky {
   position: sticky; top: calc(50vh - var(--sh) / 2); height: var(--sh);
   display: flex; align-items: center; justify-content: center;
@@ -302,7 +302,7 @@ h1, h2, h3, p, dl, dd { margin: 0; }
 
 /* ===================== Hand + flowers ===================== */
 .c-pair {
-  margin-top: calc(162 * var(--k));
+  margin-top: calc(80 * var(--k));
   display: grid; grid-template-columns: 735fr 739fr; column-gap: calc(10 * var(--k));
 }
 .c-pair > div { position: relative; overflow: hidden; border-radius: var(--r); aspect-ratio: 735 / 726; }
@@ -400,7 +400,7 @@ h1, h2, h3, p, dl, dd { margin: 0; }
 
   .c-store { margin: calc(10 * var(--m)) 0 0; aspect-ratio: 375 / 265; border-radius: 0; }
 
-  .c-dark { margin-top: calc(9 * var(--m)); padding: calc(99 * var(--m)) 0 calc(90 * var(--m)); }
+  .c-dark { margin-top: calc(9 * var(--m)); padding: calc(99 * var(--m)) 0 calc(20 * var(--m)); }
   .c-marquee { row-gap: calc(39 * var(--m)); }
   .c-track { gap: calc(36 * var(--m)); }
   .c-card { width: calc(206 * var(--m)); padding: calc(2.5 * var(--m)); border-radius: 6px; }
