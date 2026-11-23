@@ -9,18 +9,18 @@
 index.html            — разметка страницы
 css/styles.css        — все стили (переменные в :root задают внешний вид)
 js/app.js             — логика (сетка работ, «Загрузить ещё», курсор, скролл, прелоадер)
-data/works.json       — список работ (добавляйте свои сюда)
+data/works.js         — список работ (добавляйте свои сюда)
 assets/works/         — превью изображений для работ
 assets/placeholders/  — нейтральные заглушки 16:9
 assets/logos/         — логотипы клиентов для бегущих лент
-scripts/gen-placeholders.py  — генерирует заглушки и пример works.json
+scripts/gen-placeholders.py  — генерирует заглушки и пример works.js
 scripts/build-standalone.py  — собирает всё в один файл scripts/standalone.html
 cases/                — страницы кейсов (см. cases/README.md)
 ```
 
 ## Как добавить работу
 
-Откройте `data/works.json` и допишите объект в массив:
+Откройте `data/works.js` и допишите объект в массив `window.__WORKS__`:
 
 ```json
 {
@@ -42,13 +42,11 @@ cases/                — страницы кейсов (см. cases/README.md)
 
 ## Запуск
 
-Локально из папки проекта:
+Просто откройте `index.html` двойным кликом: сервер не нужен, всё работает
+прямо с диска (список работ лежит в `data/works.js`, а не в JSON). Кейсы тоже
+открываются двойным кликом по `cases/<имя>/index.html`.
 
-```
-python3 -m http.server 8137
-```
-
-и откройте http://localhost:8137
+При желании можно запустить и через сервер: `python3 -m http.server 8137`.
 
 ## Один файл
 

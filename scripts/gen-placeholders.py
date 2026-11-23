@@ -1,14 +1,14 @@
 #!/usr/bin/env python3
 """
-Generate neutral 16:9 placeholder tiles and a sample data/works.json.
+Generate neutral 16:9 placeholder tiles and a sample data/works.js.
 
   - assets/placeholders/tile-01..06.svg  — identical neutral 16:9 frames
-  - data/works.json                      — TOTAL sample works
+  - data/works.js                      — TOTAL sample works
 
 The first work is the real "Культура Дома" photo; every 5th work is a
-video placeholder. Re-running this OVERWRITES data/works.json, so the
+video placeholder. Re-running this OVERWRITES data/works.js, so the
 "Культура Дома" entry is re-applied here explicitly to survive a rebuild.
-Add your own works by editing data/works.json directly.
+Add your own works by editing data/works.js directly.
 """
 import os, json
 
@@ -65,8 +65,8 @@ def main():
     }
 
     os.makedirs(os.path.join(ROOT, "data"), exist_ok=True)
-    with open(os.path.join(ROOT, "data", "works.json"), "w", encoding="utf-8") as f:
-        json.dump(works, f, ensure_ascii=False, indent=2)
+    with open(os.path.join(ROOT, "data", "works.js"), "w", encoding="utf-8") as f:
+        f.write("window.__WORKS__ = " + json.dumps(works, ensure_ascii=False, indent=2) + ";\n")
     print(f"Wrote {NUM_TILES} tiles and {TOTAL} works.")
 
 if __name__ == "__main__":

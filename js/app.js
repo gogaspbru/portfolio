@@ -1,6 +1,6 @@
 /* ============================================================
    Portfolio logic — no dependencies.
-   - Loads works from data/works.json
+   - Loads works from data/works.js (window.__WORKS__)
    - Renders 18 at a time via "Загрузить ещё"
    - Each row: caption on the left, light 16:9 tile on the right
    - Photo & video tiles; click opens link in a new tab
@@ -716,23 +716,14 @@
     go();
   })();
 
-  // Works come from window.__WORKS__ (single-file build) or data/works.json.
+  // Works come from data/works.js (window.__WORKS__): a plain script, so the
+  // page also works when opened straight from disk (file://), no server needed.
   if (window.__WORKS__) {
     init(window.__WORKS__);
   } else {
-    fetch("data/works.json", { cache: "no-cache" })
-      .then(function (r) {
-        if (!r.ok) throw new Error("HTTP " + r.status);
-        return r.json();
-      })
-      .then(init)
-      .catch(function (err) {
-        console.error("Не удалось загрузить works.json:", err);
-        list.innerHTML =
-          '<p style="color:#8b8b82">Не удалось загрузить работы. ' +
-          "Запустите сайт через локальный сервер (fetch не работает с file://).</p>";
-        hidePreloader();
-      });
+    console.error("Не найден список работ: data/works.js не загрузился.");
+    list.innerHTML = '<p style="color:#8b8b82">Не удалось загрузить работы (data/works.js).</p>';
+    hidePreloader();
   }
 })();
 

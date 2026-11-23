@@ -1,4 +1,6 @@
-[
+/* Список работ на главной. Редактируйте этот файл: обычный JS, поэтому
+   сайт открывается и двойным кликом по index.html (без сервера). */
+window.__WORKS__ = [
   {
     "type": "video",
     "variant": "plate",
@@ -240,4 +242,4 @@
     "preview": "assets/works/036_trinity.webp",
     "link": "https://www.trinitygroup.ru/"
   }
-]
+];
