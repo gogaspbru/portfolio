@@ -254,6 +254,19 @@
       });
     }
 
+    // dark block opens from a rounded card to full screen and folds back on exit
+    if (dark) {
+      var dr = dark.getBoundingClientRect();
+      if (dr.bottom > -50 && dr.top < vh + 50) {
+        var enter = Math.min(1, Math.max(0, (vh - dr.top) / (vh * 0.85)));
+        var leave = Math.min(1, Math.max(0, dr.bottom / (vh * 0.85)));
+        var e = Math.min(enter, leave);
+        e = e < .5 ? 4 * e * e * e : 1 - Math.pow(-2 * e + 2, 3) / 2;   // easeInOutCubic
+        var ex = (1 - e).toFixed(4);
+        if (ex !== dark._ex) { dark.style.setProperty("--ex", ex); dark._ex = ex; }
+      }
+    }
+
     for (var i = 0; i < para.length; i++) {
       var el = para[i];
       var box = (el.closest(".c-reveal, .c-phones__stage") || el).getBoundingClientRect();

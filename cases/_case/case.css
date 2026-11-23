@@ -252,7 +252,12 @@ h1, h2, h3, p, dl, dd { margin: 0; }
   background: var(--night);
   padding: calc(125 * var(--k)) 0 0;
   overflow-x: clip;   /* not hidden: the shapes block inside is sticky */
+  /* scroll-driven entry/exit (case.js sets --ex: 1 = card, 0 = full screen):
+     the dark block rises as a rounded card the width of the content above,
+     opens up to full bleed, and on the way out folds back into a card */
+  clip-path: inset(0 calc(var(--ex, 0) * var(--pad)) round calc(var(--ex, 0) * 56 * var(--k)));
 }
+.c-dark .c-marquee { transform: scale(calc(1 - var(--ex, 0) * .07)); transform-origin: 50% 0; }
 .c-marquee { display: grid; row-gap: calc(92 * var(--k)); }
 .c-row { overflow: visible; }
 .c-track {
@@ -278,16 +283,16 @@ h1, h2, h3, p, dl, dd { margin: 0; }
 .c-dark.is-in .c-row { opacity: 1; translate: 0 0; }
 
 /* figures: the screen holds, the figure swaps as you scroll, then the page moves on */
-.c-shapes { position: relative; height: calc(100vh + var(--n, 8) * 11vh); margin-top: calc(10 * var(--k)); }
+.c-shapes { position: relative; height: calc(100vh + var(--n, 8) * 5vh); margin-top: calc(10 * var(--k)); }
 .c-shapes__sticky {
   position: sticky; top: 0; height: 100vh;
   display: flex; align-items: center; justify-content: center;
 }
-.c-shapes__box { position: relative; width: calc(314 * var(--k)); aspect-ratio: 1; }
+.c-shapes__box { position: relative; width: calc(200 * var(--k)); aspect-ratio: 1; }
 .c-shape {
   position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible;
   opacity: 0; transform: scale(.94) rotate(-4deg);
-  transition: opacity .16s linear, transform .5s var(--ease);
+  transition: opacity .12s linear, transform .3s var(--ease);
 }
 .c-shape.is-active { opacity: 1; transform: none; }
 .c-shape path { stroke: var(--copper); stroke-width: 1; vector-effect: non-scaling-stroke; stroke-miterlimit: 10; }
@@ -401,7 +406,7 @@ h1, h2, h3, p, dl, dd { margin: 0; }
   .c-card { width: calc(206 * var(--m)); padding: calc(2.5 * var(--m)); border-radius: 6px; }
   .c-card img { border-radius: 3px; }
   .c-shapes { margin-top: 0; }
-  .c-shapes__box { width: calc(170 * var(--m)); }
+  .c-shapes__box { width: calc(120 * var(--m)); }
 
   .c-pair { margin-top: calc(49 * var(--m)); grid-template-columns: 1fr; row-gap: calc(22 * var(--m)); }
   .c-pair > div { aspect-ratio: 335 / 332; }
