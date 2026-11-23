@@ -23,7 +23,7 @@
   var REDUCE = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
   /* ---------- reveals ---------- */
-  var revealSel = "[data-in], .c-reveal, .c-rise, .c-phones, .c-tablet, .c-dark, .c-shapes, .c-pair__slate";
+  var revealSel = "[data-in], .c-reveal, .c-rise, .c-phones, .c-tablet, .c-dark, .c-shapes, .c-pair__slate, [data-risers], [data-orbit]";
   var revealEls = Array.prototype.slice.call(document.querySelectorAll(revealSel));
 
   if (REDUCE || !("IntersectionObserver" in window)) {
@@ -229,7 +229,7 @@
     return { el: el, target: el.querySelector(".c-laptop__device") || el, last: null };
   });
 
-  var risers = Array.prototype.map.call(document.querySelectorAll(".c-phones__stage"), function (stage) {
+  var risers = Array.prototype.map.call(document.querySelectorAll(".c-phones__stage, [data-risers]"), function (stage) {
     return { stage: stage, phones: Array.prototype.map.call(stage.querySelectorAll("[data-rise]"), function (el) {
       return { el: el, order: parseFloat(el.getAttribute("data-rise")) || 0, last: null };
     }) };

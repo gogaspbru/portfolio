@@ -14,6 +14,11 @@ works/
     index.html     — кейс Lindera (/works/lindera/)
     lindera.css    — стили, нужные только этому кейсу
     img/, video/   — картинки 2x из Figma и запись прокрутки сайта (screen.webm/mp4)
+  krotex/
+    index.html     — кейс KROTEX (/works/krotex/)
+    krotex.css     — стили, нужные только этому кейсу
+    img/, video/   — картинки 2x из Figma; видео: hero (первый экран), screen (прокрутка сайта),
+                     orbit (круглое видео в кольцах)
 ```
 
 ## Видео
@@ -44,3 +49,7 @@ ffmpeg -i source.mov -vf "scale=1920:-2,fps=25" -an -c:v libx264 -crf 24 -preset
 
 Цвет, в который плавно перекрашивается страница у блока `.c-dark`, задаётся атрибутом
 `data-tint="r,g,b"` (по умолчанию тёмный 18,19,23; у Lindera зелёный 93,109,99).
+
+Телефоны, которые по скроллу поднимаются из нижнего края панели: у панели атрибут `data-risers`
+(или класс `.c-phones__stage`), у каждого телефона `data-rise="0|1|2"` — порядок появления.
+case.js пишет в телефон `--rise` от 1 до 0, а сдвиг задаёт CSS кейса (см. `.k-phone` в krotex.css).

@@ -20,7 +20,7 @@ window.__WORKS__ = [
     "type": "video",
     "title": "Krotex",
     "preview": "assets/works/03_krotex.webp",
-    "link": "https://krotexpro.ru/",
+    "link": "works/krotex/",
     "video": "assets/works/03_krotex.webm"
   },
   {
