@@ -15,7 +15,7 @@ assets/placeholders/  — нейтральные заглушки 16:9
 assets/logos/         — логотипы клиентов для бегущих лент
 scripts/gen-placeholders.py  — генерирует заглушки и пример works.js
 scripts/build-standalone.py  — собирает всё в один файл scripts/standalone.html
-cases/                — страницы кейсов (см. cases/README.md)
+works/                — страницы кейсов, адрес вида /works/kulturadoma/ (см. works/README.md)
 ```
 
 ## Как добавить работу
@@ -37,7 +37,7 @@ cases/                — страницы кейсов (см. cases/README.md)
 - Для видео добавьте поле `"video": "assets/works/my-clip.mp4"` — оно
   проигрывается по наведению; `preview` показывается до наведения.
 - `link` открывается по клику на плитку: внешний адрес (`https://…`) в новой
-  вкладке, кейс (`cases/<имя>/index.html`) в той же.
+  вкладке, кейс (`works/<имя>/`) в той же.
 
 Кладите свои изображения в `assets/works/`, видео — туда же.
 
@@ -45,7 +45,7 @@ cases/                — страницы кейсов (см. cases/README.md)
 
 Просто откройте `index.html` двойным кликом: сервер не нужен, всё работает
 прямо с диска (список работ лежит в `data/works.js`, а не в JSON). Кейсы тоже
-открываются двойным кликом по `cases/<имя>/index.html`.
+открываются двойным кликом по `works/<имя>/index.html`.
 
 При желании можно запустить и через сервер: `python3 -m http.server 8137`.
 

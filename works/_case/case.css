@@ -1,5 +1,5 @@
 /* ============================================================
-   Case pages — shared styles for /cases/<name>/index.html
+   Case pages — shared styles for /works/<name>/index.html
    Desktop is laid out on a 1600px design grid: every size is
    N * var(--k), where --k = one design pixel at the current width.
    Mobile (≤760px) uses the 375px design: N * var(--m).

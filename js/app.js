@@ -131,7 +131,11 @@
     var a = document.createElement("a");
     a.className = "item__tile";
     if (item.link) {                 // only clickable when a real link is given
-      a.href = item.link;
+      // clean folder links ("works/kulturadoma/") on the server; opened from disk
+      // (file://) a folder link would show a file list, so point at its index.html
+      var href = item.link;
+      if (location.protocol === "file:" && /\/$/.test(href) && !/^[a-z]+:/i.test(href)) href += "index.html";
+      a.href = href;
       // outside sites open in a new tab; our own case pages (relative links) open in place
       if (/^https?:\/\//i.test(item.link)) { a.target = "_blank"; a.rel = "noopener"; }
     }

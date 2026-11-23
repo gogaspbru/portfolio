@@ -11,6 +11,15 @@
   "use strict";
 
   var doc = document.documentElement;
+
+  /* links to folders ("../../", "../kulturadoma/") are clean on the server;
+     opened from disk (file://) they would show a file list, so add index.html */
+  if (location.protocol === "file:") {
+    Array.prototype.forEach.call(document.querySelectorAll("a[href]"), function (a) {
+      var h = a.getAttribute("href");
+      if (/\/$/.test(h) && !/^[a-z]+:/i.test(h)) a.setAttribute("href", h + "index.html");
+    });
+  }
   var REDUCE = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
   /* ---------- reveals ---------- */
