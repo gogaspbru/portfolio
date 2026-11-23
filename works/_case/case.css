@@ -560,3 +560,47 @@ html.scrollbar-on::-webkit-scrollbar { width: 0; height: 0; }    /* WebKit */
   transition: opacity .3s ease;
   will-change: transform, height;
 }
+
+/* ===================== Custom cursor, as on the home page (desktop only, case.js) ===================== */
+.cursor-dot,
+.cursor-ring {
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 3000;
+  pointer-events: none;
+  border-radius: 50%;
+  opacity: 0;
+  mix-blend-mode: difference;   /* stays visible on light and dark backgrounds */
+  will-change: transform;
+}
+.cursor-ready .cursor-dot { opacity: .65; }   /* brighter centre */
+.cursor-ready .cursor-ring { opacity: .16; }  /* lighter halo */
+
+.cursor-dot {
+  width: 7px;
+  height: 7px;
+  margin: -3.5px 0 0 -3.5px;
+  background: #fff;
+}
+.cursor-ring {
+  width: 40px;
+  height: 40px;
+  margin: -20px 0 0 -20px;
+  border: 1.5px solid #fff;
+  transition: width .28s ease, height .28s ease, margin .28s ease,
+              background-color .28s ease, opacity .3s ease;
+}
+/* grow the trailing ring over interactive elements */
+.cursor-hover .cursor-ring {
+  width: 64px;
+  height: 64px;
+  margin: -32px 0 0 -32px;
+  background: rgba(255, 255, 255, .14);
+}
+
+/* hide the native cursor only when the custom one is active on a fine pointer */
+@media (hover: hover) and (pointer: fine) {
+  html.cursor-on,
+  html.cursor-on * { cursor: none; }
+}

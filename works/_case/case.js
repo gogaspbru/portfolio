@@ -358,6 +358,48 @@
     if (!img.complete) img.addEventListener("load", measure, { once: true });
   });
 
+  /* ---------- custom cursor, as on the home page (js/app.js initCursor) ----------
+     a dot under the pointer and a trailing ring that grows over links */
+  (function () {
+    if (!window.matchMedia || !window.matchMedia("(hover: hover) and (pointer: fine)").matches) return;
+    var cores = navigator.hardwareConcurrency, mem = navigator.deviceMemory;
+    if (REDUCE || (cores > 0 && cores <= 2) || (mem > 0 && mem <= 2)) return;   // same low-power rule as the home page
+
+    var ring = document.createElement("div");
+    var dot = document.createElement("div");
+    ring.className = "cursor-ring";
+    dot.className = "cursor-dot";
+    document.body.appendChild(ring);
+    document.body.appendChild(dot);
+    doc.classList.add("cursor-on");
+
+    var mx = window.innerWidth / 2, my = window.innerHeight / 2;
+    var rx = mx, ry = my, shown = false, raf = null;
+    var hoverSel = "a, button";
+
+    function loop() {
+      rx += (mx - rx) * 0.18;
+      ry += (my - ry) * 0.18;
+      ring.style.transform = "translate(" + rx + "px," + ry + "px)";
+      if (Math.abs(mx - rx) < 0.1 && Math.abs(my - ry) < 0.1) { raf = null; return; }
+      raf = requestAnimationFrame(loop);
+    }
+    document.addEventListener("mousemove", function (e) {
+      mx = e.clientX; my = e.clientY;
+      dot.style.transform = "translate(" + mx + "px," + my + "px)";
+      if (!shown) { shown = true; doc.classList.add("cursor-ready"); }
+      if (!raf) raf = requestAnimationFrame(loop);
+    });
+    document.addEventListener("mouseover", function (e) {
+      if (e.target.closest && e.target.closest(hoverSel)) doc.classList.add("cursor-hover");
+    });
+    document.addEventListener("mouseout", function (e) {
+      if (e.target.closest && e.target.closest(hoverSel)) doc.classList.remove("cursor-hover");
+    });
+    doc.addEventListener("mouseleave", function () { doc.classList.remove("cursor-ready"); });
+    doc.addEventListener("mouseenter", function () { if (shown) doc.classList.add("cursor-ready"); });
+  })();
+
   /* ---------- smooth scroll + thin scrollbar, as on the home page (js/app.js) ----------
      desktop with a mouse only; off for reduced motion and clearly weak machines */
   (function () {
