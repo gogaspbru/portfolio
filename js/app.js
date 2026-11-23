@@ -127,13 +127,13 @@
     var cell = document.createElement("div");
     cell.className = "item" + (item.type === "video" ? " is-video" : "");
 
-    // the 16:9 tile (clickable, opens link in a new tab)
+    // the 16:9 tile (clickable: external links open in a new tab, case pages in place)
     var a = document.createElement("a");
     a.className = "item__tile";
     if (item.link) {                 // only clickable when a real link is given
       a.href = item.link;
-      a.target = "_blank";
-      a.rel = "noopener";
+      // outside sites open in a new tab; our own case pages (relative links) open in place
+      if (/^https?:\/\//i.test(item.link)) { a.target = "_blank"; a.rel = "noopener"; }
     }
     a.setAttribute("aria-label", item.title || "Работа");
 

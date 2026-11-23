@@ -6,7 +6,7 @@ window.__WORKS__ = [
     "variant": "plate",
     "title": "Культура Дома",
     "preview": "assets/works/01_kultura_doma.webp",
-    "link": "https://kultura-doma.ru/",
+    "link": "cases/kultura-doma/index.html",
     "video": "assets/works/01_kultura_doma_round.webm"
   },
   {
