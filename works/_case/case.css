@@ -186,6 +186,19 @@ h1, h2, h3, p, dl, dd { margin: 0; }
 /* ===================== Laptop ===================== */
 .c-laptop { margin-top: calc(94 * var(--k)); }
 .c-laptop img { width: 100%; height: auto; }
+/* the laptop grows a little as it scrolls in (--z 0 → 1, case.js [data-zoom]) and its
+   screen "wakes up": black glass fades away, then a soft light sweeps across it */
+.c-laptop__device { position: relative; transform: scale(calc(.9 + .1 * var(--z, 1))); transform-origin: 50% 85%; will-change: transform; }
+.c-laptop__screen { position: absolute; left: 21.14%; top: 8.19%; width: 58.63%; height: 67.6%; overflow: hidden; pointer-events: none; }
+/* black glass clears as the laptop reaches the middle of the screen (tied to --z) */
+.c-laptop__screen::before { content: ""; position: absolute; inset: 0; background: #0e0e10; opacity: clamp(0, calc((.88 - var(--z, 1)) * 4), 1); }
+.c-laptop__screen::after {
+  content: ""; position: absolute; top: -10%; bottom: -10%; left: -45%; width: 32%;
+  background: linear-gradient(100deg, rgba(255,255,255,0), rgba(255,255,255,.5) 50%, rgba(255,255,255,0));
+  transform: skewX(-14deg); opacity: 0;
+}
+.c-laptop.is-awake .c-laptop__screen::after { animation: screen-sweep 1.8s var(--ease-io) .25s both; }
+@keyframes screen-sweep { 0% { left: -45%; opacity: 0; } 20% { opacity: 1; } 100% { left: 125%; opacity: 0; } }
 
 /* ===================== Phones on beige ===================== */
 .c-phones { margin-top: calc(73 * var(--k)); }
@@ -204,7 +217,20 @@ h1, h2, h3, p, dl, dd { margin: 0; }
    bottom edge of the beige panel and settle in their places (--rise 1 → 0,
    set by case.js). They stay upright and never pass below the panel. */
 .c-phones__stage { clip-path: inset(-50% -30% 0 -30%); }
+/* the centre phone rises first; the side phones then slide out from behind it to
+   their places (sideways and up, no tilt), so all three stay inside the panel */
 .c-phone { translate: 0 calc(var(--rise, 0) * 42%); }
+.c-phone--left  { --sx: 113%; }
+.c-phone--right { --sx: -113%; }
+.c-phone--left, .c-phone--right {
+  translate: calc(var(--rise, 0) * var(--sx)) calc(var(--rise, 0) * 26%);
+  scale: calc(1 - var(--rise, 0) * .08);
+}
+/* once in place they breathe gently, out of step with each other */
+.c-phones.is-in .c-phone { animation: phone-float 7s ease-in-out infinite; }
+.c-phones.is-in .c-phone--center { animation-delay: -2.3s; }
+.c-phones.is-in .c-phone--right { animation-delay: -4.6s; }
+@keyframes phone-float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-1.6%); } }
 .c-phones__mark {
   position: absolute; left: 48.05%; top: 82.56%; width: 3.77%; height: auto;
   opacity: 0; transform: translateY(10px); transition: opacity 1s var(--ease) .7s, transform 1.2s var(--ease) .7s;
@@ -383,7 +409,7 @@ h1, h2, h3, p, dl, dd { margin: 0; }
   .c-text__body p + p { margin-top: 21px; }
 
   .c-laptop { margin-top: calc(40 * var(--m)); padding: 0; overflow: hidden; }
-  .c-laptop img { width: calc(558 * var(--m)); max-width: none; margin-left: calc(-91 * var(--m)); }
+  .c-laptop__device { width: calc(558 * var(--m)); margin-left: calc(-91 * var(--m)); }
 
   .c-phones { margin-top: calc(26 * var(--m)); padding: 0; }
   .c-phones__stage { aspect-ratio: 375 / 509; overflow-x: clip; overflow-y: visible; }
@@ -392,6 +418,8 @@ h1, h2, h3, p, dl, dd { margin: 0; }
   .c-phone--center { width: calc(185 / 375 * 100%); left: calc(97 / 375 * 100%); top: 0; }
   .c-phone--left   { width: calc(166 / 375 * 100%); left: calc(-62 / 375 * 100%); top: calc(167 / 509 * 100%); }
   .c-phone--right  { width: calc(166 / 375 * 100%); left: calc(274 / 375 * 100%); top: calc(167 / 509 * 100%); }
+  .c-phone--left  { --sx: 96%; }
+  .c-phone--right { --sx: -106%; }
   .c-phones__mark { width: calc(40 / 375 * 100%); left: calc(167.5 / 375 * 100%); top: calc(368 / 509 * 100%); }
 
   .c-duo { margin-top: calc(7 * var(--m)); padding: 0; }
@@ -438,6 +466,8 @@ h1, h2, h3, p, dl, dd { margin: 0; }
   .c-phone, .c-phones__mark, .c-tablet, .c-row, .c-pair__hand, .c-hero__logo path {
     transition: none !important; opacity: 1 !important; transform: none !important; translate: none !important; clip-path: none !important; filter: none !important;
   }
+  .c-laptop__screen { display: none; }
+  .c-phone { animation: none !important; scale: none !important; }
   .c-shape:first-child path { stroke-dashoffset: 0; transition: none; }
   .c-shape { transition: none; }
   .is-fallback .c-video { animation: none !important; }

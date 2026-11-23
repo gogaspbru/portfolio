@@ -225,6 +225,10 @@
   var para = Array.prototype.slice.call(document.querySelectorAll("[data-speed]"))
     .filter(function (el) { return !el.closest("[data-marquee]"); });
 
+  var zoomers = Array.prototype.slice.call(document.querySelectorAll("[data-zoom]")).map(function (el) {
+    return { el: el, target: el.querySelector(".c-laptop__device") || el, last: null };
+  });
+
   var risers = Array.prototype.map.call(document.querySelectorAll(".c-phones__stage"), function (stage) {
     return { stage: stage, phones: Array.prototype.map.call(stage.querySelectorAll("[data-rise]"), function (el) {
       return { el: el, order: parseFloat(el.getAttribute("data-rise")) || 0, last: null };
@@ -311,6 +315,16 @@
         var c = function (a, b) { return Math.round(a + (b - a) * t); };
         pageEl.style.backgroundColor = "rgb(" + c(255, tint[0]) + "," + c(255, tint[1]) + "," + c(255, tint[2]) + ")";
       }
+    }
+
+    // laptop grows from 90% to full size as it comes up the screen
+    for (var zi = 0; zi < zoomers.length; zi++) {
+      var zr = zoomers[zi].el.getBoundingClientRect();
+      if (zr.bottom < -200 || zr.top > vh + 200) continue;
+      var zp = Math.min(1, Math.max(0, (vh - zr.top) / (vh * 0.9)));
+      var zv = (1 - Math.pow(1 - zp, 3)).toFixed(4);
+      if (zv !== zoomers[zi].last) { zoomers[zi].target.style.setProperty("--z", zv); zoomers[zi].last = zv; }
+      if (zv > 0.88 && !zoomers[zi].awake) { zoomers[zi].awake = true; zoomers[zi].el.classList.add("is-awake"); }
     }
 
     // phones rise out of the beige panel one after another, then hold still
