@@ -358,5 +358,58 @@
     if (!img.complete) img.addEventListener("load", measure, { once: true });
   });
 
+  /* ---------- smooth scroll + thin scrollbar, as on the home page (js/app.js) ----------
+     desktop with a mouse only; off for reduced motion and clearly weak machines */
+  (function () {
+    if (!window.matchMedia || !window.matchMedia("(hover: hover) and (pointer: fine)").matches) return;
+
+    /* thin custom scrollbar */
+    doc.classList.add("scrollbar-on");
+    var thumb = document.createElement("div");
+    thumb.className = "scrollbar__thumb";
+    document.body.appendChild(thumb);
+    var MARGIN = 14;
+    function updateBar() {
+      var docH = doc.scrollHeight, winH = window.innerHeight, maxS = docH - winH;
+      if (maxS <= 2) { thumb.style.opacity = "0"; return; }
+      thumb.style.opacity = "";
+      var trackH = winH - MARGIN * 2;
+      var thumbH = Math.max(32, (winH / docH) * trackH);
+      var y = MARGIN + (window.pageYOffset / maxS) * (trackH - thumbH);
+      thumb.style.height = thumbH + "px";
+      thumb.style.transform = "translateY(" + y + "px)";
+    }
+    window.addEventListener("scroll", updateBar, { passive: true });
+    window.addEventListener("resize", updateBar);
+    window.addEventListener("load", updateBar);
+    updateBar();
+
+    /* inertial wheel scroll */
+    var cores = navigator.hardwareConcurrency, mem = navigator.deviceMemory;
+    if (REDUCE || (cores > 0 && cores <= 2) || (mem > 0 && mem <= 2)) return;
+
+    var current = window.pageYOffset, target = current, running = false;
+    var ease = 0.1;                 // lower = smoother / more inertia (same as the home page)
+    function clamp(v) { return Math.max(0, Math.min(v, doc.scrollHeight - window.innerHeight)); }
+    function raf() {
+      current += (target - current) * ease;
+      if (Math.abs(target - current) < 0.4) { current = target; window.scrollTo(0, current); running = false; return; }
+      window.scrollTo(0, current);
+      requestAnimationFrame(raf);
+    }
+    window.addEventListener("wheel", function (e) {
+      if (e.ctrlKey) return;        // leave pinch-zoom to the browser
+      e.preventDefault();
+      var unit = e.deltaMode === 1 ? 16 : (e.deltaMode === 2 ? window.innerHeight : 1);
+      target = clamp(target + e.deltaY * unit);
+      if (!running) { running = true; requestAnimationFrame(raf); }
+    }, { passive: false });
+    // keep in sync when the page is scrolled by other means (keyboard, links, scrollbar drag)
+    window.addEventListener("scroll", function () {
+      if (!running) current = target = window.pageYOffset;
+    }, { passive: true });
+    window.addEventListener("resize", function () { target = clamp(target); current = clamp(current); });
+  })();
+
   doc.classList.add("js-ready");
 })();

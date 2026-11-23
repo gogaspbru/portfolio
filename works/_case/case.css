@@ -548,3 +548,15 @@ h1, h2, h3, p, dl, dd { margin: 0; }
   .social__spark { display: none; }
   .reveal-line__inner, [data-reveal].reveal-simple { transform: none; opacity: 1; transition: none; }
 }
+
+/* ===================== Thin custom scrollbar, as on the home page (desktop only, case.js) ===================== */
+html.scrollbar-on { scrollbar-width: none; }                     /* Firefox */
+html.scrollbar-on::-webkit-scrollbar { width: 0; height: 0; }    /* WebKit */
+.scrollbar__thumb {
+  position: fixed; top: 0; right: 7px; width: 4px; border-radius: 4px;
+  background: #fff; opacity: .5;
+  mix-blend-mode: difference;   /* visible on light and dark sections */
+  z-index: 2500; pointer-events: none;
+  transition: opacity .3s ease;
+  will-change: transform, height;
+}

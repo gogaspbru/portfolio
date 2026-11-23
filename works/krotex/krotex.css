@@ -60,7 +60,7 @@
 .k-signs { position: relative; }
 .k-sign { position: absolute; top: 0; height: auto; }
 .k-sign:nth-child(1) { left: 16.58%; width: 14.71%; }
-.k-sign:nth-child(2) { left: 64.44%; width: 13.9%; }
+.k-sign:nth-child(2) { left: 50.53%; width: 13.9%; }
 .k-sign:nth-child(3) { left: 85.29%; width: 14.71%; }
 .k-sign:nth-child(3).is-in { animation: sign-turn 1.6s var(--ease) .5s both; }
 @keyframes sign-turn { from { rotate: -90deg; } to { rotate: 0deg; } }
