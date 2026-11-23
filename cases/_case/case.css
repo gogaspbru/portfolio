@@ -252,12 +252,26 @@ h1, h2, h3, p, dl, dd { margin: 0; }
   background: var(--night);
   padding: calc(125 * var(--k)) 0 0;
   overflow-x: clip;   /* not hidden: the shapes block inside is sticky */
-  /* scroll-driven entry/exit (case.js sets --ex: 1 = card, 0 = full screen):
-     the dark block rises as a rounded card the width of the content above,
-     opens up to full bleed, and on the way out folds back into a card */
-  clip-path: inset(0 calc(var(--ex, 0) * var(--pad)) round calc(var(--ex, 0) * 56 * var(--k)));
+  position: relative;
+  padding-bottom: calc(130 * var(--k));
+  --arc-max: calc(125 * var(--k));
 }
-.c-dark .c-marquee { transform: scale(calc(1 - var(--ex, 0) * .07)); transform-origin: 50% 0; }
+/* scroll-driven edges (case.js sets --a-in / --a-out from 1 to 0):
+   the top edge rises as a dome that flattens out as the block comes up,
+   and the bottom edge sags into a dome as the block leaves, so the dark
+   reads like a thick liquid pouring in and draining away */
+.c-dark::before, .c-dark::after {
+  content: ""; position: absolute; left: 0; right: 0; z-index: 2; pointer-events: none;
+}
+.c-dark::before {
+  top: -1px; height: calc(var(--a-in, 0) * var(--arc-max) + 1px);
+  background: radial-gradient(farthest-side at 50% 100%, transparent calc(100% - 1.5px), var(--bg) 100%);
+}
+.c-dark::after {
+  bottom: -1px; height: calc(var(--a-out, 0) * var(--arc-max) + 1px);
+  background: radial-gradient(farthest-side at 50% 0%, transparent calc(100% - 1.5px), var(--bg) 100%);
+}
+.c-dark .c-marquee { transform: translateY(calc(var(--a-in, 0) * 60 * var(--k))); }
 .c-marquee { display: grid; row-gap: calc(92 * var(--k)); }
 .c-row { overflow: visible; }
 .c-track {
@@ -283,9 +297,10 @@ h1, h2, h3, p, dl, dd { margin: 0; }
 .c-dark.is-in .c-row { opacity: 1; translate: 0 0; }
 
 /* figures: the screen holds, the figure swaps as you scroll, then the page moves on */
-.c-shapes { position: relative; height: calc(100vh + var(--n, 8) * 5vh); margin-top: calc(10 * var(--k)); }
+/* the pinned area is just the figure plus a little air, held in the middle of the screen */
+.c-shapes { --sh: calc(320 * var(--k)); position: relative; height: calc(var(--sh) + var(--n, 8) * 5vh); margin-top: calc(100 * var(--k)); }
 .c-shapes__sticky {
-  position: sticky; top: 0; height: 100vh;
+  position: sticky; top: calc(50vh - var(--sh) / 2); height: var(--sh);
   display: flex; align-items: center; justify-content: center;
 }
 .c-shapes__box { position: relative; width: calc(200 * var(--k)); aspect-ratio: 1; }
@@ -324,7 +339,7 @@ h1, h2, h3, p, dl, dd { margin: 0; }
 .c-result .c-text__body { padding-top: 0; max-width: none; }
 .c-result .c-text__body p { max-width: calc(693 * var(--k) + 2px); }
 .c-link--big {
-  margin-top: calc(81 * var(--k));
+  margin-top: calc(40 * var(--k));
   font-size: max(22px, calc(35 * var(--k))); font-weight: 600; letter-spacing: -.057em; line-height: 1.15;
   padding-bottom: calc(4 * var(--k));
 }
@@ -400,12 +415,13 @@ h1, h2, h3, p, dl, dd { margin: 0; }
 
   .c-store { margin: calc(10 * var(--m)) 0 0; aspect-ratio: 375 / 265; border-radius: 0; }
 
-  .c-dark { margin-top: calc(9 * var(--m)); padding: calc(99 * var(--m)) 0 calc(85 * var(--m)); }
+  .c-dark { margin-top: calc(9 * var(--m)); padding: calc(99 * var(--m)) 0 calc(90 * var(--m)); --arc-max: calc(70 * var(--m)); }
+  .c-dark .c-marquee { transform: translateY(calc(var(--a-in, 0) * 30 * var(--m))); }
   .c-marquee { row-gap: calc(39 * var(--m)); }
   .c-track { gap: calc(36 * var(--m)); }
   .c-card { width: calc(206 * var(--m)); padding: calc(2.5 * var(--m)); border-radius: 6px; }
   .c-card img { border-radius: 3px; }
-  .c-shapes { margin-top: 0; }
+  .c-shapes { --sh: calc(190 * var(--m)); margin-top: calc(50 * var(--m)); }
   .c-shapes__box { width: calc(120 * var(--m)); }
 
   .c-pair { margin-top: calc(49 * var(--m)); grid-template-columns: 1fr; row-gap: calc(22 * var(--m)); }
@@ -418,7 +434,7 @@ h1, h2, h3, p, dl, dd { margin: 0; }
   .c-result { margin-top: calc(49 * var(--m)); row-gap: calc(25 * var(--m)); }
   .c-h3 { font-size: 22px; letter-spacing: -.045em; margin-bottom: 23px; max-width: none; }
   .c-result .c-text__body p { max-width: none; }
-  .c-link--big { margin-top: calc(26 * var(--m)); font-size: 22px; letter-spacing: -.045em; }
+  .c-link--big { margin-top: calc(18 * var(--m)); font-size: 22px; letter-spacing: -.045em; }
 
   .c-next { margin: calc(68 * var(--m)) 0 calc(60 * var(--m)); padding: 0; }
   .c-next__media { aspect-ratio: 375 / 241; border-radius: 0; }

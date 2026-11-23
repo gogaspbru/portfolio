@@ -67,12 +67,15 @@
   Array.prototype.forEach.call(document.querySelectorAll("[data-shapes]"), function (box) {
     var shapes = box.querySelectorAll(".c-shape");
     var n = shapes.length, current = 0;
+    var sticky = box.querySelector(".c-shapes__sticky");
     box.style.setProperty("--n", String(n));
     function update() {
       var r = box.getBoundingClientRect();
-      var travel = r.height - window.innerHeight;          // scroll distance while pinned
+      var sh = sticky ? sticky.offsetHeight : window.innerHeight;
+      var travel = r.height - sh;                          // scroll distance while pinned
       if (travel <= 0) return;
-      var p = Math.min(1, Math.max(0, -r.top / travel));
+      var pinTop = (window.innerHeight - sh) / 2;          // the sticky area sits mid-screen
+      var p = Math.min(1, Math.max(0, (pinTop - r.top) / travel));
       var i = Math.min(n - 1, Math.floor(p * n));
       if (i === current) return;
       shapes[current].classList.remove("is-active");
@@ -254,16 +257,16 @@
       });
     }
 
-    // dark block opens from a rounded card to full screen and folds back on exit
+    // dark block edges: the top dome flattens as it rises, the bottom sags as it leaves
     if (dark) {
       var dr = dark.getBoundingClientRect();
       if (dr.bottom > -50 && dr.top < vh + 50) {
-        var enter = Math.min(1, Math.max(0, (vh - dr.top) / (vh * 0.85)));
-        var leave = Math.min(1, Math.max(0, dr.bottom / (vh * 0.85)));
-        var e = Math.min(enter, leave);
-        e = e < .5 ? 4 * e * e * e : 1 - Math.pow(-2 * e + 2, 3) / 2;   // easeInOutCubic
-        var ex = (1 - e).toFixed(4);
-        if (ex !== dark._ex) { dark.style.setProperty("--ex", ex); dark._ex = ex; }
+        var ein = Math.min(1, Math.max(0, (vh - dr.top) / (vh * 0.8)));
+        var eout = Math.min(1, Math.max(0, (vh - dr.bottom) / (vh * 0.8)));
+        var ai = Math.pow(1 - ein, 2).toFixed(4);          // big dome at first, eases flat
+        var ao = (1 - Math.pow(1 - eout, 2)).toFixed(4);   // flat at first, sags as it goes
+        if (ai !== dark._ai) { dark.style.setProperty("--a-in", ai); dark._ai = ai; }
+        if (ao !== dark._ao) { dark.style.setProperty("--a-out", ao); dark._ao = ao; }
       }
     }
 
