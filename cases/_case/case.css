@@ -195,22 +195,16 @@ h1, h2, h3, p, dl, dd { margin: 0; }
 .c-phone {
   position: absolute; width: 24.8%; height: auto;
   filter: drop-shadow(0 calc(30 * var(--k)) calc(40 * var(--k)) rgba(60, 35, 15, .18));
-  transform: translate3d(0, var(--py, 0px), 0);
-  will-change: transform;
+  will-change: translate;
 }
 .c-phone--left   { left: 9.77%;  top: 17.55%; }
 .c-phone--center { left: 37.87%; top: 0; z-index: 1; }
 .c-phone--right  { left: 66.04%; top: 17.55%; }
-/* parallax: side phones overtake the centre one and tilt slightly as they ride (--pp set by case.js) */
-.c-phone--left  { rotate: calc(var(--pp, 0) * -0.05deg); }
-.c-phone--right { rotate: calc(var(--pp, 0) * 0.035deg); }
-/* entrance: side phones slide in from the centre, centre one rises */
-.c-phone { opacity: 0; transition: opacity 1s var(--ease); }
-.c-phones.is-in .c-phone { opacity: 1; }
-.c-phone--left, .c-phone--right, .c-phone--center { translate: 0 0; transition: opacity 1s var(--ease), translate 1.5s var(--ease); }
-.c-phones:not(.is-in) .c-phone--left  { translate: 55% 6%; }
-.c-phones:not(.is-in) .c-phone--right { translate: -55% 6%; }
-.c-phones:not(.is-in) .c-phone--center { translate: 0 12%; }
+/* entrance tied to scroll: the phones rise one after another out of the
+   bottom edge of the beige panel and settle in their places (--rise 1 → 0,
+   set by case.js). They stay upright and never pass below the panel. */
+.c-phones__stage { clip-path: inset(-50% -30% 0 -30%); }
+.c-phone { translate: 0 calc(var(--rise, 0) * 42%); }
 .c-phones__mark {
   position: absolute; left: 48.05%; top: 82.56%; width: 3.77%; height: auto;
   opacity: 0; transform: translateY(10px); transition: opacity 1s var(--ease) .7s, transform 1.2s var(--ease) .7s;

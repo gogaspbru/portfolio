@@ -194,6 +194,12 @@
   var para = Array.prototype.slice.call(document.querySelectorAll("[data-speed]"))
     .filter(function (el) { return !el.closest("[data-marquee]"); });
 
+  var risers = Array.prototype.map.call(document.querySelectorAll(".c-phones__stage"), function (stage) {
+    return { stage: stage, phones: Array.prototype.map.call(stage.querySelectorAll("[data-rise]"), function (el) {
+      return { el: el, order: parseFloat(el.getAttribute("data-rise")) || 0, last: null };
+    }) };
+  });
+
   /* ---------- marquee rows ---------- */
   var rows = Array.prototype.slice.call(document.querySelectorAll("[data-marquee] .c-row")).map(function (row) {
     var track = row.querySelector(".c-track");
@@ -274,6 +280,18 @@
       }
     }
 
+    // phones rise out of the beige panel one after another, then hold still
+    for (var j = 0; j < risers.length; j++) {
+      var st = risers[j].stage.getBoundingClientRect();
+      if (st.bottom < -200 || st.top > vh + 200) continue;
+      var pr = Math.min(1, Math.max(0, (vh - st.top) / (vh * 0.85)));
+      risers[j].phones.forEach(function (ph) {
+        var k = Math.min(1, Math.max(0, (pr - ph.order * 0.14) / 0.6));
+        var rise = (Math.pow(1 - k, 3)).toFixed(4);                // easeOutCubic, 1 → 0
+        if (rise !== ph.last) { ph.el.style.setProperty("--rise", rise); ph.last = rise; }
+      });
+    }
+
     for (var i = 0; i < para.length; i++) {
       var el = para[i];
       var box = (el.closest(".c-reveal, .c-phones__stage") || el).getBoundingClientRect();
@@ -281,7 +299,6 @@
       var center = box.top + box.height / 2 - vh / 2;
       var s = (parseFloat(el.getAttribute("data-speed")) || 0) * (window.innerWidth <= 760 ? 0.45 : 1);
       el.style.setProperty("--py", (-center * s).toFixed(1) + "px");
-      el.style.setProperty("--pp", (-center * s).toFixed(1));
     }
     requestAnimationFrame(frame);
   }
