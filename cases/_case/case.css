@@ -250,8 +250,8 @@ h1, h2, h3, p, dl, dd { margin: 0; }
 .c-dark {
   margin-top: calc(145 * var(--k));
   background: var(--night);
-  padding: calc(125 * var(--k)) 0 calc(180 * var(--k));
-  overflow: hidden;
+  padding: calc(125 * var(--k)) 0 0;
+  overflow-x: clip;   /* not hidden: the shapes block inside is sticky */
 }
 .c-marquee { display: grid; row-gap: calc(92 * var(--k)); }
 .c-row { overflow: visible; }
@@ -277,15 +277,23 @@ h1, h2, h3, p, dl, dd { margin: 0; }
 .c-row:nth-child(3) { transition-delay: .24s; }
 .c-dark.is-in .c-row { opacity: 1; translate: 0 0; }
 
-.c-diamond {
-  width: calc(314 * var(--k)); height: auto; overflow: visible;
-  margin: calc(144 * var(--k)) auto 0;
+/* figures: the screen holds, the figure swaps as you scroll, then the page moves on */
+.c-shapes { position: relative; height: calc(100vh + var(--n, 8) * 11vh); margin-top: calc(10 * var(--k)); }
+.c-shapes__sticky {
+  position: sticky; top: 0; height: 100vh;
+  display: flex; align-items: center; justify-content: center;
 }
-.c-diamond path { stroke: var(--copper); stroke-width: 1; vector-effect: non-scaling-stroke; stroke-dasharray: 1; stroke-dashoffset: 1; transition: stroke-dashoffset 2.4s var(--ease-io); }
-.c-diamond__inner { transition-delay: .5s !important; transform-origin: 50% 50%; transform-box: fill-box; }
-.c-diamond.is-in path { stroke-dashoffset: 0; }
-.c-diamond.is-in .c-diamond__inner { animation: diamond-turn 24s linear 2.6s infinite; }
-@keyframes diamond-turn { to { transform: rotate(360deg); } }
+.c-shapes__box { position: relative; width: calc(314 * var(--k)); aspect-ratio: 1; }
+.c-shape {
+  position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible;
+  opacity: 0; transform: scale(.94) rotate(-4deg);
+  transition: opacity .16s linear, transform .5s var(--ease);
+}
+.c-shape.is-active { opacity: 1; transform: none; }
+.c-shape path { stroke: var(--copper); stroke-width: 1; vector-effect: non-scaling-stroke; stroke-miterlimit: 10; }
+/* the first figure draws itself in with a line when the block appears */
+.c-shape:first-child path { stroke-dasharray: 1; stroke-dashoffset: 1; transition: stroke-dashoffset 2.2s var(--ease-io); }
+.c-shapes.is-in .c-shape:first-child path { stroke-dashoffset: 0; }
 
 /* ===================== Hand + flowers ===================== */
 .c-pair {
@@ -392,7 +400,8 @@ h1, h2, h3, p, dl, dd { margin: 0; }
   .c-track { gap: calc(36 * var(--m)); }
   .c-card { width: calc(206 * var(--m)); padding: calc(2.5 * var(--m)); border-radius: 6px; }
   .c-card img { border-radius: 3px; }
-  .c-diamond { width: calc(131 * var(--m)); margin-top: calc(62 * var(--m)); }
+  .c-shapes { margin-top: 0; }
+  .c-shapes__box { width: calc(170 * var(--m)); }
 
   .c-pair { margin-top: calc(49 * var(--m)); grid-template-columns: 1fr; row-gap: calc(22 * var(--m)); }
   .c-pair > div { aspect-ratio: 335 / 332; }
@@ -421,6 +430,7 @@ h1, h2, h3, p, dl, dd { margin: 0; }
   .c-phone, .c-phones__mark, .c-tablet, .c-row, .c-pair__hand, .c-hero__logo path {
     transition: none !important; opacity: 1 !important; transform: none !important; translate: none !important; clip-path: none !important; filter: none !important;
   }
-  .c-diamond path { stroke-dashoffset: 0; transition: none; }
-  .c-diamond .c-diamond__inner, .is-fallback .c-video { animation: none !important; }
+  .c-shape:first-child path { stroke-dashoffset: 0; transition: none; }
+  .c-shape { transition: none; }
+  .is-fallback .c-video { animation: none !important; }
 }

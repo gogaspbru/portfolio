@@ -13,7 +13,7 @@
   var REDUCE = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
   /* ---------- reveals ---------- */
-  var revealSel = "[data-in], .c-reveal, .c-rise, .c-phones, .c-tablet, .c-dark, .c-diamond, .c-pair__slate";
+  var revealSel = "[data-in], .c-reveal, .c-rise, .c-phones, .c-tablet, .c-dark, .c-shapes, .c-pair__slate";
   var revealEls = Array.prototype.slice.call(document.querySelectorAll(revealSel));
 
   if (REDUCE || !("IntersectionObserver" in window)) {
@@ -60,6 +60,27 @@
       });
     }, { threshold: 0.15 });
     vo.observe(box);
+  });
+
+  /* ---------- figures that swap while the screen holds ---------- */
+  Array.prototype.forEach.call(document.querySelectorAll("[data-shapes]"), function (box) {
+    var shapes = box.querySelectorAll(".c-shape");
+    var n = shapes.length, current = 0;
+    box.style.setProperty("--n", String(n));
+    function update() {
+      var r = box.getBoundingClientRect();
+      var travel = r.height - window.innerHeight;          // scroll distance while pinned
+      if (travel <= 0) return;
+      var p = Math.min(1, Math.max(0, -r.top / travel));
+      var i = Math.min(n - 1, Math.floor(p * n));
+      if (i === current) return;
+      shapes[current].classList.remove("is-active");
+      shapes[i].classList.add("is-active");
+      current = i;
+    }
+    window.addEventListener("scroll", update, { passive: true });
+    window.addEventListener("resize", update);
+    update();
   });
 
   if (REDUCE) return;
