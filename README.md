@@ -15,6 +15,7 @@ assets/placeholders/  — нейтральные заглушки 16:9
 assets/logos/         — логотипы клиентов для бегущих лент
 scripts/gen-placeholders.py  — генерирует заглушки и пример works.json
 scripts/build-standalone.py  — собирает всё в один файл scripts/standalone.html
+cases/                — страницы кейсов (см. cases/README.md)
 ```
 
 ## Как добавить работу
