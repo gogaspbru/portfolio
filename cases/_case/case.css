@@ -201,6 +201,9 @@ h1, h2, h3, p, dl, dd { margin: 0; }
 .c-phone--left   { left: 9.77%;  top: 17.55%; }
 .c-phone--center { left: 37.87%; top: 0; z-index: 1; }
 .c-phone--right  { left: 66.04%; top: 17.55%; }
+/* parallax: side phones overtake the centre one and tilt slightly as they ride (--pp set by case.js) */
+.c-phone--left  { rotate: calc(var(--pp, 0) * -0.05deg); }
+.c-phone--right { rotate: calc(var(--pp, 0) * 0.035deg); }
 /* entrance: side phones slide in from the centre, centre one rises */
 .c-phone { opacity: 0; transition: opacity 1s var(--ease); }
 .c-phones.is-in .c-phone { opacity: 1; }
@@ -254,24 +257,12 @@ h1, h2, h3, p, dl, dd { margin: 0; }
   overflow-x: clip;   /* not hidden: the shapes block inside is sticky */
   position: relative;
   padding-bottom: calc(130 * var(--k));
-  --arc-max: calc(125 * var(--k));
 }
-/* scroll-driven edges (case.js sets --a-in / --a-out from 1 to 0):
-   the top edge rises as a dome that flattens out as the block comes up,
-   and the bottom edge sags into a dome as the block leaves, so the dark
-   reads like a thick liquid pouring in and draining away */
-.c-dark::before, .c-dark::after {
-  content: ""; position: absolute; left: 0; right: 0; z-index: 2; pointer-events: none;
-}
-.c-dark::before {
-  top: -1px; height: calc(var(--a-in, 0) * var(--arc-max) + 1px);
-  background: radial-gradient(farthest-side at 50% 100%, transparent calc(100% - 1.5px), var(--bg) 100%);
-}
-.c-dark::after {
-  bottom: -1px; height: calc(var(--a-out, 0) * var(--arc-max) + 1px);
-  background: radial-gradient(farthest-side at 50% 0%, transparent calc(100% - 1.5px), var(--bg) 100%);
-}
-.c-dark .c-marquee { transform: translateY(calc(var(--a-in, 0) * 60 * var(--k))); }
+/* soft entry: with JS the block itself is see-through and the whole page
+   background fades white → night as it comes up, and back to white as it
+   leaves (case.js tints .page). Without JS / reduced motion it stays solid. */
+.js-fade .c-dark { background: transparent; }
+.js-fade .page { transition: none; }
 .c-marquee { display: grid; row-gap: calc(92 * var(--k)); }
 .c-row { overflow: visible; }
 .c-track {
@@ -415,8 +406,7 @@ h1, h2, h3, p, dl, dd { margin: 0; }
 
   .c-store { margin: calc(10 * var(--m)) 0 0; aspect-ratio: 375 / 265; border-radius: 0; }
 
-  .c-dark { margin-top: calc(9 * var(--m)); padding: calc(99 * var(--m)) 0 calc(90 * var(--m)); --arc-max: calc(70 * var(--m)); }
-  .c-dark .c-marquee { transform: translateY(calc(var(--a-in, 0) * 30 * var(--m))); }
+  .c-dark { margin-top: calc(9 * var(--m)); padding: calc(99 * var(--m)) 0 calc(90 * var(--m)); }
   .c-marquee { row-gap: calc(39 * var(--m)); }
   .c-track { gap: calc(36 * var(--m)); }
   .c-card { width: calc(206 * var(--m)); padding: calc(2.5 * var(--m)); border-radius: 6px; }

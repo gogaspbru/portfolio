@@ -230,6 +230,8 @@
 
   var darkVisible = true;
   var dark = document.querySelector(".c-dark");
+  var pageEl = document.querySelector(".page");
+  if (dark && pageEl) doc.classList.add("js-fade");
   if (dark && "IntersectionObserver" in window) {
     new IntersectionObserver(function (es) { darkVisible = es[0].isIntersecting; }, { rootMargin: "200px 0px" }).observe(dark);
   }
@@ -257,16 +259,18 @@
       });
     }
 
-    // dark block edges: the top dome flattens as it rises, the bottom sags as it leaves
-    if (dark) {
+    // soft entry: tint the page from white to night as the dark block comes up, back on the way out
+    if (dark && pageEl) {
       var dr = dark.getBoundingClientRect();
-      if (dr.bottom > -50 && dr.top < vh + 50) {
-        var ein = Math.min(1, Math.max(0, (vh - dr.top) / (vh * 0.8)));
-        var eout = Math.min(1, Math.max(0, (vh - dr.bottom) / (vh * 0.8)));
-        var ai = Math.pow(1 - ein, 2).toFixed(4);          // big dome at first, eases flat
-        var ao = (1 - Math.pow(1 - eout, 2)).toFixed(4);   // flat at first, sags as it goes
-        if (ai !== dark._ai) { dark.style.setProperty("--a-in", ai); dark._ai = ai; }
-        if (ao !== dark._ao) { dark.style.setProperty("--a-out", ao); dark._ao = ao; }
+      var tin = Math.min(1, Math.max(0, (vh * 0.85 - dr.top) / (vh * 0.55)));
+      var tout = Math.min(1, Math.max(0, (dr.bottom - vh * 0.15) / (vh * 0.55)));
+      var t = Math.min(tin, tout);
+      t = t * t * (3 - 2 * t);                                   // smoothstep
+      var tk = t.toFixed(3);
+      if (tk !== dark._t) {
+        dark._t = tk;
+        var c = function (a, b) { return Math.round(a + (b - a) * t); };
+        pageEl.style.backgroundColor = "rgb(" + c(255, 18) + "," + c(255, 19) + "," + c(255, 23) + ")";
       }
     }
 
@@ -277,6 +281,7 @@
       var center = box.top + box.height / 2 - vh / 2;
       var s = (parseFloat(el.getAttribute("data-speed")) || 0) * (window.innerWidth <= 760 ? 0.45 : 1);
       el.style.setProperty("--py", (-center * s).toFixed(1) + "px");
+      el.style.setProperty("--pp", (-center * s).toFixed(1));
     }
     requestAnimationFrame(frame);
   }
