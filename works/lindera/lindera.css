@@ -21,6 +21,10 @@
   left: 19.89%; top: 19.78%; width: 60.22%;
   box-shadow: 0 calc(30 * var(--k)) calc(70 * var(--k)) rgba(52, 66, 56, .22);
 }
+/* the recording itself is white edge to edge: no dark backing and no inner rounding,
+   so no thin arcs show in the corners of the white frame */
+.l-tablet .c-tablet__screen,
+.l-tablet .c-tablet__screen .c-video { background: #fff; border-radius: 0; }
 
 /* ===================== Photo collage ===================== */
 .l-collage {
@@ -106,6 +110,7 @@
   .l-screen__stage { aspect-ratio: 375 / 319; }
   .l-screen__bg { border-radius: 0; }
   .l-screen__bg img { object-position: 31% 50%; }
+  .l-tablet .c-tablet__screen { border-radius: 0; }
   .l-tablet.c-tablet { left: 0; width: 100%; top: calc(56 / 319 * 100%); padding: calc(5 * var(--m)); border-radius: calc(14 * var(--m)); }
 
   .l-collage {
