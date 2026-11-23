@@ -261,8 +261,13 @@ h1, h2, h3, p, dl, dd { margin: 0; }
   transition: transform 1.6s var(--ease) .15s, opacity 1s var(--ease) .15s;
 }
 .c-tablet.is-in { transform: none; opacity: 1; }
-.c-tablet__screen { width: 100%; height: 100%; overflow: hidden; border-radius: calc(15 * var(--k)); background: #1b1512; }
+/* no inner rounding and a white backing: a rounded clip over the recording left thin
+   dark arcs in the corners of the white frame (seen on «Культура дома») */
+.c-tablet__screen { width: 100%; height: 100%; overflow: hidden; border-radius: 0; background: #fff; }
 .c-tablet__screen .c-video { width: 100%; height: 100%; object-fit: cover; }
+/* the «Культура дома» recording has black rounded corners baked into its edges (~4px of 1000):
+   enlarge it slightly so the white frame crops them off */
+.c-tablet--trim .c-video { scale: 1.025; }
 
 /* ===================== Store ===================== */
 .c-store { margin-top: calc(139 * var(--k)); }
@@ -427,7 +432,6 @@ h1, h2, h3, p, dl, dd { margin: 0; }
   .c-duo__velvet { left: 0; width: 100%; top: 0; bottom: auto; height: calc(322 / 605 * 100%); border-radius: 0; }
   .c-duo__slate  { right: 0; width: 100%; top: auto; bottom: 0; height: calc(283 / 605 * 100%); border-radius: 0; }
   .c-tablet { left: 0; width: 100%; top: calc(209 / 605 * 100%); padding: calc(5 * var(--m)); border-radius: calc(14 * var(--m)); }
-  .c-tablet__screen { border-radius: calc(10 * var(--m)); }
 
   .c-store { margin: calc(10 * var(--m)) 0 0; aspect-ratio: 375 / 265; border-radius: 0; }
 
