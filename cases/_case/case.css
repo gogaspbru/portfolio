@@ -434,3 +434,79 @@ h1, h2, h3, p, dl, dd { margin: 0; }
   .c-shape { transition: none; }
   .is-fallback .c-video { animation: none !important; }
 }
+
+/* ===================== Footer (same as the home page) =====================
+   The dark footer is fixed behind the white .page; the page gets a bottom
+   margin equal to the footer height (set in case.js), so scrolling past the
+   last block lifts the white page and uncovers the footer. */
+.page { position: relative; z-index: 1; background: var(--bg); display: flow-root; }   /* flow-root keeps the last block's bottom margin white */
+.site-footer {
+  position: fixed; left: 0; right: 0; bottom: 0; z-index: 0;
+  background: #111215; color: #f3f2ef;
+  visibility: hidden;                 /* shown by JS once the user scrolls (avoids an iOS load flash) */
+}
+.site-footer.is-visible { visibility: visible; }
+.site-footer__inner {
+  position: relative; z-index: 1;
+  display: flex; flex-direction: column; justify-content: flex-end;
+  min-height: 100svh;
+}
+.statement {
+  padding-top: clamp(48px, 6vw, 96px);
+  padding-bottom: clamp(40px, 6vw, 90px);
+  align-self: stretch;
+}
+.statement__text {
+  margin: 0; max-width: 66.666%;
+  font-size: clamp(30px, 4.4vw, 62px);
+  font-weight: 600; line-height: 0.75; letter-spacing: -0.02em;
+  color: #f3f2ef;
+}
+.footer__bottom { padding-bottom: clamp(6px, 0.9vw, 12px); align-self: stretch; }
+.footer__copy { margin: 0 0 clamp(26px, 4vw, 54px); color: #8b8a83; font-size: 15px; }
+.contact { display: flex; align-items: flex-end; justify-content: space-between; gap: clamp(20px, 2.6vw, 44px); flex-wrap: wrap; }
+.contact__title {
+  margin: 0; font-size: clamp(62px, 11.7vw, 172px);
+  font-weight: 700; line-height: 0.9; letter-spacing: -0.03em; color: #f3f2ef;
+}
+.contact__socials { display: flex; gap: clamp(12px, 1.4vw, 22px); }
+.social {
+  position: relative; display: flex; align-items: center; justify-content: center;
+  width: clamp(64px, 5vw, 92px); height: clamp(64px, 5vw, 92px);
+  border-radius: 50%; background: #24252b; color: #f3f2ef;
+  overflow: visible; will-change: transform;
+  transition: transform .6s cubic-bezier(.34,1.56,.64,1), background .3s ease;
+}
+.social:hover { background: #2b2c34; }
+.social__spark {
+  position: absolute; inset: 0; width: 100%; height: 100%;
+  overflow: visible; opacity: 0; pointer-events: none; z-index: 2;
+  transition: opacity .18s ease;
+}
+.social__spark circle { fill: none; filter: url(#electricFx); }
+.social__spark .spark-glow { stroke: url(#sparkGrad); stroke-width: 3; opacity: .95; }
+.social__spark .spark-core { stroke: #ffffff; stroke-width: 1; }
+.social:hover .social__spark { opacity: 1; animation: sparkHue 4s linear infinite; }
+@keyframes sparkHue { to { filter: hue-rotate(360deg); } }
+.social__icon { position: relative; z-index: 1; width: 38%; height: auto; will-change: transform; transition: transform .6s cubic-bezier(.34,1.56,.64,1); }
+
+/* statement text floats up line by line once uncovered */
+.reveal-line { display: block; overflow: hidden; padding: 0.26em 0.03em; margin: -0.26em -0.03em; }
+.reveal-line__inner { display: block; transform: translateY(120%); transition: transform .95s var(--ease); }
+[data-reveal].is-in .reveal-line__inner { transform: translateY(0); }
+[data-reveal].reveal-simple { opacity: 0; transform: translateY(26px); transition: opacity .7s ease, transform .85s var(--ease); }
+[data-reveal].reveal-simple.is-in { opacity: 1; transform: none; }
+
+@media (max-width: 900px) { .statement__text { max-width: 100%; } }
+@media (max-width: 640px) {
+  .footer__copy { font-size: 13px; }
+  .statement__text { line-height: 0.78; }
+  .contact { flex-direction: column; align-items: stretch; gap: clamp(22px, 6vw, 32px); }
+  .contact__title { font-size: clamp(39px, 14.5vw, 73px); }
+  .contact__socials { width: 100%; justify-content: space-between; }
+  .social { width: clamp(60px, 17vw, 74px); height: clamp(60px, 17vw, 74px); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .social__spark { display: none; }
+  .reveal-line__inner, [data-reveal].reveal-simple { transform: none; opacity: 1; transition: none; }
+}

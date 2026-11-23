@@ -3,6 +3,7 @@
    - reveals ([data-in], .c-reveal, .c-rise, …) via IntersectionObserver
    - videos play only while on screen; poster "breathes" if the file is missing
    - parallax for [data-speed] elements
+   - dark footer from the home page, uncovered as the page scrolls away
    - endless moving rows in the dark block (direction per row, speeds up
      with scroll, slows down under the cursor)
    ============================================================ */
@@ -83,7 +84,108 @@
     update();
   });
 
+  /* ---------- footer (same as the home page) ----------
+     The dark footer is fixed behind the white .page. Give the page a bottom
+     margin equal to the footer height so scrolling past the last block lifts
+     the page away and uncovers the footer. */
+  var page = document.querySelector(".page");
+  var footer = document.querySelector(".site-footer");
+  var yearEl = document.getElementById("year");
+  if (yearEl) yearEl.textContent = new Date().getFullYear();
+  if (page && footer) {
+    var syncFooter = function () { page.style.marginBottom = footer.offsetHeight + "px"; };
+    syncFooter();
+    window.addEventListener("resize", syncFooter);
+    window.addEventListener("load", syncFooter);
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(syncFooter);
+    // keep it hidden until the user scrolls (avoids a load-time flash on iOS)
+    var showFooter = function () { footer.classList.add("is-visible"); window.removeEventListener("scroll", onFooterScroll); };
+    var onFooterScroll = function () { if (window.pageYOffset > 60) showFooter(); };
+    window.addEventListener("scroll", onFooterScroll, { passive: true });
+    setTimeout(showFooter, 1800);
+
+    // statement text: lines float up once about half of it is uncovered
+    var stmt = footer.querySelector("[data-reveal]");
+    if (stmt && !REDUCE) {
+      var text = stmt.textContent.trim();
+      var lineMode = !window.matchMedia("(max-width: 640px)").matches;
+      var split = function () {
+        if (!lineMode) return;
+        stmt.textContent = "";
+        var spans = text.split(/\s+/).map(function (w, i, a) {
+          var s = document.createElement("span");
+          s.style.display = "inline-block"; s.textContent = w;
+          stmt.appendChild(s);
+          if (i < a.length - 1) stmt.appendChild(document.createTextNode(" "));
+          return s;
+        });
+        var lines = [], cur = [], top = null;
+        spans.forEach(function (s) {
+          if (top === null) top = s.offsetTop;
+          if (s.offsetTop - top > 2) { lines.push(cur); cur = []; top = s.offsetTop; }
+          cur.push(s.textContent);
+        });
+        if (cur.length) lines.push(cur);
+        stmt.textContent = "";
+        lines.forEach(function (ws, i) {
+          var line = document.createElement("span"); line.className = "reveal-line";
+          var inner = document.createElement("span"); inner.className = "reveal-line__inner";
+          inner.style.transitionDelay = (i * 0.09) + "s";
+          inner.textContent = ws.join(" ");
+          line.appendChild(inner); stmt.appendChild(line);
+        });
+      };
+      if (!lineMode) stmt.classList.add("reveal-simple");
+      var checkStmt = function () {
+        var r = stmt.getBoundingClientRect();
+        if (page.getBoundingClientRect().bottom <= r.top + r.height * 0.5) {
+          window.removeEventListener("scroll", checkStmt);
+          split();                     // measure at the final width, then animate
+          void stmt.offsetWidth;
+          stmt.classList.add("is-in");
+        }
+      };
+      window.addEventListener("scroll", checkStmt, { passive: true });
+      checkStmt();
+    }
+  }
+
   if (REDUCE) return;
+
+  /* ---------- footer circles: magnetic pull + electric outline (mouse only) ---------- */
+  if (window.matchMedia("(hover: hover) and (pointer: fine)").matches) {
+    var socials = Array.prototype.slice.call(document.querySelectorAll(".social"));
+    socials.forEach(function (el) {
+      var icon = el.querySelector(".social__icon");
+      el.addEventListener("mousemove", function (e) {
+        var r = el.getBoundingClientRect();
+        var mx = e.clientX - (r.left + r.width / 2), my = e.clientY - (r.top + r.height / 2);
+        el.style.transition = "transform .18s ease-out, background .3s ease";
+        el.style.transform = "translate(" + (mx * 0.35) + "px," + (my * 0.35) + "px)";
+        if (icon) { icon.style.transition = "transform .18s ease-out"; icon.style.transform = "translate(" + (mx * 0.18) + "px," + (my * 0.18) + "px)"; }
+      });
+      el.addEventListener("mouseleave", function () {
+        el.style.transition = ""; el.style.transform = "";
+        if (icon) { icon.style.transition = ""; icon.style.transform = ""; }
+      });
+    });
+    var turb = document.querySelector("#electricFx feTurbulence");
+    if (turb) {
+      var hovering = 0, sraf = null, st = 0;
+      var crackle = function () {
+        st += 1;
+        if (st % 4 === 0) {
+          turb.setAttribute("seed", ((st / 4) * 2) % 211);
+          turb.setAttribute("baseFrequency", (0.06 + Math.sin(st * 0.09) * 0.03).toFixed(4));
+        }
+        sraf = hovering > 0 ? requestAnimationFrame(crackle) : null;
+      };
+      socials.forEach(function (el) {
+        el.addEventListener("mouseenter", function () { hovering++; if (!sraf) sraf = requestAnimationFrame(crackle); });
+        el.addEventListener("mouseleave", function () { hovering = Math.max(0, hovering - 1); });
+      });
+    }
+  }
 
   /* ---------- parallax ---------- */
   var para = Array.prototype.slice.call(document.querySelectorAll("[data-speed]"))
