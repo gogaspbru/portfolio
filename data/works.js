@@ -1,24 +1,26 @@
-[
+/* Список работ на главной. Редактируйте этот файл: обычный JS, поэтому
+   сайт открывается и двойным кликом по index.html (без сервера). */
+window.__WORKS__ = [
   {
     "type": "video",
     "variant": "plate",
     "title": "Культура Дома",
     "preview": "assets/works/01_kultura_doma.webp",
-    "link": "https://kultura-doma.ru/",
+    "link": "works/kulturadoma/",
     "video": "assets/works/01_kultura_doma_round.webm"
   },
   {
     "type": "video",
     "title": "Lindera",
     "preview": "assets/works/02_lindera.webp",
-    "link": "https://lindera.ru/",
+    "link": "works/lindera/",
     "video": "assets/works/02_lindera.webm"
   },
   {
     "type": "video",
     "title": "Krotex",
     "preview": "assets/works/03_krotex.webp",
-    "link": "https://krotexpro.ru/",
+    "link": "works/krotex/",
     "video": "assets/works/03_krotex.webm"
   },
   {
@@ -240,4 +242,4 @@
     "preview": "assets/works/036_trinity.webp",
     "link": "https://www.trinitygroup.ru/"
   }
-]
+];

@@ -6,7 +6,7 @@ whole site can be opened from `file://` or shared as one file.
 
 The page markup here is kept in sync with index.html. app.js reads
 `window.__WORKS__` / `window.__LOGOS__` when present (this build injects them)
-and otherwise falls back to fetching data/works.json.
+(data/works.js sets it in the regular multi-file site).
 """
 import os, json, base64, mimetypes, urllib.parse
 
@@ -32,7 +32,8 @@ def data_uri(relpath):
 def build():
     css = read("css/styles.css")
     app = read("js/app.js")
-    works = json.loads(read("data/works.json"))
+    src = read("data/works.js")
+    works = json.loads(src[src.index("[") : src.rindex("]") + 1])
 
     # Inline every asset referenced by a work.
     for w in works:
@@ -50,7 +51,7 @@ def build():
     body = read("index.html")
     # Pull just the <body> inner markup out of index.html.
     start = body.find("<body>") + len("<body>")
-    end = body.find("<script src=\"js/app.js\">")
+    end = body.find("<script src=\"data/works.js\">")
     markup = body[start:end].strip()
 
     injected = (

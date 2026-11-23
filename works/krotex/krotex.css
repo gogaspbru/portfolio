@@ -1,0 +1,161 @@
+/* ============================================================
+   KROTEX — styles only this case needs. Everything shared
+   (header, intro, text blocks, reveals, moving rows, result,
+   next case, footer) lives in ../_case/case.css.
+   Desktop: 1600 design → N * var(--k). Mobile: 375 → N * var(--m).
+   ============================================================ */
+
+/* ===================== Hero: video + KROTEX logo ===================== */
+.k-hero { aspect-ratio: 1481 / 824; background: #1d1f1c; }
+.k-hero::after { background: rgba(0, 0, 0, .15); }           /* the 15% shade from the mockup */
+.k-hero__logo.c-hero__logo { left: 40.58%; top: 45.27%; width: 19.99%; transform: none; }
+
+/* ===================== Site video in a white frame on the blueprint ===================== */
+.k-screen { margin-top: calc(121 * var(--k)); }
+.k-screen__stage { position: relative; aspect-ratio: 1483 / 824; }
+.k-screen__bg { position: absolute; inset: 0; overflow: hidden; border-radius: var(--r); background: #121317; }
+.k-screen__bg img { width: 100%; height: 100%; object-fit: cover; }
+.k-tablet.c-tablet {
+  left: 19.89%; top: 19.78%; width: 60.22%;
+  box-shadow: 0 calc(40 * var(--k)) calc(90 * var(--k)) rgba(0, 0, 0, .5);
+}
+/* the recording is white at the edges: no dark backing, no inner rounding (no thin arcs in the corners) */
+.k-tablet .c-tablet__screen,
+.k-tablet .c-tablet__screen .c-video { background: #fff; border-radius: 0; }
+
+/* ===================== Collage ===================== */
+.k-collage {
+  margin-top: calc(84 * var(--k));
+  display: grid;
+  grid-template-columns: 736fr 11fr 736fr;
+  grid-template-rows: calc(425 * var(--k)) calc(11 * var(--k)) calc(416 * var(--k));
+  grid-template-areas:
+    "w . t"
+    "w . ."
+    "w . f";
+}
+.k-collage img { display: block; }
+
+/* the wall: three phones rise out of its bottom edge one after another (--rise 1 → 0, case.js),
+   stay upright and never leave the panel, then float gently */
+.k-wall { grid-area: w; position: relative; overflow: hidden; border-radius: var(--r); }
+.k-wall__bg { position: absolute; inset: 0; }
+.k-wall__bg img { width: 100%; height: 100%; object-fit: cover; }
+.k-phone {
+  position: absolute; height: auto;
+  filter: drop-shadow(0 calc(24 * var(--k)) calc(30 * var(--k)) rgba(40, 40, 40, .16));
+  translate: 0 calc(var(--rise, 0) * var(--dy));
+  will-change: translate;
+}
+.k-phone--1 { left: 34.78%; top: 2.82%;  width: 40.49%; --dy: 195%; }
+.k-phone--2 { left: 13.72%; top: 29.46%; width: 48.37%; --dy: 152%; }
+.k-phone--3 { left: 43.21%; top: 38.62%; width: 41.17%; --dy: 116%; }
+.k-wall.is-in .k-phone { animation: phone-float 7s ease-in-out infinite; }
+.k-wall.is-in .k-phone--2 { animation-delay: -2.3s; }
+.k-wall.is-in .k-phone--3 { animation-delay: -4.6s; }
+
+.k-collage__top { grid-area: t; display: grid; grid-template-columns: 362fr 374fr; }
+.k-collage__mirror { position: relative; overflow: hidden; border-radius: var(--r); }
+.k-collage__mirror img { width: 100%; height: 100%; object-fit: cover; }
+.k-signs { position: relative; }
+.k-sign { position: absolute; top: 0; height: auto; }
+.k-sign:nth-child(1) { left: 16.58%; width: 14.71%; }
+.k-sign:nth-child(2) { left: 64.44%; width: 13.9%; }
+.k-sign:nth-child(3) { left: 85.29%; width: 14.71%; }
+.k-sign:nth-child(3).is-in { animation: sign-turn 1.6s var(--ease) .5s both; }
+@keyframes sign-turn { from { rotate: -90deg; } to { rotate: 0deg; } }
+
+.k-collage__fire { grid-area: f; position: relative; overflow: hidden; border-radius: var(--r); }
+.k-collage__fire img { width: 100%; height: 100%; object-fit: cover; }
+
+/* ===================== Dark: moving pages (page fades to night, case.js) ===================== */
+.k-dark.c-dark { margin-top: calc(137 * var(--k)); padding: calc(144 * var(--k)) 0 calc(156 * var(--k)); }
+.k-marquee { row-gap: calc(91 * var(--k)); }
+.k-row-m { display: none; }
+
+/* ===================== Orbit: round video in thin rings ===================== */
+.k-orbit { margin-top: calc(70 * var(--k)); overflow: hidden; }
+.k-orbit__stage { position: relative; width: calc(745 * var(--k)); aspect-ratio: 1; margin: 0 auto; }
+.k-orbit__ring, .k-orbit__wave, .k-orbit__disc {
+  position: absolute; left: 50%; top: 50%; border-radius: 50%;
+  translate: -50% -50%;
+}
+.k-orbit__ring { border: 1px solid #e3e3e3; aspect-ratio: 1; }
+.k-orbit__ring--3 { width: 100%;    opacity: .2; }
+.k-orbit__ring--1 { width: 80.81%; }
+.k-orbit__ring--2 { width: 70.87%; }
+.k-orbit__disc { width: 48.59%; aspect-ratio: 1; overflow: hidden; background: #2a2622; isolation: isolate; }
+.k-orbit__disc .c-video { width: 100%; height: 100%; object-fit: cover; display: block; }
+/* a soft light ring that keeps leaving the disc and fading out */
+.k-orbit__wave { width: 48.59%; aspect-ratio: 1; border: 1px solid rgba(214, 163, 143, .55); opacity: 0; }
+
+/* entrance: the disc opens from its centre, the rings spread out after it */
+.k-orbit__disc { clip-path: circle(0% at 50% 50%); scale: .86; transition: clip-path 1.4s var(--ease), scale 1.8s var(--ease); }
+.k-orbit__ring { scale: .62; opacity: 0; transition: scale 1.8s var(--ease), opacity 1.2s var(--ease); }
+.k-orbit__ring--2 { transition-delay: .2s; }
+.k-orbit__ring--1 { transition-delay: .32s; }
+.k-orbit__ring--3 { transition-delay: .44s; }
+.k-orbit.is-in .k-orbit__disc { clip-path: circle(50% at 50% 50%); scale: 1; }
+.k-orbit.is-in .k-orbit__ring { scale: 1; opacity: 1; }
+.k-orbit.is-in .k-orbit__ring--3 { opacity: .2; }
+.k-orbit.is-in .k-orbit__wave { animation: orbit-wave 5s cubic-bezier(.2, .6, .3, 1) 1.6s infinite; }
+@keyframes orbit-wave {
+  0%   { scale: 1;    opacity: 0; }
+  12%  { opacity: .9; }
+  100% { scale: 2.06; opacity: 0; }
+}
+
+/* ===================== Wide interior photo ===================== */
+.k-wide { padding: 0; margin: calc(80 * var(--k)) var(--pad) 0; overflow: hidden; border-radius: var(--r); aspect-ratio: 1484 / 824; }
+.k-wide img { width: 100%; height: 100%; object-fit: cover; }
+
+.case--krotex .c-result { margin-top: calc(116 * var(--k)); }
+.case--krotex .c-next { margin-top: calc(125 * var(--k)); }
+.k-next .c-next__text { color: #fff; }
+
+/* ===================== Mobile (375 design) ===================== */
+@media (max-width: 760px) {
+  .k-hero { aspect-ratio: 375 / 208; }
+  .k-hero__logo.c-hero__logo { left: 37.4%; top: 44.6%; width: 26.4%; }
+
+  .k-screen { margin-top: calc(56 * var(--m)); padding: 0; }
+  .k-screen__stage { aspect-ratio: 375 / 319; }
+  .k-screen__bg { border-radius: 0; }
+  .k-tablet.c-tablet { left: 0; width: 100%; top: calc(56 / 319 * 100%); padding: calc(5 * var(--m)); border-radius: calc(14 * var(--m)); }
+
+  .k-collage {
+    margin-top: calc(42 * var(--m));
+    grid-template-columns: 1fr;
+    grid-template-rows: auto calc(8 * var(--m)) auto calc(8 * var(--m)) auto;
+    grid-template-areas: "w" "." "t" "." "f";
+  }
+  .k-wall { aspect-ratio: 736 / 852; }
+  .k-phone { filter: drop-shadow(0 10px 14px rgba(40, 40, 40, .16)); }
+  .k-collage__top { aspect-ratio: 736 / 425; }
+  .k-collage__fire { aspect-ratio: 736 / 416; }
+
+  .k-dark.c-dark { margin-top: calc(70 * var(--m)); padding: calc(50 * var(--m)) 0 calc(50 * var(--m)); }
+  .k-marquee { row-gap: calc(12 * var(--m)); }
+  .k-row-m { display: block; }
+  .k-dark .c-track { gap: calc(8 * var(--m)); }
+  .k-dark .c-card { width: calc(249 * var(--m)); padding: calc(3 * var(--m)); }
+
+  .k-orbit { margin-top: calc(40 * var(--m)); }
+  .k-orbit__stage { width: calc(330 * var(--m)); }
+
+  .k-wide { margin: calc(40 * var(--m)) 0 0; aspect-ratio: 375 / 320; border-radius: 0; }
+
+  .case--krotex .c-result { margin-top: calc(46 * var(--m)); }
+  .case--krotex .c-next { margin-top: calc(68 * var(--m)); }
+  .k-next .c-next__media img { object-position: 60% 50%; }
+  .k-next .c-next__text { align-items: flex-end; padding-right: var(--pad); text-align: right; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .k-phone, .k-sign, .k-orbit__disc, .k-orbit__ring {
+    transition: none !important; animation: none !important; translate: none; scale: none !important; clip-path: none !important;
+  }
+  .k-orbit__ring, .k-orbit__disc { translate: -50% -50% !important; opacity: 1; }
+  .k-orbit__ring--3 { opacity: .2; }
+  .k-orbit__wave { display: none; }
+}

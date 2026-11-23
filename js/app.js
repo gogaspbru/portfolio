@@ -1,6 +1,6 @@
 /* ============================================================
    Portfolio logic — no dependencies.
-   - Loads works from data/works.json
+   - Loads works from data/works.js (window.__WORKS__)
    - Renders 18 at a time via "Загрузить ещё"
    - Each row: caption on the left, light 16:9 tile on the right
    - Photo & video tiles; click opens link in a new tab
@@ -127,13 +127,17 @@
     var cell = document.createElement("div");
     cell.className = "item" + (item.type === "video" ? " is-video" : "");
 
-    // the 16:9 tile (clickable, opens link in a new tab)
+    // the 16:9 tile (clickable: external links open in a new tab, case pages in place)
     var a = document.createElement("a");
     a.className = "item__tile";
     if (item.link) {                 // only clickable when a real link is given
-      a.href = item.link;
-      a.target = "_blank";
-      a.rel = "noopener";
+      // clean folder links ("works/kulturadoma/") on the server; opened from disk
+      // (file://) a folder link would show a file list, so point at its index.html
+      var href = item.link;
+      if (location.protocol === "file:" && /\/$/.test(href) && !/^[a-z]+:/i.test(href)) href += "index.html";
+      a.href = href;
+      // outside sites open in a new tab; our own case pages (relative links) open in place
+      if (/^https?:\/\//i.test(item.link)) { a.target = "_blank"; a.rel = "noopener"; }
     }
     a.setAttribute("aria-label", item.title || "Работа");
 
@@ -716,23 +720,14 @@
     go();
   })();
 
-  // Works come from window.__WORKS__ (single-file build) or data/works.json.
+  // Works come from data/works.js (window.__WORKS__): a plain script, so the
+  // page also works when opened straight from disk (file://), no server needed.
   if (window.__WORKS__) {
     init(window.__WORKS__);
   } else {
-    fetch("data/works.json", { cache: "no-cache" })
-      .then(function (r) {
-        if (!r.ok) throw new Error("HTTP " + r.status);
-        return r.json();
-      })
-      .then(init)
-      .catch(function (err) {
-        console.error("Не удалось загрузить works.json:", err);
-        list.innerHTML =
-          '<p style="color:#8b8b82">Не удалось загрузить работы. ' +
-          "Запустите сайт через локальный сервер (fetch не работает с file://).</p>";
-        hidePreloader();
-      });
+    console.error("Не найден список работ: data/works.js не загрузился.");
+    list.innerHTML = '<p style="color:#8b8b82">Не удалось загрузить работы (data/works.js).</p>';
+    hidePreloader();
   }
 })();
 
