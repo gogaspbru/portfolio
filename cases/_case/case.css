@@ -313,6 +313,9 @@ h1, h2, h3, p, dl, dd { margin: 0; }
 }
 .c-pair__slate.is-in .c-pair__hand { transform: none; }
 .c-pair__photo img { width: 100%; height: 100%; object-fit: cover; }
+/* the columns differ by a few px; size the photo by the row (set by the slate) so both bottoms line up */
+.c-pair__photo { aspect-ratio: auto !important; }
+@media (max-width: 760px) { .c-pair__photo { aspect-ratio: 335 / 332 !important; } }
 
 /* ===================== Christmas ===================== */
 .c-xmas { margin: calc(11 * var(--k)) var(--pad) 0; padding: 0; overflow: hidden; border-radius: var(--r); aspect-ratio: 1485 / 808; }
