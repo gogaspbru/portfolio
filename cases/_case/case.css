@@ -97,7 +97,7 @@ h1, h2, h3, p, dl, dd { margin: 0; }
 .c-rise.is-in img { opacity: 1; transform: none; }
 
 /* ===================== Intro ===================== */
-.c-intro { padding-top: calc(167 * var(--k)); }
+.c-intro { padding-top: calc(110 * var(--k)); }
 .c-back {
   display: inline-flex; align-items: center; gap: calc(12 * var(--k));
   font-size: max(15px, calc(18 * var(--k))); font-weight: 600; line-height: 1;
@@ -106,7 +106,7 @@ h1, h2, h3, p, dl, dd { margin: 0; }
 .c-back:hover .c-back__icon { transform: translateX(-5px); }
 
 .c-title {
-  margin-top: calc(80 * var(--k));
+  margin-top: calc(52 * var(--k));
   font-size: max(36px, calc(84 * var(--k)));
   font-weight: 600;
   line-height: .85;
@@ -352,10 +352,10 @@ h1, h2, h3, p, dl, dd { margin: 0; }
   .contacts__item--mail { transform: translateX(-4px); }
   .logo__text { letter-spacing: -0.02em; }
 
-  .c-intro { padding-top: calc(34 * var(--m)); }
+  .c-intro { padding-top: calc(24 * var(--m)); }
   .c-back { font-size: 16px; gap: 10px; }
   .c-back__icon { width: 18px; }
-  .c-title { margin-top: calc(70 * var(--m)); font-size: calc(35.3 * var(--m)); letter-spacing: -.04em; line-height: .9; }
+  .c-title { margin-top: calc(50 * var(--m)); font-size: calc(35.3 * var(--m)); letter-spacing: -.04em; line-height: .9; }
   .c-meta { margin-top: calc(18 * var(--m)); grid-template-columns: 1fr auto; row-gap: calc(24 * var(--m)); }
   .c-meta__col--link { grid-column: 1 / -1; }
   .c-meta dt { font-size: 13px; }
