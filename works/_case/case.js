@@ -358,6 +358,96 @@
     if (!img.complete) img.addEventListener("load", measure, { once: true });
   });
 
+  /* ---------- gooey cursor over a photo ([data-goo]) ----------
+     the pointer leaves a trail of soft blobs that melt into each other (blur + alpha threshold)
+     and show the same photo in a burgundy duotone; each blob swells, then shrinks away.
+     desktop with a mouse only */
+  (function () {
+    var hosts = document.querySelectorAll("[data-goo]");
+    if (!hosts.length || REDUCE) return;
+    if (!window.matchMedia || !window.matchMedia("(hover: hover) and (pointer: fine)").matches) return;
+    var NS = "http://www.w3.org/2000/svg";
+    var TTL = 1100;          // ms a blob lives
+    var R = 95;              // blob radius at its biggest, in photo pixels (photo is ~3000 wide)
+    var STEP = 34;           // a new blob every N photo pixels of movement
+
+    Array.prototype.forEach.call(hosts, function (host, n) {
+      var img = host.querySelector("img");
+      if (!img) return;
+      var W = img.getAttribute("width"), H = img.getAttribute("height");
+      var src = img.currentSrc || img.getAttribute("src");
+      var id = "goo" + n;
+      var svg = document.createElementNS(NS, "svg");
+      svg.setAttribute("class", "c-goo");
+      svg.setAttribute("viewBox", "0 0 " + W + " " + H);
+      svg.setAttribute("preserveAspectRatio", "xMidYMid slice");   // = object-fit: cover
+      svg.setAttribute("aria-hidden", "true");
+      svg.setAttribute("data-speed", img.getAttribute("data-speed") || "0");
+      svg.innerHTML =
+        '<defs>' +
+          '<filter id="' + id + '-f" x="-20%" y="-20%" width="140%" height="140%">' +
+            '<feGaussianBlur in="SourceGraphic" stdDeviation="22"/>' +
+            '<feColorMatrix values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 28 -11"/>' +
+          '</filter>' +
+          '<filter id="' + id + '-tone" color-interpolation-filters="sRGB">' +
+            '<feColorMatrix type="saturate" values="0"/>' +
+            '<feComponentTransfer>' +
+              '<feFuncR type="table" tableValues="0.16 0.62 0.98"/>' +
+              '<feFuncG type="table" tableValues="0.03 0.12 0.88"/>' +
+              '<feFuncB type="table" tableValues="0.06 0.17 0.80"/>' +
+            '</feComponentTransfer>' +
+          '</filter>' +
+          '<mask id="' + id + '-m" maskUnits="userSpaceOnUse" x="0" y="0" width="' + W + '" height="' + H + '">' +
+            '<g filter="url(#' + id + '-f)" fill="#fff"></g>' +
+          '</mask>' +
+        '</defs>' +
+        '<image href="' + src + '" width="' + W + '" height="' + H + '" preserveAspectRatio="xMidYMid slice"' +
+          ' filter="url(#' + id + '-tone)" mask="url(#' + id + '-m)"/>';
+      host.appendChild(svg);
+      para.push(svg);   // same parallax as the photo
+      var group = svg.querySelector("mask g");
+
+      var blobs = [], raf = null, last = null;
+      function toPhoto(e) {
+        var m = svg.getScreenCTM();
+        if (!m) return null;
+        var p = svg.createSVGPoint(); p.x = e.clientX; p.y = e.clientY;
+        return p.matrixTransform(m.inverse());
+      }
+      function add(x, y) {
+        var c = document.createElementNS(NS, "circle");
+        c.setAttribute("cx", x.toFixed(1)); c.setAttribute("cy", y.toFixed(1)); c.setAttribute("r", "0");
+        group.appendChild(c);
+        blobs.push({ el: c, t: performance.now(), k: 0.75 + Math.random() * 0.5 });
+      }
+      function tick(now) {
+        for (var i = blobs.length - 1; i >= 0; i--) {
+          var b = blobs[i], a = (now - b.t) / TTL;
+          if (a >= 1) { group.removeChild(b.el); blobs.splice(i, 1); continue; }
+          // swell fast, then shrink slowly
+          var s = a < 0.18 ? 1 - Math.pow(1 - a / 0.18, 3) : 1 - Math.pow((a - 0.18) / 0.82, 1.6);
+          b.el.setAttribute("r", (R * b.k * s).toFixed(1));
+        }
+        raf = blobs.length ? requestAnimationFrame(tick) : null;
+      }
+      host.addEventListener("mousemove", function (e) {
+        var p = toPhoto(e);
+        if (!p) return;
+        if (!last) { add(p.x, p.y); last = p; }
+        else {
+          var dx = p.x - last.x, dy = p.y - last.y, d = Math.sqrt(dx * dx + dy * dy);
+          if (d >= STEP) {
+            var steps = Math.min(12, Math.floor(d / STEP));
+            for (var i = 1; i <= steps; i++) add(last.x + dx * i / steps, last.y + dy * i / steps);
+            last = p;
+          }
+        }
+        if (!raf) raf = requestAnimationFrame(tick);
+      });
+      host.addEventListener("mouseleave", function () { last = null; });
+    });
+  })();
+
   /* ---------- custom cursor, as on the home page (js/app.js initCursor) ----------
      a dot under the pointer and a trailing ring that grows over links */
   (function () {

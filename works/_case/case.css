@@ -91,6 +91,11 @@ h1, h2, h3, p, dl, dd { margin: 0; }
 /* parallax images ride on --py (set by JS), on top of the reveal zoom */
 .c-reveal > img[data-speed] { transform: translate3d(0, var(--py, 0px), 0) scale(1.18); }
 .c-reveal.is-in > img[data-speed] { transform: translate3d(0, var(--py, 0px), 0) scale(1.12); }
+/* gooey cursor layer (case.js, [data-goo]) rides on the same parallax and zoom as its photo */
+.c-goo { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; overflow: visible; }
+.c-reveal > .c-goo { transform: translate3d(0, var(--py, 0px), 0) scale(1.18); transition: transform 1.8s var(--ease) var(--d, 0s); }
+.c-reveal.is-in > .c-goo { transform: translate3d(0, var(--py, 0px), 0) scale(1.12); }
+[data-goo] { position: relative; }
 
 /* objects that float up into place (laptop) */
 .c-rise img { opacity: 0; transform: translateY(80px) scale(.96); transition: opacity 1.1s var(--ease), transform 1.6s var(--ease); }
