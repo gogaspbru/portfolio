@@ -27,7 +27,7 @@ window.__WORKS__ = [
     "type": "video",
     "title": "SVAM Group",
     "preview": "assets/works/04_svam.webp",
-    "link": "https://svamgroup.ru/",
+    "link": "works/svam/",
     "video": "assets/works/04_svam.webm"
   },
   {

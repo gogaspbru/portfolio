@@ -358,6 +358,60 @@
     if (!img.complete) img.addEventListener("load", measure, { once: true });
   });
 
+  /* ---------- rails that fly right → left as the page scrolls ([data-scrollx="from,to"]) ----------
+     from/to are design px (1600 grid): the shift when the rail enters the screen and when it leaves;
+     data-scrollx-m="from,to" gives separate values for phones (375 grid) */
+  (function () {
+    var rails = Array.prototype.map.call(document.querySelectorAll("[data-scrollx]"), function (el) {
+      var ft = el.getAttribute("data-scrollx").split(",").map(Number);
+      var fm = (el.getAttribute("data-scrollx-m") || "").split(",").map(Number);   // optional mobile values, px of the 375 grid
+      return { el: el, target: el.firstElementChild || el, from: ft[0] || 0, to: ft[1] || 0,
+               fromM: fm.length === 2 ? fm[0] : null, toM: fm.length === 2 ? fm[1] : null, last: null };
+    });
+    if (!rails.length || REDUCE) return;
+    var ticking = false;
+    function update() {
+      ticking = false;
+      var vh = window.innerHeight, w = window.innerWidth;
+      var scale = w <= 760 ? w / 375 * 0.45 : Math.min(w, 1920) / 1600;
+      for (var i = 0; i < rails.length; i++) {
+        var r = rails[i], b = r.el.getBoundingClientRect();
+        if (b.bottom < -100 || b.top > vh + 100) continue;
+        var p = Math.min(1, Math.max(0, (vh - b.top) / (vh + b.height)));
+        var mob = w <= 760 && r.fromM !== null;
+        var a = mob ? r.fromM : r.from, z = mob ? r.toM : r.to, sc = mob ? w / 375 : scale;
+        var x = ((a + (z - a) * p) * sc).toFixed(1);
+        if (x !== r.last) { r.target.style.setProperty("--sx", x + "px"); r.last = x; }
+      }
+    }
+    function req() { if (!ticking) { ticking = true; requestAnimationFrame(update); } }
+    window.addEventListener("scroll", req, { passive: true });
+    window.addEventListener("resize", req);
+    update();
+  })();
+
+  /* ---------- photo that follows the mouse ([data-tilt], desktop only) ---------- */
+  (function () {
+    var boxes = document.querySelectorAll("[data-tilt]");
+    if (!boxes.length || REDUCE) return;
+    if (!window.matchMedia || !window.matchMedia("(hover: hover) and (pointer: fine)").matches) return;
+    Array.prototype.forEach.call(boxes, function (box) {
+      box.addEventListener("mousemove", function (e) {
+        var b = box.getBoundingClientRect();
+        var nx = (e.clientX - b.left) / b.width, ny = (e.clientY - b.top) / b.height;
+        box.style.setProperty("--tx", ((0.5 - nx) * 40).toFixed(1) + "px");
+        box.style.setProperty("--ty", ((0.5 - ny) * 26).toFixed(1) + "px");
+        box.style.setProperty("--ts", "1.06");
+        box.style.setProperty("--gx", (nx * 100).toFixed(1) + "%");
+        box.style.setProperty("--gy", (ny * 100).toFixed(1) + "%");
+        box.style.setProperty("--go", "1");
+      });
+      box.addEventListener("mouseleave", function () {
+        ["--tx", "--ty", "--ts", "--go"].forEach(function (k) { box.style.removeProperty(k); });
+      });
+    });
+  })();
+
   /* ---------- gooey cursor over a photo ([data-goo]) ----------
      the pointer leaves a trail of soft blobs that melt into each other (blur + alpha threshold)
      and show the same photo in a burgundy duotone; each blob swells, then shrinks away.
