@@ -69,10 +69,10 @@
   padding: calc(124 * var(--k)) 0 calc(138 * var(--k));
   background: #f6f6f8;
   overflow-x: clip;
-  display: grid; row-gap: calc(83 * var(--k));
 }
-.s-rail__track--p1 { gap: calc(75 * var(--k)); margin-left: calc(12 * var(--k)); }
-.s-rail__track--p2 { gap: calc(77 * var(--k)); margin-left: calc(-248 * var(--k)); }
+.s-marquee { row-gap: calc(83 * var(--k)); }
+.s-marquee .c-track { gap: calc(76 * var(--k)); }
+.s-pages .c-row { opacity: 1; translate: 0 0; }   /* no dark block here, so the rows are shown at once */
 .s-page.c-card { width: calc(476 * var(--k)); aspect-ratio: 476 / 317; padding: calc(5.5 * var(--k)); }
 .s-page.c-card:hover { transform: translateY(calc(-8 * var(--k))) scale(1.02); }
 
@@ -145,9 +145,9 @@
   .s-rail__track--2 { gap: calc(10 * var(--m)); margin-left: calc(-110 * var(--m)); }
   .s-cat { width: calc(200 * var(--m)); border-radius: calc(10 * var(--m)); }
 
-  .s-pages { margin-top: calc(54 * var(--m)); padding: calc(44 * var(--m)) 0 calc(48 * var(--m)); row-gap: calc(14 * var(--m)); }
-  .s-rail__track--p1 { gap: calc(14 * var(--m)); margin-left: calc(10 * var(--m)); }
-  .s-rail__track--p2 { gap: calc(14 * var(--m)); margin-left: calc(-90 * var(--m)); }
+  .s-pages { margin-top: calc(54 * var(--m)); padding: calc(44 * var(--m)) 0 calc(48 * var(--m)); }
+  .s-marquee { row-gap: calc(14 * var(--m)); }
+  .s-marquee .c-track { gap: calc(14 * var(--m)); }
   .s-page.c-card { width: calc(220 * var(--m)); padding: calc(2.5 * var(--m)); border-radius: 6px; }
 
   .s-lk { padding: calc(50 * var(--m)) 0 calc(30 * var(--m)); }
