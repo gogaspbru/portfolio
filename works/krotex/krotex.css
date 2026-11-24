@@ -140,7 +140,7 @@
   .k-dark .c-track { gap: calc(8 * var(--m)); }
   .k-dark .c-card { width: calc(249 * var(--m)); padding: calc(3 * var(--m)); }
 
-  .k-orbit { margin-top: calc(40 * var(--m)); }
+  .k-orbit { margin-top: calc(-10 * var(--m)); }   /* 50 padding of the dark block above - 10 = 40, same as the gap below */
   .k-orbit__stage { width: calc(330 * var(--m)); }
 
   .k-wide { margin: calc(40 * var(--m)) 0 0; aspect-ratio: 375 / 320; border-radius: 0; }
