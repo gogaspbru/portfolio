@@ -21,10 +21,6 @@
   left: 19.89%; top: 19.78%; width: 60.22%;
   box-shadow: 0 calc(40 * var(--k)) calc(90 * var(--k)) rgba(0, 0, 0, .5);
 }
-/* the recording is not in yet: the still frame drifts slowly, as if the page is alive */
-.o-tablet__img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 0; transform-origin: 50% 0; }
-.o-tablet.is-in .o-tablet__img { animation: o-drift 14s ease-in-out 1.6s infinite alternate; }
-@keyframes o-drift { from { transform: scale(1.0001); } to { transform: scale(1.06) translate3d(-1%, 0, 0); } }
 
 .o-did { margin-top: calc(86 * var(--k)); }
 
@@ -215,7 +211,7 @@
   .o-icons__track { transform: none !important; }
   .o-sec__title .c-mask__in { transition: none !important; transform: none !important; }
   .o-tcard, .o-pair__photo, .o-lk__stage.c-reveal > img.o-lk__img { opacity: 1 !important; transform: none !important; transition: none !important; animation: none !important; }
-  .o-tablet__img, .o-tcard--main::after { animation: none !important; }
+  .o-tcard--main::after { animation: none !important; }
 }
 /* once the pointer is over the panel, cards follow it without the long entry easing */
 .o-therapy__panel.is-live .o-tcard { transition: opacity 1s var(--ease); }
