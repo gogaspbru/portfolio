@@ -34,7 +34,7 @@ window.__WORKS__ = [
     "type": "video",
     "title": "ОБИТ",
     "preview": "assets/works/05_obit.webp",
-    "link": "https://obit.ru/",
+    "link": "works/obit/",
     "video": "assets/works/05_obit.webm"
   },
   {
