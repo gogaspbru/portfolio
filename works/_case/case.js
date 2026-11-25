@@ -79,7 +79,7 @@
       s.addEventListener("error", function () { failed++; if (failed >= sources.length) markFallback(); });
     });
     v.addEventListener("error", markFallback);
-    if (REDUCE) return;   // keep the poster still for reduced-motion users
+    if (REDUCE) { v.removeAttribute("autoplay"); v.pause(); return; }   // keep the poster still for reduced-motion users
     if (!("IntersectionObserver" in window)) { v.play().catch(function () {}); return; }
     var vo = new IntersectionObserver(function (entries) {
       entries.forEach(function (e) {
