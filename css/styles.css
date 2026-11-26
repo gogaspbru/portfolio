@@ -674,3 +674,6 @@ html.scrollbar-on::-webkit-scrollbar { width: 0; height: 0; }  /* WebKit */
   will-change: transform, height;
 }
 
+
+/* jump target from the last case («Все работы»): keep the cards clear of the header */
+#works { scroll-margin-top: 70px; }
