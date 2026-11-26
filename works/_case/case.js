@@ -186,7 +186,8 @@
 
   /* ---------- «живой скриншот»: a long site screenshot scrolling inside a device frame ----------
      <div class="live-shot" data-src="img/a.webp[,img/b.webp]" data-speed="60" data-stops="0.2,0.45,0.7"></div>
-     Optional: data-bg="#fff" (colour shown while the picture loads, default white).
+     Optional: data-bg="#fff" (colour shown while the picture loads, default white);
+     data-pause / data-pause-bottom / data-pause-top / data-return (seconds: 1.5 / 2 / 1 / 2.5). No data-stops + zero pauses = never stops.
      Auto-scroll: 1 s pause at the top → down with eased starts/stops, 1.5 s at each stop →
      2 s at the bottom → eased return to the top in 2.5 s → again. Runs only while on screen,
      wheel/swipe scroll it by hand, auto-scroll resumes 3 s after the last input. */
@@ -196,7 +197,9 @@
     var SPEED = parseFloat(box.getAttribute("data-speed")) || 60;          // px per second (CSS px)
     var STOPS = (box.getAttribute("data-stops") || "").split(",").map(parseFloat)
       .filter(function (v) { return v > 0 && v < 1; }).sort(function (a, b) { return a - b; });
-    var RAMP = 0.8, STOP_PAUSE = 1.5, BOTTOM_PAUSE = 2, RETURN_TIME = 2.5, TOP_PAUSE = 1, IDLE = 3;
+    function num(name, def) { var v = parseFloat(box.getAttribute(name)); return isNaN(v) ? def : v; }
+    var RAMP = 0.8, STOP_PAUSE = num("data-pause", 1.5), BOTTOM_PAUSE = num("data-pause-bottom", 2),
+        RETURN_TIME = num("data-return", 2.5), TOP_PAUSE = num("data-pause-top", 1), IDLE = 3;
     if (box.getAttribute("data-bg")) box.style.setProperty("--ls-bg", box.getAttribute("data-bg"));
 
     var track = document.createElement("div");
