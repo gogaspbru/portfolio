@@ -1,0 +1,1 @@
+<?php header("Content-Type: text/html"); echo "<html><body>"; echo str_repeat("<p>много текста</p>", 400000);

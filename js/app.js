@@ -1,6 +1,6 @@
 /* ============================================================
    Portfolio logic — no dependencies.
-   - Loads works from data/works.js (window.__WORKS__)
+   - Loads works from data/works.json
    - Renders 18 at a time via "Загрузить ещё"
    - Each row: caption on the left, light 16:9 tile on the right
    - Photo & video tiles; click opens link in a new tab
@@ -46,6 +46,12 @@
   var refreshScrollbar = null;   // set by initScrollbar()
   // desktop = has a real pointer; used to gate video tiles (off on mobile)
   var IS_DESKTOP = !!(window.matchMedia && window.matchMedia("(hover: hover) and (pointer: fine)").matches);
+  // Touch/mobile: no hover OR a coarse pointer. On these devices we never build a
+  // <video> and never set a src, so no mp4/webm is ever requested — poster only.
+  var IS_TOUCH = !!(window.matchMedia && (
+    window.matchMedia("(hover: none)").matches ||
+    window.matchMedia("(pointer: coarse)").matches));
+  var VIDEO_OK = IS_DESKTOP && !IS_TOUCH;   // create hover-video only on true mouse desktops
 
   // Low-power / weak-machine heuristic. Used to drop the costlier effects
   // (custom smooth-scroll, animated SVG turbulence) so nothing janks on old
@@ -61,23 +67,70 @@
   })();
   if (LOW_POWER) { try { document.documentElement.classList.add("low-power"); } catch (e) {} }
 
+  // Footer year — set immediately and unconditionally, so "© 2002 – YYYY" is
+  // always complete even if the works fetch (below) fails.
+  (function () {
+    var y = document.getElementById("year");
+    if (y) y.textContent = new Date().getFullYear();
+  })();
+
   // Preload hover-video clips a bit before they're on screen, so the clip
   // starts instantly on hover (no fetch-on-hover lag), while still not
   // downloading anything until you scroll near it.
+  // Videos are created with preload="none" (no fetch at all). As a tile nears the
+  // viewport it's queued to buffer only its METADATA (light — headers, not the
+  // whole clip), and only a few at a time, so scrolling never triggers a storm of
+  // full mp4/webm downloads. The full clip is fetched only when the user hovers.
+  var MAX_LOADS = 3;            // concurrent metadata fetches
+  var activeLoads = 0;
+  var loadQueue = [];
+  function pumpLoads() {
+    while (activeLoads < MAX_LOADS && loadQueue.length) {
+      var v = loadQueue.shift();
+      if (!v || v.preload !== "none" || v.__hovered) continue;   // hover already took over
+      activeLoads++;
+      v.preload = "metadata";
+      var done = function () {
+        v.removeEventListener("loadedmetadata", done);
+        v.removeEventListener("error", done);
+        activeLoads = Math.max(0, activeLoads - 1);
+        pumpLoads();
+      };
+      v.addEventListener("loadedmetadata", done);
+      v.addEventListener("error", done);
+      try { v.load(); } catch (_) { done(); }
+    }
+  }
   var videoPreloadObserver = ("IntersectionObserver" in window)
     ? new IntersectionObserver(function (entries) {
         entries.forEach(function (e) {
           if (!e.isIntersecting) return;
           videoPreloadObserver.unobserve(e.target);
           var v = e.target.__video;
-          if (v && v.preload !== "auto") { v.preload = "auto"; try { v.load(); } catch (_) {} }
+          if (v && v.preload === "none") { loadQueue.push(v); pumpLoads(); }
         });
-      }, { rootMargin: "800px 0px 800px 0px" })
+      }, { rootMargin: "300px 0px 300px 0px" })   // buffer just ahead of the viewport
     : null;
   function preloadVideoInView(video, cell) {
-    if (!videoPreloadObserver) { video.preload = "metadata"; return; }
+    if (!videoPreloadObserver) { video.preload = "none"; return; }
     cell.__video = video;
     videoPreloadObserver.observe(cell);
+  }
+
+  // Cap how many clips play at once. Hover is normally one at a time, but this
+  // guards fast fly-overs from leaving several clips decoding in the background.
+  var MAX_PLAYING = 2;
+  var playingList = [];
+  function registerPlay(v) {
+    if (playingList.indexOf(v) === -1) playingList.push(v);
+    while (playingList.length > MAX_PLAYING) {
+      var old = playingList.shift();
+      if (old !== v) { try { old.pause(); old.currentTime = 0; } catch (_) {} }
+    }
+  }
+  function unregisterPlay(v) {
+    var i = playingList.indexOf(v);
+    if (i > -1) playingList.splice(i, 1);
   }
 
   // ---------- Card reveal: blocks open top→bottom as they scroll in ----------
@@ -113,7 +166,7 @@
         cardObserver.unobserve(e.target);
         if (cardsArmed) revealCard(e.target, batch++); else cardQueue.push(e.target);
       });
-    }, { threshold: 0.2, rootMargin: "0px 0px -8% 0px" });
+    }, { threshold: 0, rootMargin: "0px" });   // reveal as soon as a card peeks in, so the row under the fold shows there is more
   }
 
   function esc(s) {
@@ -127,17 +180,15 @@
     var cell = document.createElement("div");
     cell.className = "item" + (item.type === "video" ? " is-video" : "");
 
-    // the 16:9 tile (clickable: external links open in a new tab, case pages in place)
+    // the 16:9 tile (clickable, opens link in a new tab)
     var a = document.createElement("a");
     a.className = "item__tile";
     if (item.link) {                 // only clickable when a real link is given
-      // clean folder links ("works/kulturadoma/") on the server; opened from disk
-      // (file://) a folder link would show a file list, so point at its index.html
-      var href = item.link;
-      if (location.protocol === "file:" && /\/$/.test(href) && !/^[a-z]+:/i.test(href)) href += "index.html";
-      a.href = href;
-      // outside sites open in a new tab; our own case pages (relative links) open in place
-      if (/^https?:\/\//i.test(item.link)) { a.target = "_blank"; a.rel = "noopener"; }
+      a.href = item.link;
+      if (/^https?:\/\//i.test(item.link)) {   // external sites open in a new tab, case pages in the same one
+        a.target = "_blank";
+        a.rel = "noopener";
+      }
     }
     a.setAttribute("aria-label", item.title || "Работа");
 
@@ -153,13 +204,22 @@
     // crisp on high-DPI screens. Intrinsic size keeps the 16:9 box stable.
     img.width = 1400;
     img.height = 788;
-    img.alt = item.title || "";
-    img.src = item.preview || "";
+    // decorative: the title is conveyed by the link's aria-label + the visible
+    // caption, so an alt here would be redundant (a11y: image-redundant-alt)
+    img.alt = "";
+    if (item.preview) {
+      img.src = item.preview;                       // large / fallback (no-srcset browsers)
+      // responsive: a light 480-wide variant for phones/tablets, full poster for
+      // retina desktop. sizes ≈ tile width (46vw at 2 cols, 31vw at 3 cols).
+      img.srcset = item.preview.replace(/\.webp$/, "-480.webp") + " 480w, " +
+                   item.preview + " 1400w";
+      img.sizes = "(max-width: 640px) 46vw, 31vw";
+    }
     media.appendChild(img);
 
     // Plate-reveal tile (Культура Дома): a round video sits centered under the
     // plate poster; on hover the plate fades out to uncover the round clip.
-    if (item.variant === "plate" && item.video && IS_DESKTOP) {
+    if (item.variant === "plate" && item.video && VIDEO_OK) {
       cell.className += " item--plate";
       img.className += " item__img--plate";
       var round = document.createElement("div");
@@ -174,10 +234,13 @@
       media.appendChild(round);
       preloadVideoInView(rvid, cell);
       a.addEventListener("mouseenter", function () {
-        if (rvid.preload !== "auto") rvid.preload = "auto";
+        rvid.__hovered = true;
+        if (rvid.preload !== "auto") rvid.preload = "auto";   // hover → fetch the full clip
+        registerPlay(rvid);
         var pr = rvid.play(); if (pr && pr.catch) pr.catch(function () {});
       });
       a.addEventListener("mouseleave", function () {
+        unregisterPlay(rvid);
         rvid.pause(); try { rvid.currentTime = 0; } catch (e) {}
       });
     }
@@ -185,7 +248,7 @@
     // the poster image stays). Two modes:
     //   default  — autoplays (muted loop), the clip replaces the image;
     //   hover:true — image by default, the clip plays on hover.
-    else if (item.type === "video" && item.video && IS_DESKTOP) {
+    else if (item.type === "video" && item.video && VIDEO_OK) {
       var hoverMode = item.autoplay !== true;   // hover-play is the default; opt in to autoplay
       cell.className += hoverMode ? " item--video-hover" : " item--video-autoplay";
       var video = document.createElement("video");
@@ -203,11 +266,14 @@
         media.appendChild(video);
         preloadVideoInView(video, cell);      // preload before hover → instant start
         a.addEventListener("mouseenter", function () {
-          if (video.preload !== "auto") video.preload = "auto";
+          video.__hovered = true;
+          if (video.preload !== "auto") video.preload = "auto";   // hover → fetch the full clip
+          registerPlay(video);
           var pr = video.play();
           if (pr && pr.catch) pr.catch(function () {});
         });
         a.addEventListener("mouseleave", function () {
+          unregisterPlay(video);
           video.pause();
           // back to frame 0 so every hover starts on the poster frame (no visual jump);
           // the clip is already buffered, so the seek is instant
@@ -308,7 +374,7 @@
     for (var i = 0; i < VISIBLE; i++) {
       var idx = i % LOGOS.length;
       shown[i] = idx;
-      html += '<div class="logos__cell"><img src="' + LOGOS[idx] + '" alt="" decoding="async"></div>';
+      html += '<div class="logos__cell"><img src="' + LOGOS[idx] + '" alt="" decoding="async" width="120" height="40"></div>';
     }
     grid.innerHTML = html;
     var imgs = grid.querySelectorAll(".logos__cell img");
@@ -373,7 +439,7 @@
       dot.style.transform = "translate(" + mx + "px," + my + "px)";
       if (!shown) { shown = true; root.classList.add("cursor-ready"); }
       if (!raf) raf = requestAnimationFrame(loop);   // wake the easing loop only while moving
-    });
+    }, { passive: true });
 
     document.addEventListener("mouseover", function (e) {
       if (e.target.closest && e.target.closest(hoverSel)) root.classList.add("cursor-hover");
@@ -456,7 +522,13 @@
       thumb.style.transform = "translateY(" + y + "px)";
     }
 
-    window.addEventListener("scroll", update, { passive: true });
+    var ticking = false;
+    function onScroll() {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(function () { update(); ticking = false; });
+    }
+    window.addEventListener("scroll", onScroll, { passive: true });
     window.addEventListener("resize", update);
     refreshScrollbar = update;   // called after "Load more" grows the page
     update();
@@ -540,13 +612,20 @@
         if (lineMode && el._inners) splitLines(el);
         if (armed) fire(el); else queued.push(el);
       }
-      function check() {
+      var ticking = false;
+      function measure() {
+        ticking = false;
         var pageBottom = page.getBoundingClientRect().bottom;
         var r = el.getBoundingClientRect();
         if (pageBottom <= r.top + r.height * 0.5) {   // ~half of the statement uncovered
           window.removeEventListener("scroll", check);
           doReveal();
         }
+      }
+      function check() {
+        if (ticking) return;
+        ticking = true;
+        requestAnimationFrame(measure);
       }
       window.addEventListener("scroll", check, { passive: true });
       check();
@@ -692,8 +771,6 @@
       clearTimeout(rt);
       rt = setTimeout(fillLastRow, 200);
     });
-    var yearEl = document.getElementById("year");
-    if (yearEl) yearEl.textContent = new Date().getFullYear();
     initReveal();
     initRevealFooter();
     initMagnetic();
@@ -717,17 +794,29 @@
       lineDone = true;
     }
     window.addEventListener("load", function () { loaded = true; go(); });
+    // Hard fail-safe: never let the preloader hang or block the page if some
+    // resource (font, image, third-party script) stalls or fails to load.
+    setTimeout(function () { if (!done) { done = true; hidePreloader(); } }, 5000);
     go();
   })();
 
-  // Works come from data/works.js (window.__WORKS__): a plain script, so the
-  // page also works when opened straight from disk (file://), no server needed.
+  // Works come from window.__WORKS__ (single-file build) or data/works.json.
   if (window.__WORKS__) {
     init(window.__WORKS__);
   } else {
-    console.error("Не найден список работ: data/works.js не загрузился.");
-    list.innerHTML = '<p style="color:#8b8b82">Не удалось загрузить работы (data/works.js).</p>';
-    hidePreloader();
+    fetch("data/works.json", { cache: "no-cache" })
+      .then(function (r) {
+        if (!r.ok) throw new Error("HTTP " + r.status);
+        return r.json();
+      })
+      .then(init)
+      .catch(function (err) {
+        console.error("Не удалось загрузить works.json:", err);
+        list.innerHTML =
+          '<p style="color:#8b8b82">Не удалось загрузить работы. ' +
+          "Запустите сайт через локальный сервер (fetch не работает с file://).</p>";
+        hidePreloader();
+      });
   }
 })();
 

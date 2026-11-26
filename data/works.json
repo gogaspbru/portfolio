@@ -1,0 +1,255 @@
+[
+  {
+    "type": "video",
+    "variant": "plate",
+    "title": "Культура Дома",
+    "preview": "assets/works/01_kultura_doma.webp",
+    "link": "works/kulturadoma/",
+    "video": "assets/works/01_kultura_doma_round.webm"
+  },
+  {
+    "type": "video",
+    "title": "Lindera",
+    "preview": "assets/works/02_lindera.webp",
+    "link": "works/lindera/",
+    "video": "assets/works/02_lindera.webm"
+  },
+  {
+    "type": "video",
+    "title": "Krotex",
+    "preview": "assets/works/03_krotex.webp",
+    "link": "works/krotex/",
+    "video": "assets/works/03_krotex.webm"
+  },
+  {
+    "type": "video",
+    "title": "SVAM Group",
+    "preview": "assets/works/04_svam.webp",
+    "link": "works/svam/",
+    "video": "assets/works/04_svam.webm"
+  },
+  {
+    "type": "video",
+    "title": "ОБИТ",
+    "preview": "assets/works/05_obit.webp",
+    "link": "works/obit/",
+    "video": "assets/works/05_obit.webm"
+  },
+  {
+    "type": "video",
+    "title": "Smart Open",
+    "preview": "assets/works/06_smart_open.webp",
+    "link": "works/smartopen/",
+    "video": "assets/works/06_smart_open.webm"
+  },
+  {
+    "type": "video",
+    "title": "ТатПром-Холдинг",
+    "preview": "assets/works/07_tatprom.webp",
+    "link": "https://gk-tph.ru/",
+    "video": "assets/works/07_tatprom.webm"
+  },
+  {
+    "type": "video",
+    "title": "Branding.GE",
+    "preview": "assets/works/08_branding.webp",
+    "link": "https://branding.ge/",
+    "video": "assets/works/08_branding.webm"
+  },
+  {
+    "type": "video",
+    "title": "Уют Телеком",
+    "preview": "assets/works/09_uut_telecom.webp",
+    "link": "https://uut-telecom.ru/",
+    "video": "assets/works/09_uut_telecom.webm"
+  },
+  {
+    "type": "video",
+    "title": "Цифровой прогресс",
+    "preview": "assets/works/010_dipro.webp",
+    "link": "https://dipro.ru/",
+    "video": "assets/works/010_dipro.webm"
+  },
+  {
+    "type": "video",
+    "title": "Нептун",
+    "preview": "assets/works/011_neptun.webp",
+    "link": "https://drycleaning.ru/",
+    "video": "assets/works/011_neptun_v2.webm"
+  },
+  {
+    "type": "video",
+    "title": "Kogio",
+    "preview": "assets/works/012_kogio.webp",
+    "link": "https://kogio.ru/",
+    "video": "assets/works/012_kogio_v2.webm"
+  },
+  {
+    "type": "video",
+    "title": "Енева",
+    "preview": "assets/works/013_eneva.webp",
+    "link": "https://eneva.ru/",
+    "video": "assets/works/013_eneva.webm"
+  },
+  {
+    "type": "video",
+    "title": "Miridium",
+    "preview": "assets/works/015_miridium.webp",
+    "link": "https://miridium.ru/",
+    "video": "assets/works/015_miridium.webm"
+  },
+  {
+    "type": "video",
+    "title": "Full Comfort",
+    "preview": "assets/works/014_full_comfort.webp",
+    "link": "https://fullcomfort.ru/",
+    "video": "assets/works/014_full_comfort.webm"
+  },
+  {
+    "type": "video",
+    "title": "Panasonic",
+    "preview": "assets/works/016_panasonic.webp",
+    "link": "https://b2b.cis.panasonic.com/",
+    "video": "assets/works/016_panasonic_v2.webm"
+  },
+  {
+    "type": "video",
+    "title": "Technology Comfort",
+    "preview": "assets/works/017_technology_comfort_v2.webp",
+    "link": "https://technology-comfort.ru/",
+    "video": "assets/works/017_technology_comfort.webm"
+  },
+  {
+    "type": "video",
+    "title": "СПбГУТ",
+    "preview": "assets/works/018_spbgut.webp",
+    "link": "https://www.sut.ru/",
+    "video": "assets/works/018_spbgut.webm"
+  },
+  {
+    "type": "video",
+    "title": "Юнет",
+    "preview": "assets/works/019_unet.webp",
+    "link": "https://www.unetcom.ru/",
+    "video": "assets/works/019_unet.webm"
+  },
+  {
+    "type": "video",
+    "title": "Ямайка",
+    "preview": "assets/works/020_imaika_v2.webp",
+    "link": "http://www.i-maika.ru/",
+    "video": "assets/works/020_imaika_v2.webm"
+  },
+  {
+    "type": "video",
+    "title": "Olmio",
+    "preview": "assets/works/021_olmio.webp",
+    "link": "https://olmio.com/",
+    "video": "assets/works/021_olmio.webm"
+  },
+  {
+    "type": "video",
+    "title": "Key Account",
+    "preview": "assets/works/022_key_account.webp",
+    "link": "https://keyaccount.ru/",
+    "video": "assets/works/022_key_account.webm"
+  },
+  {
+    "type": "video",
+    "title": "Technoflot",
+    "preview": "assets/works/023_technoflot.webp",
+    "link": "http://tfdecor.ru/",
+    "video": "assets/works/023_technoflot.webm"
+  },
+  {
+    "type": "video",
+    "title": "Talvi",
+    "preview": "assets/works/024_talvi.webp",
+    "link": "https://talvi.spb.ru/",
+    "video": "assets/works/024_talvi.webm"
+  },
+  {
+    "type": "video",
+    "title": "Black Star Fitness",
+    "preview": "assets/works/025_black_star_v2.webp",
+    "link": "https://blackstar.potok4.ru/",
+    "video": "assets/works/025_black_star_v2.webm"
+  },
+  {
+    "type": "video",
+    "title": "Дата-Центр N1",
+    "preview": "assets/works/026_dc1.webp",
+    "link": "https://dc1.ru/",
+    "video": "assets/works/026_dc1.webm"
+  },
+  {
+    "type": "video",
+    "title": "Texet",
+    "preview": "assets/works/027_texet.webp",
+    "link": "https://www.texet.ru/",
+    "video": "assets/works/027_texet.webm"
+  },
+  {
+    "type": "video",
+    "title": "HIKMICRO",
+    "preview": "assets/works/028_hikmicro.webp",
+    "link": "https://hikmicro2.ru/",
+    "video": "assets/works/028_hikmicro.webm"
+  },
+  {
+    "type": "video",
+    "title": "4Rooms",
+    "preview": "assets/works/029_4rooms_v2.webp",
+    "link": "https://4rooms-spb.ru/",
+    "video": "assets/works/029_4rooms_v2.webm"
+  },
+  {
+    "type": "video",
+    "title": "ВитаЛиква",
+    "preview": "assets/works/030_vitaliqua.webp",
+    "link": "https://vitaliqua.ru/",
+    "video": "assets/works/030_vitaliqua.webm"
+  },
+  {
+    "type": "video",
+    "title": "Фонд Будущие Лидеры",
+    "preview": "assets/works/031_leaders_v2.webp",
+    "link": "https://russianleaders.org/",
+    "video": "assets/works/031_leaders.webm"
+  },
+  {
+    "type": "video",
+    "title": "Limak Marash",
+    "preview": "assets/works/032_limakmarash_v2.webp",
+    "link": "https://lms-gc.com/",
+    "video": "assets/works/032_limakmarash.webm"
+  },
+  {
+    "type": "video",
+    "title": "Турул",
+    "preview": "assets/works/033_turul.webp",
+    "link": "https://turul-group.ru/",
+    "video": "assets/works/033_turul.webm"
+  },
+  {
+    "type": "video",
+    "title": "ГеоСплит",
+    "preview": "assets/works/034_geosplit.webp",
+    "link": "https://geosplit.ru/",
+    "video": "assets/works/034_geosplit.webm"
+  },
+  {
+    "type": "video",
+    "title": "Idealist",
+    "preview": "assets/works/035_idealist.webp",
+    "link": "https://idea-list.ru/",
+    "video": "assets/works/035_idealist.webm"
+  },
+  {
+    "type": "video",
+    "title": "Тринити",
+    "preview": "assets/works/036_trinity_v2.webp",
+    "link": "https://www.trinitygroup.ru/",
+    "video": "assets/works/036_trinity.webm"
+  }
+]

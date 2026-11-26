@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<title>Котовости — демо-сайт для «Котозахвата»</title>
+<!--
+  Вымышленная страница для демо-уровня. Её рендерит scripts/make-demo.mjs
+  (скриншот + разметка элементов → client/public/demo/).
+  Все тексты и картинки придуманы, никаких реальных брендов.
+-->
+<link rel="stylesheet" href="style.css">
+<script>document.body && (document.body.innerHTML = "ВЗЛОМ")</script>
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <div class="logo">Кото<b>вости</b></div>
+    <nav><a class="on" href="#">Главное</a><a href="#">Лежанки</a><a href="#">Корм</a><a href="#">Наука</a><a href="#">Мнения</a></nav>
+  </div>
+</header>
+
+<div class="wrap">
+  <section class="hero">
+    <div class="hero-text">
+      <p class="kicker">Срочно · 7:04 утра</p>
+      <h1>Учёные подтвердили: коробка всё ещё лучше подарка</h1>
+      <p class="lead">Независимое исследование трёх подъездов показало, что упаковка от холодильника интереснее самого холодильника в 9 раз из 10.</p>
+      <a class="btn btn-main" href="#" onclick="alert(1)">Читать дальше</a><a class="btn btn-alt" href="#">Все новости</a>
+    </div>
+    <img alt="" src="img/pic0.svg">
+  </section>
+</div>
+
+<div class="strip"><div class="wrap"><span>☀ Солнечное пятно: 14:00–15:30</span><span>Индекс мурчания: 87</span><span>Курс сметаны: стабильный</span></div></div>
+
+<div class="wrap">
+  <h2>Главные новости дня</h2>
+  <div class="cards">
+    <article class="card">
+      <img alt="" src="/img/pic1.svg">
+      <h3>Клубок размотался до соседнего района</h3>
+      <p>Жители просят вернуть нитку, но ответственный за клубок отказывается от комментариев.</p>
+      <span class="tag">Происшествия</span>
+    </article>
+    <article class="card">
+      <img alt="" src="data:image/gif;base64,R0lGODlhAQABAAAAACw=" data-src="img/pic2.svg" loading="lazy">
+      <h3>Подоконник признан памятником архитектуры</h3>
+      <p>Теперь лежать на нём можно только с экскурсоводом и строго с 12 до 17 часов.</p>
+      <span class="tag">Культура</span>
+    </article>
+    <article class="card">
+      <img alt="" src="/img/pic3.svg">
+      <h3>Миска наполовину пуста: эксперты бьют тревогу</h3>
+      <p>Оптимисты уверены, что миска наполовину полна, но на всякий случай громко кричат в 5 утра.</p>
+      <span class="tag">Экономика</span>
+    </article>
+  </div>
+
+  <div class="split">
+    <div class="quote">
+      <p>«Если что-то стоит на краю стола, это временно»</p>
+      <span>— Гравитационный отдел редакции</span>
+    </div>
+    <div class="list">
+      <h3>Коротко</h3>
+      <p>Пылесос снова вышел на охоту. Рекомендуем переждать на шкафу.</p>
+      <p>Новая лежанка простояла пустой 40 дней. Коробка из-под неё занята.</p>
+      <p>Шуршащий пакет обнаружен в прихожей. Выезжает спецгруппа.</p>
+      <p>Хозяин снова сидит на любимом стуле. Ведутся переговоры.</p>
+    </div>
+  </div>
+
+  <h2>Выбор редакции</h2>
+  <div class="cards">
+    <article class="card">
+      <h3>Как занять всю кровать, имея массу 4 кг</h3>
+      <p>Пошаговое руководство по стратегическому растягиванию поперёк.</p>
+      <span class="tag">Гайды</span>
+    </article>
+    <article class="card">
+      <h3>Топ-5 мест, где можно спрятаться от ветеринара</h3>
+      <p>Спойлер: под ванной уже проверяли. Ищите новые решения.</p>
+      <span class="tag">Лайфхаки</span>
+    </article>
+    <article class="card">
+      <h3>Почему человек не понимает намёков у двери</h3>
+      <p>Разбираемся, сколько раз нужно мяукнуть, чтобы открыли.</p>
+      <span class="tag">Психология</span>
+    </article>
+  </div>
+
+  <section class="sub">
+    <div style="flex:1">
+      <h2>Подпишитесь на мурзылку</h2>
+      <p>Каждое утро в 5:00 — самые громкие новости прямо в ухо.</p>
+    </div>
+    <div class="field">Ваша почта</div>
+    <a class="btn btn-main" href="#">Подписаться</a>
+  </section>
+</div>
+
+<footer>
+  <div class="wrap cols">
+    <div><h4>Котовости</h4><p>Вымышленное издание для демо-уровня.</p><p>Все совпадения случайны.</p></div>
+    <div><h4>Рубрики</h4><p>Лежанки · Корм · Наука</p><p>Мнения · Коробки</p></div>
+    <div><h4>Редакция</h4><p>Главный редактор: рыжий</p><p>Корректор: полосатая</p></div>
+  </div>
+</footer>
+</body>
+</html>

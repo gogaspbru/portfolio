@@ -1,0 +1,166 @@
+/* ============================================================
+   SVAM Group — styles only this case needs. Everything shared
+   (header, intro, text blocks, reveals, result, next case, footer)
+   lives in ../_case/case.css.
+   Desktop: 1600 design → N * var(--k). Mobile: 375 → N * var(--m).
+   ============================================================ */
+
+.s-br-m { display: none; }
+.s-br-d { display: inline; }
+
+/* ===================== Hero: photo + SVAM logo ===================== */
+.s-hero img { width: 100%; height: 100%; object-fit: cover; }
+.s-hero::after { display: none; }
+.s-hero__logo.c-hero__logo { left: 35.54%; top: 44.9%; width: 32.97%; transform: none; }
+
+/* ===================== Site video in a white frame over the bubbles ===================== */
+.s-screen { margin-top: calc(121 * var(--k)); }
+.s-screen__stage { position: relative; aspect-ratio: 1483 / 824; }
+.s-screen__bg { position: absolute; inset: 0; overflow: hidden; border-radius: var(--r); background: #1d2430; }
+.s-screen__bg img { width: 100%; height: 100%; object-fit: cover; }
+.s-tablet.c-tablet {
+  left: 19.89%; top: 19.78%; width: 60.22%;
+  box-shadow: 0 calc(40 * var(--k)) calc(90 * var(--k)) rgba(0, 0, 0, .45);
+}
+
+/* ===================== Collage: wave video, agave, tequila, bar ===================== */
+.s-collage {
+  margin-top: calc(121 * var(--k));
+  display: grid;
+  grid-template-columns: 361fr 15fr 361fr 11fr 735fr;
+  grid-template-rows: calc(463 * var(--k)) calc(11 * var(--k)) calc(387 * var(--k));
+  grid-template-areas:
+    "w w w . b"
+    ". . . . b"
+    "a . t . b";
+}
+.s-collage > div { position: relative; overflow: hidden; border-radius: var(--r); }
+.s-collage img, .s-collage .c-video { width: 100%; height: 100%; object-fit: cover; }
+.s-collage__wave    { grid-area: w; background: #f07a16; }
+.s-collage__agave   { grid-area: a; background: #f6f6f6; }
+.s-collage__tequila { grid-area: t; }
+.s-collage__bar     { grid-area: b; }
+
+/* ===================== Wide pictures ===================== */
+.s-wide { padding: 0; margin-left: var(--pad); margin-right: var(--pad); overflow: hidden; border-radius: var(--r); }
+.s-wide img { width: 100%; height: 100%; object-fit: cover; }
+.s-wide--phones { margin-top: calc(126 * var(--k)); aspect-ratio: 1483 / 848; }
+.s-wide--laptop { margin-top: calc(112 * var(--k)); aspect-ratio: 1483 / 842; }
+.s-wide--beer   { margin-top: calc(143 * var(--k)); aspect-ratio: 1484 / 824; }
+
+/* ===================== Rails that fly right → left with the scroll (case.js, data-scrollx) ===================== */
+.s-rail { position: relative; }
+.s-rail__track {
+  display: flex; width: max-content;
+  transform: translate3d(var(--sx, 0px), 0, 0);
+  will-change: transform;
+}
+
+/* categories: cards 440×306, 30 apart; the second row starts 220 further left */
+.s-cats { margin-top: calc(120 * var(--k)); overflow-x: clip; display: grid; row-gap: calc(37 * var(--k)); }
+.s-rail__track--1 { gap: calc(30 * var(--k)); margin-left: calc(-40 * var(--k)); }
+.s-rail__track--2 { gap: calc(30 * var(--k)); margin-left: calc(-260 * var(--k)); }
+.s-cat { flex: none; width: calc(440 * var(--k)); aspect-ratio: 440 / 306; border-radius: calc(20 * var(--k)); overflow: hidden; background: #f6f6f8; }
+.s-cat img { width: 100%; height: 100%; object-fit: cover; }
+
+/* site pages on the light grey band */
+.s-pages {
+  margin-top: calc(149 * var(--k));
+  padding: calc(124 * var(--k)) 0 calc(138 * var(--k));
+  background: #f6f6f8;
+  overflow-x: clip;
+}
+.s-marquee { row-gap: calc(83 * var(--k)); }
+.s-marquee .c-track { gap: calc(76 * var(--k)); }
+.s-pages .c-row { opacity: 1; translate: 0 0; }   /* no dark block here, so the rows are shown at once */
+.s-page.c-card { width: calc(476 * var(--k)); aspect-ratio: 476 / 317; padding: calc(5.5 * var(--k)); }
+.s-page.c-card:hover { transform: translateY(calc(-8 * var(--k))) scale(1.02); }
+
+/* personal account: dark band, title, a long map of screens */
+.s-lk { background: #212936; color: #fff; padding: calc(122 * var(--k)) 0 calc(61 * var(--k)); overflow-x: clip; }
+.s-lk__title {
+  font-size: max(36px, calc(84 * var(--k)));
+  font-weight: 600; line-height: 1; letter-spacing: -.04em;
+  position: relative; z-index: 1; padding-bottom: .06em;
+}
+.s-lk__title.is-in { opacity: 1; transform: none; }
+.s-lk__title.is-in .c-mask__in { transform: none; }
+.s-lk__rail { margin-top: 0; }
+.s-lk__map {
+  width: calc(3180 * var(--k)); max-width: none; height: auto;
+  margin-left: calc(5 * var(--k));
+  transform: translate3d(var(--sx, 0px), 0, 0);
+  will-change: transform;
+}
+
+/* ===================== Beer photo: follows the mouse (desktop, case.js data-tilt) ===================== */
+.s-wide--beer { position: relative; perspective: 1400px; }
+.s-wide--beer.c-reveal.is-in > img {
+  transform: translate3d(var(--tx, 0px), var(--ty, 0px), 0) scale(var(--ts, 1.0001));
+  transition: transform .9s var(--ease);
+}
+.s-wide--beer::after {   /* soft light that follows the pointer */
+  content: ""; position: absolute; inset: 0; pointer-events: none;
+  background: radial-gradient(circle at var(--gx, 50%) var(--gy, 50%), rgba(255, 214, 150, .28), rgba(255, 214, 150, 0) 38%);
+  mix-blend-mode: soft-light;
+  opacity: var(--go, 0); transition: opacity .6s ease;
+}
+
+.case--svam .c-result { margin-top: calc(106 * var(--k)); }
+.case--svam .c-next { margin-top: calc(155 * var(--k)); }
+.s-next .c-next__text { color: #fff; }
+
+/* ===================== Mobile (375 design, built like Lindera) ===================== */
+@media (max-width: 760px) {
+  .s-br-m { display: inline; }
+  .s-br-d { display: none; }
+
+  .s-hero__logo.c-hero__logo { left: 22%; top: 43.5%; width: 56%; }
+
+  .s-screen { margin-top: calc(56 * var(--m)); padding: 0; }
+  .s-screen__stage { aspect-ratio: 375 / 319; }
+  .s-screen__bg { border-radius: 0; }
+  .s-tablet.c-tablet { left: 0; width: 100%; top: calc(56 / 319 * 100%); padding: calc(5 * var(--m)); border-radius: calc(14 * var(--m)); }
+
+  .s-collage {
+    margin-top: calc(42 * var(--m));
+    grid-template-columns: 1fr calc(7 * var(--m)) 1fr;
+    grid-template-rows: calc(210 * var(--m)) calc(7 * var(--m)) calc(176 * var(--m)) calc(8 * var(--m)) calc(393 * var(--m));
+    grid-template-areas:
+      "w w w"
+      ". . ."
+      "a . t"
+      ". . ."
+      "b b b";
+  }
+
+  .s-wide { margin-left: 0; margin-right: 0; border-radius: 0; }
+  .s-wide--phones { margin-top: calc(43 * var(--m)); aspect-ratio: 375 / 300; }
+  .s-wide--phones img { object-position: 50% 60%; }
+  .s-wide--laptop { margin-top: calc(43 * var(--m)); aspect-ratio: 375 / 260; }
+  .s-wide--beer   { margin-top: calc(54 * var(--m)); aspect-ratio: 375 / 320; }
+
+  .s-cats { margin-top: calc(48 * var(--m)); row-gap: calc(10 * var(--m)); }
+  .s-rail__track--1 { gap: calc(10 * var(--m)); margin-left: calc(-20 * var(--m)); }
+  .s-rail__track--2 { gap: calc(10 * var(--m)); margin-left: calc(-110 * var(--m)); }
+  .s-cat { width: calc(200 * var(--m)); border-radius: calc(10 * var(--m)); }
+
+  .s-pages { margin-top: calc(54 * var(--m)); padding: calc(44 * var(--m)) 0 calc(48 * var(--m)); }
+  .s-marquee { row-gap: calc(14 * var(--m)); }
+  .s-marquee .c-track { gap: calc(14 * var(--m)); }
+  .s-page.c-card { width: calc(220 * var(--m)); padding: calc(2.5 * var(--m)); border-radius: 6px; }
+
+  .s-lk { padding: calc(50 * var(--m)) 0 calc(30 * var(--m)); }
+  .s-lk__title { font-size: calc(35.3 * var(--m)); line-height: 1; }
+  .s-lk__rail { margin-top: calc(10 * var(--m)); }
+  .s-lk__map { width: calc(1800 * var(--m)); margin-left: 0; }
+
+  .case--svam .c-result { margin-top: calc(46 * var(--m)); }
+  .case--svam .c-next { margin-top: calc(68 * var(--m)); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .s-rail__track, .s-lk__map { transform: none !important; }
+  .s-lk__title .c-mask__in { transition: none !important; transform: none !important; }
+  .s-wide--beer.c-reveal.is-in > img { transform: none !important; }
+}

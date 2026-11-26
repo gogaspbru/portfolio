@@ -1,0 +1,67 @@
+/* ==========================================================================
+   Шрифты
+   ========================================================================== */
+
+/* Conthrax SemiBold — заголовочный шрифт (файл от заказчика).
+   ВНИМАНИЕ: десктопная лицензия Typodermic (assets/fonts/conthrax-license.pdf) не покрывает
+   веб-использование — для продакшна нужна веб-лицензия. Файлы шрифта в git не кладём. */
+@font-face {
+  font-family: "Conthrax";
+  src: url("../assets/fonts/conthrax-sb.woff2") format("woff2"),
+       url("../assets/fonts/conthrax-sb.ttf") format("truetype");
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Значения — из макета Figma «Frame 42» (pJg6tGUTJX15f4x2i5YdNn, 327:2935), ширина 1600 */
+:root {
+  /* ---------- Цвета ---------- */
+  --color-blue: #1E6EF3;          /* фирменный: «пространство», синий блок, линия */
+  --color-blue-dark: #1044BA;     /* кнопка «Подобрать решение» */
+  --color-graphite: #37374B;      /* заголовок, меню */
+  --color-text-muted: #7B7B7B;    /* подзаголовок первого экрана */
+  --color-label: #C8C8C8;         /* надзаголовок «О ТРИНИТИ» */
+  --color-light: #F8F8F8;         /* фон первого экрана, подложка «Конфигураторы» */
+  --color-white: #FFFFFF;
+  --color-ink: #191919;            /* текст кнопки на лаймовой заливке */
+  --color-accent-lime: #CEE06D;   /* ховер кнопки (как в первой версии) */
+
+  --shadow-pill: 0 4px 24px rgba(0, 0, 0, 0.02);
+
+  /* точки на фоне первого экрана */
+  --hero-dot-color: rgba(55, 55, 75, 0.064);   /* было 0.16 — на 60% прозрачнее */
+  --hero-dot-size: 1px;           /* радиус точки */
+  --hero-dot-step: 14px;          /* шаг сетки */
+
+  /* ---------- Типографика ---------- */
+  --font-base: "Onest", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  --font-display: "Conthrax", "Tektur", var(--font-base);
+
+  /* ---------- Сетка ---------- */
+  --page-max: 1600px;
+  --gutter-left: 51px;            /* шапка и карточки: x = 51 */
+  --gutter-right: 50px;           /* правый край карточек: 1550 */
+
+  /* ---------- Размеры ---------- */
+  --header-top: 18px;
+  --pill-height: 61px;
+  --hero-height: 770px;           /* синий блок начинается с y = 770 */
+  --hero-scroll: 130vh;           /* сколько прокручиваем, пока линия поворачивается и заливает экран */
+  --hero-video-pos: 20% 50%;     /* кадрирование видео в параллелограмме */
+  --radius-pill: 100px;
+  --radius-card: 5px;
+
+  /* ---------- Анимации ---------- */
+  --ease: cubic-bezier(0.2, 0.7, 0.3, 1);
+  --duration: 200ms;
+}
+
+@media (max-width: 767px) {
+  :root {
+    --gutter-left: 16px;
+    --gutter-right: 16px;
+    --header-top: 12px;
+    --pill-height: 48px;
+  }
+}

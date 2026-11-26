@@ -1,0 +1,97 @@
+/* ==========================================================================
+   Шрифты
+   ========================================================================== */
+
+/* Conthrax SemiBold — заголовочный шрифт (файл от заказчика).
+   ВНИМАНИЕ: в архиве лежит десктопная лицензия Typodermic (assets/fonts/conthrax-license.pdf),
+   она не покрывает веб-использование — для продакшна нужна веб-лицензия.
+   Если файла нет, временная замена: Tektur с Google Fonts
+   (https://fonts.google.com/specimen/Tektur) — подключить и поменять --font-display. */
+@font-face {
+  font-family: "Conthrax";
+  src: url("../assets/fonts/conthrax-sb.woff2") format("woff2"),
+       url("../assets/fonts/conthrax-sb.ttf") format("truetype");
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  /* ---------- Цвета: фирменные (из брифа) ---------- */
+  --color-brand-blue: #3268F2;
+  --color-brand-graphite: #585868;
+
+  /* ---------- Цвета: из макета Figma 174:129 ---------- */
+  --color-blue: #1E6EF3;          /* ссылки, блок «30+», маркеры */
+  --color-blue-icon: #307CE9;     /* иконка-слэш на светлой карточке */
+  --color-ink: #191919;           /* заголовки на белом */
+  --color-black: #000000;
+  --color-graphite-dark: #37374B; /* меню, иконки шапки, блок «80 000» */
+  --color-graphite: #575767;      /* блок «300+» */
+  --color-light: #F8F8F8;         /* подложки карточек, блок «КИИ» */
+  --color-muted: #C8C8C8;         /* надзаголовок «О ТРИНИТИ» */
+  --color-white: #FFFFFF;
+  --color-footer: #2C2C2C;
+  --color-cubes-bg: #EEF0F4;      /* фон варианта «кубики» (index-cubes.html) */
+  --color-accent-lime: #CEE06D;   /* заливка CTA по ховеру (бриф) */        /* прямоугольник под фреймом (вероятно, будущий футер) */
+
+  --color-line-light: rgba(255, 255, 255, 0.1); /* вертикальные линии на первом экране */
+  --color-line-dark: rgba(0, 0, 0, 0.06);       /* вертикальные линии ниже */
+
+  --gradient-header-cell: linear-gradient(180deg, #FFFFFF 18.441%, rgba(255, 255, 255, 0) 83.534%);
+  --gradient-news-card:
+    linear-gradient(90deg, rgba(0, 0, 0, 0.2) 0%, rgba(0, 0, 0, 0.2) 100%),
+    linear-gradient(121.43deg, rgba(255, 255, 255, 0.08) 8.9515%, rgba(255, 255, 255, 0.002) 114%);
+
+  /* ---------- Типографика ---------- */
+  --font-base: "Onest", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  --font-display: "Conthrax", "Tektur", var(--font-base);
+
+  /* ---------- Сетка (макет 1600: линии 58 / 401 / 798 / 1205 / 1539) ---------- */
+  --page-max: 1600px;
+  --gutter-left: 58px;
+  --gutter-right: 61px;
+  --grid-width: 1481;   /* 1539 - 58 */
+  --col-1: 343;         /* 58  → 401  */
+  --col-2: 397;         /* 401 → 798  */
+  --col-3: 407;         /* 798 → 1205 */
+  --col-4: 334;         /* 1205 → 1539 */
+  --page-inset: 9px;    /* отступ подложки первого экрана от края */
+  --stats-inset: 8px;   /* отступ блоков с цифрами от края окна */
+
+  /* ---------- Радиусы ---------- */
+  --radius-xs: 1px;
+  --radius-s: 5px;
+  --radius-m: 10px;
+  --radius-news: 15px;
+  --radius-l: 35px;
+  --radius-xl: 40px;
+  --radius-news-corner: 50px;
+  --radius-hero-corner: 60px;
+
+  /* ---------- Высоты ---------- */
+  --hero-height: 786px;              /* по макету 838px; уменьшено по просьбе (≈ −6%) */
+  --header-top: 31px;                /* шапка в начале страницы */
+  --header-top-stuck: 6px;           /* прилипшая шапка (Figma «Frame 22») */
+  --header-cell-height: 129px;
+  --header-cell-height-stuck: 54px;
+  --sticky-top: 100px;               /* отступ липких блоков «О Тринити» от верха окна */
+  --line-scroll: 230vh;              /* index-line.html: высота «дорожки» (130vh — сама анимация) */
+  --line-scroll-mobile: 180vh;
+  --matrix-scroll: 80vh;             /* index-matrix.html: сколько прокручиваем, пока знак поднимается */
+
+  /* ---------- Анимации ---------- */
+  --ease: cubic-bezier(0.2, 0.7, 0.3, 1);
+  --duration: 200ms;
+}
+
+@media (max-width: 767px) {
+  :root {
+    --gutter-left: 16px;
+    --gutter-right: 16px;
+    --page-inset: 6px;
+    --header-top: 16px;
+    --header-cell-height: 72px;
+    --header-cell-height-stuck: 54px;
+  }
+}

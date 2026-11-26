@@ -1,0 +1,1377 @@
+@import url("./variables.css");
+
+/* ==========================================================================
+   Base
+   ========================================================================== */
+*,
+*::before,
+*::after { box-sizing: border-box; }
+
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  font-family: var(--font-base);
+  font-size: 16px;
+  line-height: 1.4;
+  color: var(--color-ink);
+  background: var(--color-white);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+h1, h2, h3, p, ul { margin: 0; }
+ul { padding: 0; list-style: none; }
+img, video { display: block; max-width: 100%; }
+a { color: inherit; text-decoration: none; }
+button { font: inherit; color: inherit; background: none; border: 0; padding: 0; cursor: pointer; }
+
+:focus-visible { outline: 2px solid var(--color-blue); outline-offset: 2px; }
+
+.page.is-menu-open { overflow: hidden; }
+
+.nowrap { white-space: nowrap; }
+
+/* Принудительные переносы строк из макета — только на широких экранах */
+@media (max-width: 1023px) { .br-desktop { display: none; } }
+
+/* ==========================================================================
+   Layout helpers
+   ========================================================================== */
+.container {
+  width: 100%;
+  max-width: var(--page-max);
+  margin-inline: auto;
+  padding-left: var(--gutter-left);
+  padding-right: var(--gutter-right);
+}
+
+/* Декоративные вертикальные линии сетки (58 / 401 / 798 / 1205 / 1539) */
+.grid-lines {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  display: grid;
+  grid-template-columns: 343fr 397fr 407fr 334fr;
+  max-width: var(--page-max);
+  margin-inline: auto;
+  padding-left: var(--gutter-left);
+  padding-right: var(--gutter-right);
+  pointer-events: none;
+}
+.grid-lines span { border-left: 1px solid var(--grid-line-color); }
+.grid-lines span:last-child { border-right: 1px solid var(--grid-line-color); }
+.grid-lines--light { --grid-line-color: var(--color-line-light); }
+.grid-lines--dark  { --grid-line-color: var(--color-line-dark); }
+
+@media (max-width: 1023px) { .grid-lines { display: none; } }
+
+/* ==========================================================================
+   Hero (первый экран)
+   ========================================================================== */
+.hero {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  z-index: 2; /* над .main, чтобы фиксированная шапка была поверх контента */
+  height: calc(var(--hero-height) + var(--page-inset)); /* 9 + 838 = 847 */
+  padding-top: calc(var(--header-top) + var(--header-cell-height)); /* место под фиксированную шапку */
+  color: var(--color-white);
+  isolation: isolate;
+}
+
+.hero__media {
+  position: absolute;
+  inset: var(--page-inset) var(--page-inset) 0;
+  z-index: -1;
+  overflow: hidden;
+  border-radius: var(--radius-m) var(--radius-m) var(--radius-hero-corner) var(--radius-m);
+  background: var(--color-brand-blue) url("../assets/video/poster.jpg") center / cover no-repeat;
+}
+
+.hero__video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* --- Вариант «матрица точек» (index-matrix.html, js/hero-matrix.js) --- */
+.hero-track {
+  position: relative;
+  z-index: 2;                                  /* как у .hero: шапка поверх .main */
+  height: calc(var(--hero-height) + var(--page-inset) + var(--matrix-scroll));
+}
+.hero--matrix {
+  position: sticky;
+  top: 0;
+}
+.hero__media--matrix {
+  background: radial-gradient(ellipse at 70% 45%, #3D74F5 0%, var(--color-brand-blue) 55%, #2C5DE6 100%);
+}
+.hero__matrix {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.hero__matrix[hidden] { display: none; }
+
+/* --- Вариант «кубики» (index-cubes.html, js/hero-cubes.js): светлый первый экран --- */
+.hero__media--cubes { background: var(--color-blue); } /* фирменный #1E6EF3, без затемнения поверх */
+
+/* светлая тема (.hero--light): дымка светлая */
+.hero--light .hero__media--cubes { background: var(--color-cubes-bg); }
+.hero--light .hero__media--cubes::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(90deg, rgba(238, 240, 244, 0.85) 0%, rgba(238, 240, 244, 0.35) 30%, rgba(238, 240, 244, 0) 55%),
+    radial-gradient(ellipse at 60% 50%, rgba(238, 240, 244, 0) 55%, rgba(238, 240, 244, 0.55) 100%);
+}
+.hero__cubes { display: block; width: 100%; height: 100%; }
+.hero__cubes[hidden] { display: none; }
+
+.hero--light { color: var(--color-ink); }
+.hero--light .hero__title { color: var(--color-ink); }
+.hero--light .hero__text { color: var(--color-graphite-dark); }
+.hero--light .cta {
+  background-image:
+    url("../assets/img/icons/button-bracket-dark.svg"),
+    url("../assets/img/icons/button-bracket-bottom-dark.svg");
+}
+.hero--light .cta__label { color: var(--color-ink); }
+.hero--light .cta__icon img { filter: brightness(0) invert(0.1); } /* белая стрелка → #191919 */
+.hero--light .news-card {
+  background: rgba(255, 255, 255, 0.72);
+  box-shadow: 0 6px 20px rgba(25, 25, 40, 0.06);
+}
+.hero--light .news-card:hover { background-color: rgba(255, 255, 255, 0.9); }
+.hero--light .news-card__date,
+.hero--light .news-card__link { color: var(--color-graphite-dark); }
+.hero--light .news-card__all { background: var(--color-cubes-bg); color: var(--color-graphite-dark); }
+.hero--light .news-card__all:hover { background: #ECECF0; }
+
+.hero > .grid-lines { top: var(--page-inset); }
+
+.hero__body {
+  position: relative;
+  z-index: 1;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: flex-start;
+  padding-bottom: 68px; /* 847 - 779 */
+}
+
+/* --- Заголовок --- */
+.hero__title {
+  --title-size: 82px;
+  margin-left: -4px; /* x = 54 при линии сетки 58 */
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: var(--title-size);
+  line-height: 0.8415em;   /* 69px */
+  letter-spacing: -0.04em; /* -3.28px */
+  color: var(--color-white);
+}
+
+.hero__title-line { display: block; }
+
+/* ==========================================================================
+   Построчное появление (как на goga.spb.ru): строка — маска, внутренний span
+   выезжает снизу. Анимация включается только если JS добавил .reveal-ready.
+   ========================================================================== */
+.reveal-line {
+  display: block;
+  overflow: hidden;
+  padding: 0.26em 0.03em;   /* запас под выносные элементы, чтобы маска их не резала */
+  margin: -0.26em -0.03em;  /* ...и компенсация, позиция строки не меняется */
+}
+.reveal-line__inner { display: block; }
+/* flex-колонка: отрицательные margin соседних строк не «схлопываются» */
+[data-reveal] { display: flex; flex-direction: column; }
+.reveal-ready [data-reveal] .reveal-line__inner {
+  transform: translateY(120%);
+  transition: transform 0.95s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.reveal-ready [data-reveal].is-in .reveal-line__inner { transform: translateY(0); }
+
+/* --- Появление при загрузке: шапка падает сверху, карточка новости выезжает снизу ---
+   fill-mode: backwards — стартовое состояние держится только до начала анимации (пока paused — тоже),
+   после неё ничего не остаётся (не мешает прилипанию шапки и бургер-меню). */
+@keyframes drop-in {
+  from { transform: translateY(calc(-100% - var(--header-top))); }
+  to   { transform: none; }
+}
+@keyframes rise-in {
+  from { opacity: 0; transform: translateY(48px); }
+  to   { opacity: 1; transform: none; }
+}
+.reveal-ready .header__cell,
+.reveal-ready .header__burger {
+  animation: drop-in 0.6s cubic-bezier(0.22, 1, 0.36, 1) backwards paused;
+}
+.reveal-ready .header__inner > :nth-child(2) { animation-delay: 0.04s; }
+.reveal-ready .header__inner > :nth-child(3) { animation-delay: 0.08s; }
+.reveal-ready .header__inner > :nth-child(4) { animation-delay: 0.12s; }
+.reveal-ready .header__inner > :nth-child(5) { animation-delay: 0.16s; }
+.reveal-ready .header__inner > :nth-child(6) { animation-delay: 0.20s; }
+.reveal-ready .news-card {
+  animation: rise-in 0.95s cubic-bezier(0.22, 1, 0.36, 1) 0.35s backwards paused; /* после строк заголовка */
+}
+/* стартуют вместе со строками заголовка — когда загрузились шрифты (js/reveal.js → .is-loaded) */
+.reveal-ready.is-loaded .header__cell,
+.reveal-ready.is-loaded .header__burger,
+.reveal-ready.is-loaded .news-card { animation-play-state: running; }
+
+/* строка с размытым «основу» — маске нужен запас справа под блюр */
+.hero__title .reveal-line { padding-right: 0.5em; margin-right: -0.5em; }
+.hero__title-line--accent .reveal-line__inner { position: relative; height: 100%; }
+
+.hero__title-line--accent {
+  position: relative;
+  /* пустая строка 69px (+ поля маски .reveal-line), слово «основу» лежит поверх */
+  height: calc(0.8415em + 0.52em);
+}
+
+.hero__title-sharp,
+.hero__title-blur {
+  position: absolute;
+  top: 0.0122em;           /* +1px */
+  left: 1.622em;           /* 187 - 54 = 133px */
+  line-height: 0.878em;    /* 72px */
+  letter-spacing: -0.03em; /* -2.46px */
+  white-space: nowrap;
+}
+
+/* Прогрессивный блюр: «осно» резко, к «у» нарастает размытие (подогнано по скриншоту макета) */
+.hero__title-sharp {
+  -webkit-mask-image: linear-gradient(90deg, #000 66%, transparent 100%);
+          mask-image: linear-gradient(90deg, #000 66%, transparent 100%);
+}
+.hero__title-blur {
+  /* поля под «разлёт» блюра, иначе маска обрезает его по краям блока */
+  margin: -24px 0 0 -24px;
+  padding: 24px;
+  filter: blur(4px);
+  /* те же точки перехода, что у резкого слоя, с учётом полей 24px */
+  -webkit-mask-image: linear-gradient(90deg, transparent 52%, #000 78%);
+          mask-image: linear-gradient(90deg, transparent 52%, #000 78%);
+}
+
+.hero__text {
+  max-width: 718px;
+  margin-top: 48px;
+  margin-left: -2px; /* x = 56 */
+  font-size: 20px;
+  line-height: 27px;
+  letter-spacing: -0.01em;
+}
+
+/* --- CTA «Подобрать сервер» ---
+   Ховер — по мотивам Codrops «Button Hover Styles», №2 (button--hyperion, MIT):
+   контур заливается цветом слева направо, при уходе курсора заливка уезжает вправо;
+   текст и стрелка уходят вверх и заново въезжают снизу. */
+.cta {
+  position: relative;
+  isolation: isolate;
+  display: grid;
+  grid-template-columns: 211px 1fr;
+  align-items: center;
+  width: 278px;
+  height: 60px;
+  margin-top: 65px;
+  background:
+    url("../assets/img/icons/button-bracket.svg") left top / 278px 17px no-repeat,
+    url("../assets/img/icons/button-bracket-bottom.svg") left bottom / 278px 17px no-repeat;
+}
+
+/* слой заливки */
+.cta::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: var(--color-accent-lime);
+  transform: scale3d(0, 1, 1);
+  transform-origin: 100% 50%;   /* уходит вправо */
+  transition: transform 0.3s cubic-bezier(0.7, 0, 0.2, 1);
+}
+.cta:hover::before,
+.cta:focus-visible::before {
+  transform: scale3d(1, 1, 1);
+  transform-origin: 0% 50%;     /* приходит слева */
+}
+
+.cta__label {
+  display: block;
+  overflow: hidden;              /* маска для «перезахода» текста */
+  padding-left: 33px;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 24px;
+  letter-spacing: 0.16em; /* 1.92px */
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.9);
+  transition: color 0.2s linear;
+}
+.cta__label-text { display: block; }
+
+.cta__icon {
+  display: flex;
+  justify-content: center;
+  overflow: hidden;
+  padding-top: 3px;
+}
+.cta__icon img { transition: filter 0.2s linear; }
+
+.cta:hover .cta__label,
+.cta:focus-visible .cta__label {
+  color: var(--color-ink);
+  transition-delay: 0.15s;       /* темнеет, когда текст уже «за кадром» и под ним заливка */
+}
+.cta:hover .cta__icon img,
+.cta:focus-visible .cta__icon img {
+  filter: brightness(0) invert(0.1); /* белая стрелка → #191919 */
+  transition-delay: 0.15s;
+}
+
+.cta:hover .cta__label-text,
+.cta:focus-visible .cta__label-text {
+  animation: cta-move-up-out 0.2s forwards, cta-move-up-in 0.2s forwards 0.2s;
+}
+.cta:hover .cta__icon img,
+.cta:focus-visible .cta__icon img {
+  animation: cta-arrow-out 0.2s forwards, cta-arrow-in 0.2s forwards 0.2s;
+}
+
+@keyframes cta-move-up-out { to { transform: translate3d(0, -105%, 0); } }
+@keyframes cta-move-up-in {
+  from { transform: translate3d(0, 100%, 0); }
+  to   { transform: translate3d(0, 0, 0); }
+}
+@keyframes cta-arrow-out { to { transform: translate3d(130%, -130%, 0); } }
+@keyframes cta-arrow-in {
+  from { transform: translate3d(-130%, 130%, 0); }
+  to   { transform: translate3d(0, 0, 0); }
+}
+
+/* --- Карточка новости --- */
+.news-card {
+  position: absolute;
+  bottom: 57px; /* 847 - 790 */
+  /* левый край — линия 1205 + 1px */
+  /* левый край — линия 1205 + 1px; на узких экранах прижимаем к правому краю (54px, как в макете) */
+  left: min(
+    calc(var(--gutter-left) + (100% - var(--gutter-left) - var(--gutter-right)) * 1147 / 1481 + 1px),
+    calc(100% - 340px - 54px)
+  );
+  width: 340px;
+  height: 219px;
+  padding: 24px 22px 0 33px;
+  border-radius: var(--radius-news) var(--radius-news) var(--radius-news-corner) var(--radius-news);
+  background-image: var(--gradient-news-card);
+  -webkit-backdrop-filter: blur(25px);
+          backdrop-filter: blur(25px);
+  transition: background-color var(--duration) var(--ease);
+}
+.news-card:hover { background-color: rgba(255, 255, 255, 0.06); }
+
+.news-card__top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.news-card__date {
+  margin-top: 7px;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 27px;
+  letter-spacing: -0.01em;
+  color: var(--color-light);
+}
+
+.news-card__all {
+  display: block;
+  width: 104px;
+  height: 31px;
+  padding-left: 15px;
+  border-radius: var(--radius-s);
+  background: rgba(248, 248, 248, 0.1);
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 31px;
+  letter-spacing: -0.01em;
+  color: var(--color-white);
+  transition: background-color var(--duration) var(--ease);
+}
+.news-card__all:hover { background: rgba(248, 248, 248, 0.22); }
+
+.news-card__link {
+  display: block;
+  max-width: 271px;
+  margin-top: 20px; /* y = 649 */
+  margin-left: 1px;
+  font-size: 16px;
+  line-height: 24px;
+  letter-spacing: -0.01em;
+  color: var(--color-light);
+  opacity: 0.7;
+  transition: opacity var(--duration) var(--ease);
+}
+.news-card__link:hover { opacity: 1; }
+
+/* ==========================================================================
+   Вариант «линия» (index-line.html, js/line-scene.js) — по мотивам santalarch.com
+   Значения — из эскиза Figma «Frame 31» (282:1712), макет 1600px.
+   ========================================================================== */
+.line-scene {
+  position: relative;
+  z-index: 2;                          /* шапка внутри — поверх .main */
+  height: var(--line-scroll);          /* «дорожка»: сколько прокручиваем, пока идёт анимация */
+}
+.line-scene__stage {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  min-height: 640px;
+  overflow: hidden;
+  background: var(--color-light);
+  color: var(--color-graphite-dark);
+}
+
+.line-scene__content {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 100%;
+  padding-top: calc(var(--header-top) + 66px);
+  will-change: transform;
+}
+.line-scene__title {
+  margin: 0 0 0 21px;                  /* x = 79 */
+  font-weight: 600;
+  font-size: 60px;
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  color: var(--color-graphite-dark);
+}
+.line-scene__title-line { display: block; }
+.line-scene__title-line--accent {
+  font-family: var(--font-display);
+  font-size: 82px;                     /* «пространство»: 945px по ширине в макете */
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+}
+.line-scene__text {
+  max-width: 520px;
+  margin: 48px 0 0 22px;
+  font-size: 20px;
+  line-height: 27px;
+  letter-spacing: -0.01em;
+}
+
+/* линия / полоса заливки: слой во весь экран, форму (clip-path: polygon) задаёт JS.
+   Пока линия поворачивается — она под заголовком и параллелограммом. */
+.line-scene__line {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: var(--color-blue);
+  clip-path: polygon(0 0, 0 0, 0 0);   /* до первого кадра JS линии не видно */
+}
+.line-scene.is-band .line-scene__line { z-index: 3; } /* раскрываясь в полосу, накрывает всё */
+
+/* параллелограмм стоит на месте. Внешний слой (bbox) JS обрезает по линии — часть над линией
+   скрывается по мере того, как линия в него заходит; внутренний — сама форма с видео. */
+.line-scene__plane {
+  position: absolute;
+  left: 56.2%;                         /* x = 899 / 1600 */
+  top: 32%;
+  z-index: 1;
+  width: 36.7vw;                       /* 587 / 1600 */
+  height: 32.3vw;                      /* 517 / 1600 */
+  max-height: 58vh;
+  opacity: 0;
+  transform: translateY(40px);
+  transition: opacity 0.8s var(--ease) 0.35s, transform 1s var(--ease) 0.35s;
+}
+.line-scene__plane-shape {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  background: var(--color-blue) url("../assets/video/poster.jpg") center / cover no-repeat;
+  /* скос граней 30° от вертикали; точную форму под текущий размер задаёт JS */
+  clip-path: polygon(50.6% 0, 100% 0, 49.2% 100%, 0 100%);
+}
+.line-scene__video { display: block; width: 100%; height: 100%; object-fit: cover; }
+.line-scene.is-ready .line-scene__plane { opacity: 1; transform: none; }
+
+/* синий заполнил экран — заголовок больше не нужен (и не ловит выделение) */
+.line-scene.is-filled .line-scene__content { visibility: hidden; }
+
+/* без анимации (prefers-reduced-motion): обычный экран, синяя секция идёт следом */
+.line-scene--static { height: auto; }
+.line-scene--static .line-scene__stage { position: relative; }
+.line-scene--static .line-scene__plane { opacity: 1; transform: none; transition: none; }
+
+/* секция на синем: тот же цвет, что у залитого экрана — переход бесшовный */
+/* Секция наезжает на залипший экран (margin-top: −100vh), чтобы после заливки не было
+   пустого синего экрана: её верхние 100vh прозрачны, а блоки проявляются, как только
+   синий заполнил экран (.line-scene.is-filled). */
+.blue-section {
+  position: relative;
+  z-index: 3;                          /* над залипшим экраном */
+  margin-top: -100vh;
+  padding-bottom: 120px;
+  background: linear-gradient(transparent 100vh, var(--color-blue) 100vh);
+  color: var(--color-white);
+  pointer-events: none;
+}
+.blue-section .about {
+  padding-top: 120px;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(40px);
+  transition: opacity 0.5s var(--ease), transform 0.7s var(--ease), visibility 0s 0.5s;
+}
+.line-scene.is-filled + .blue-section .about {
+  opacity: 1;
+  visibility: visible;
+  transform: none;
+  pointer-events: auto;
+  transition: opacity 0.5s var(--ease), transform 0.7s var(--ease), visibility 0s;
+}
+/* без анимации — обычный поток */
+.line-scene--static + .blue-section { margin-top: 0; background: var(--color-blue); }
+.line-scene--static + .blue-section .about { opacity: 1; visibility: visible; transform: none; pointer-events: auto; }
+.blue-section .about__label { color: rgba(255, 255, 255, 0.6); }
+.blue-section .about__title,
+.blue-section .link-more { color: var(--color-white); }
+.blue-section .link-more__icon { filter: brightness(0) invert(1); }
+
+@media (max-width: 1023px) {
+  .line-scene__title { font-size: 44px; margin-left: 0; }
+  .line-scene__title-line--accent { font-size: 58px; }
+  .line-scene__text { margin-left: 0; font-size: 18px; line-height: 25px; }
+  .line-scene__plane { left: 58%; top: 18%; }
+}
+@media (max-width: 767px) {
+  .line-scene { height: var(--line-scroll-mobile); }
+  .line-scene__content { justify-content: flex-end; padding-bottom: 48px; }
+  .line-scene__title { font-size: 8vw; }
+  .line-scene__title-line--accent { font-size: 8.2vw; } /* «пространство» ≈ 11,5 em по ширине */
+  .line-scene__text { margin-top: 24px; font-size: 16px; line-height: 22px; }
+  .line-scene__plane { left: 50%; top: 14%; width: 60vw; height: 52vw; }
+}
+
+/* ==========================================================================
+   Header (внутри первого экрана)
+   ========================================================================== */
+/* Шапка фиксированная. В начале страницы — как на первом экране макета (y = 31, ячейки 129px
+   с градиентом). После начала скролла (.header--stuck, js/header.js) — состояние из Figma «Frame 22»:
+   прилипает к верху (y = 6), ячейки 54px, белые 90% + backdrop-blur. */
+.header {
+  position: fixed;
+  top: var(--header-top);
+  left: 0;
+  right: 0;
+  z-index: 100;
+  transition: top 300ms var(--ease);
+}
+.header--stuck { top: var(--header-top-stuck); }
+
+.header__inner {
+  display: grid;
+  grid-template-columns: minmax(0, 221fr) minmax(0, 923fr) 87px 87px 158px;
+  gap: 1px;
+  padding-left: calc(var(--gutter-left) + 1px);
+}
+
+.header__cell,
+.header__burger {
+  position: relative;
+  isolation: isolate;
+  height: var(--header-cell-height);
+  border-radius: var(--radius-s);
+  background-color: transparent;
+  transition: height 300ms var(--ease), background-color 300ms var(--ease), box-shadow 300ms var(--ease);
+}
+/* градиент отдельным слоем, чтобы плавно гасить его при прилипании */
+.header__cell::before,
+.header__burger::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  background-image: var(--gradient-header-cell);
+  transition: opacity 300ms var(--ease);
+  pointer-events: none;
+}
+.header--stuck .header__cell,
+.header--stuck .header__burger {
+  height: var(--header-cell-height-stuck);
+  background-color: rgba(255, 255, 255, 0.95); /* Figma: 0.9 — сделано белее по просьбе */
+  -webkit-backdrop-filter: blur(12px);        /* Figma: blur 2 — размытие усилено по просьбе */
+          backdrop-filter: blur(12px);
+  /* мягкая тень, чтобы шапка не терялась на белом (в макете нет) */
+  box-shadow: 0 6px 20px rgba(25, 25, 40, 0.08);
+}
+.header--stuck .header__cell::before,
+.header--stuck .header__burger::before { opacity: 0; }
+
+.header__logo {
+  display: inline-block;
+  margin: 15px 0 0 37px;
+  transition: opacity var(--duration) var(--ease);
+}
+.header__logo:hover { opacity: 0.75; }
+
+/* --- Навигация --- */
+/* В макете пункты разделены 8 пробелами в одной строке (≈29.58px), строка начинается с пробела */
+.nav { padding: 13px 0 0 31.7px; }
+
+.nav__list {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 0 29.58px;
+}
+.nav__item:nth-child(6) { margin-left: 4.4px; } /* «Конфигураторы» — отдельный слой, x = 770 */
+.nav__item--mobile { display: none; }           /* «Портал» в меню — только на мобильных */
+
+.nav__link {
+  display: block;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 26px;
+  letter-spacing: -0.01em;
+  color: var(--color-graphite-dark);
+  white-space: nowrap;
+  transition: color var(--duration) var(--ease);
+}
+.nav__link:hover { color: var(--color-blue); }
+
+/* --- Иконки --- */
+.header__cell--icon {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.header__icon-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  margin-top: 5px; /* иконка 18px на y = 16 от верха ячейки */
+  border-radius: var(--radius-s);
+  transition: background-color var(--duration) var(--ease);
+}
+/* ховер у иконок пока убран по просьбе (был: фон rgba(55, 55, 75, 0.06)) */
+
+.header__portal {
+  display: flex;
+  align-items: center;
+  justify-content: center; /* иконка + текст по центру ячейки */
+  gap: 10px;
+  padding: 11px 0 0;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 26px;
+  letter-spacing: -0.01em;
+  color: var(--color-graphite-dark);
+  transition: color var(--duration) var(--ease);
+}
+.header__portal-icon {
+  transform: scaleX(-1); /* в макете corner-up-left отражён → «corner-up-right» */
+  transition: transform var(--duration) var(--ease);
+}
+.header__portal:hover { color: var(--color-blue); }
+.header__portal:hover .header__portal-icon { transform: scaleX(-1) translateX(-2px); }
+
+/* ==========================================================================
+   Выпадающее меню (Figma: Frame 23 «Продукты», Frame 24 «остальные»)
+   Открывается наведением/фокусом на пункт меню (js/mega-menu.js), только ≥ 1200px.
+   Пока открыто — ячейки шапки в «прилипшем» виде (54px, белые 98%),
+   страница за меню размыта и затемнена (.mega-overlay).
+   Позиции в комментариях — от левого/верхнего края панели (панель: x = 58, y = 61).
+   ========================================================================== */
+.header--mega .header__cell,
+.header--mega .header__burger {
+  height: var(--header-cell-height-stuck);
+  background-color: rgba(255, 255, 255, 0.98);
+  box-shadow: none;
+}
+.header--mega .header__cell::before { opacity: 0; }
+
+.nav__item.is-active .nav__link { color: var(--color-blue); }
+
+.mega {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  padding-top: 1px; /* зазор 1px между ячейками и панелью */
+  pointer-events: none;
+}
+.header--mega .mega { pointer-events: auto; }
+
+.mega__panel {
+  position: relative;
+  min-height: 451px;
+  border-radius: var(--radius-s);
+  background: var(--color-white);
+  clip-path: inset(0 0 100% 0 round var(--radius-s));
+  transition: clip-path 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.header--mega .mega__panel { clip-path: inset(0 0 0 0 round var(--radius-s)); }
+.mega__panel[hidden] { display: none; } /* иначе display: grid/flex ниже перебивает hidden */
+
+/* «Продукты»: 4 колонки + карточка флагмана */
+.mega__panel--products {
+  display: grid;
+  grid-template-columns: 253fr 242fr 293fr 316fr 291px; /* x: 39 / 292 / 534 / 827 / 1143 */
+  align-items: start;
+  padding: 30px 47px 39px 39px; /* итог: высота 451, как в макете */
+}
+
+.mega__heading {
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 26px;
+  letter-spacing: -0.01em;
+  color: var(--color-graphite-dark);
+}
+.mega__slash {
+  margin-right: 0.6em;
+  color: var(--color-blue);
+}
+
+.mega__list {
+  display: flex;
+  flex-direction: column;
+  gap: 21px;
+  margin-top: 18px;
+}
+.mega__col--indent .mega__list { padding-left: 20px; } /* в макете у колонок M8/M7 пункты с отступом */
+
+.mega__link {
+  display: block;
+  padding-right: 16px;
+}
+.mega__title {
+  display: block;
+  padding: 2.5px 0;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 21px;
+  letter-spacing: -0.01em;
+  color: var(--color-graphite-dark);
+  transition: color var(--duration) var(--ease);
+}
+.mega__sub {
+  display: block;
+  padding-top: 4px;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 17px;
+  letter-spacing: -0.01em;
+  color: #ABABB5;
+}
+.mega__link:hover .mega__title { color: var(--color-blue); }
+
+.mega__badge {
+  display: inline-block;
+  margin-left: 6px;
+  padding: 0 8px;
+  border-radius: 100px;
+  background: var(--color-accent-lime);
+  font-size: 14px;
+  line-height: 23px;
+  color: var(--color-graphite-dark);
+  vertical-align: 0;
+}
+
+/* Карточка флагмана */
+.mega__promo {
+  align-self: start;
+  height: 359px;
+  margin-top: 8px; /* y = 99 */
+  padding: 28px 24px 0 34px;
+  border-radius: var(--radius-s) var(--radius-s) var(--radius-xl) var(--radius-s);
+  background: var(--color-light);
+}
+.mega__promo-img {
+  width: 234px;
+  height: 110px;
+  margin-left: -5px;
+  object-fit: cover;
+  object-position: center top;
+  mix-blend-mode: darken; /* белый фон фото растворяется в сером #F8F8F8 */
+}
+.mega__promo-caption {
+  margin-top: 30px;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 26px;
+  letter-spacing: -0.01em;
+  color: #ABABB5;
+}
+.mega__promo-title {
+  margin-top: -2px;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 26px;
+  letter-spacing: -0.01em;
+  color: var(--color-graphite-dark);
+}
+.mega__promo-sub {
+  margin-top: -2px;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 26px;
+  letter-spacing: -0.01em;
+  color: #ABABB5;
+}
+.mega__promo-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 212px;
+  height: 47px;
+  margin-top: 17px;
+  border-radius: var(--radius-s);
+  background: var(--color-blue);
+  font-size: 15px;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  color: var(--color-white);
+  transition: background-color var(--duration) var(--ease);
+}
+.mega__promo-btn:hover { background-color: #1659D1; }
+
+/* Остальные пункты — заглушка «Структура подраздела» */
+.mega__panel--stub {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.mega__stub {
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 26px;
+  letter-spacing: -0.01em;
+  color: var(--color-graphite-dark);
+  opacity: 0.4;
+}
+
+/* Размытие и затемнение страницы под меню (Figma: background blur 50, чёрный 20%) */
+.mega-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background-image: var(--gradient-news-card);
+  -webkit-backdrop-filter: blur(25px);
+          backdrop-filter: blur(25px);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s var(--ease), visibility 0s linear 0.3s;
+}
+.header--mega .mega-overlay {
+  opacity: 1;
+  visibility: visible;
+  transition: opacity 0.3s var(--ease);
+}
+
+/* --- Бургер --- */
+.header__burger {
+  display: none;
+  z-index: 60;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 5px;
+  padding-top: 20px;
+}
+.header__burger-line {
+  display: block;
+  width: 20px;
+  height: 2px;
+  border-radius: 1px;
+  background: var(--color-graphite-dark);
+  transition: transform var(--duration) var(--ease), opacity var(--duration) var(--ease);
+}
+.header__burger[aria-expanded="true"] .header__burger-line:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.header__burger[aria-expanded="true"] .header__burger-line:nth-child(2) { opacity: 0; }
+.header__burger[aria-expanded="true"] .header__burger-line:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+/* ==========================================================================
+   Main / О Тринити
+   ========================================================================== */
+.main {
+  position: relative;
+  isolation: isolate;
+}
+
+.about {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: 343fr 397fr 407fr 334fr;
+  align-items: start;
+  padding-top: 145px; /* заголовок y = 992 */
+}
+
+.about__head {
+  position: sticky;           /* левая часть стоит на месте, пока карточки скроллятся */
+  top: var(--sticky-top);
+  grid-column: 1 / 3;
+  margin-left: -4px; /* x = 54 */
+}
+
+.about__label {
+  position: absolute;
+  top: -1px; /* y = 991 */
+  left: 5px; /* x = 59 */
+  font-size: 12px;
+  line-height: 23px;
+  letter-spacing: 0.29em; /* 3.48px */
+  color: var(--color-muted);
+}
+
+.about__title {
+  max-width: 551px;
+  font-size: 47px;
+  font-weight: 500;
+  line-height: 45px;
+  letter-spacing: -0.03em; /* -1.41px */
+  text-transform: uppercase;
+  color: var(--color-ink);
+}
+.about__title .reveal-line:first-child { padding-left: calc(180px + 0.03em); } /* «НАМ ДОВЕРЯЮТ» с x = 234 */
+
+.link-more {
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
+  margin-top: 37px;
+  margin-left: 2px; /* x = 56 */
+  font-size: 14px;
+  line-height: 23px;
+  letter-spacing: -0.01em;
+  color: var(--color-blue);
+}
+.link-more__icon {
+  transform: scaleX(-1);
+  transition: transform var(--duration) var(--ease);
+}
+/* Ховер — Codrops «Line Hover Styles», №8 (link--kale), MIT © Codrops:
+   под текстом «вспыхивает» плашка 10px (растёт снизу вверх и схлопывается),
+   затем проявляется тонкая линия 1px. */
+.link-more__text {
+  position: relative;
+  white-space: nowrap;
+}
+.link-more__text::before,
+.link-more__text::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  height: 1px;
+  background: currentColor;
+  pointer-events: none;
+}
+.link-more__text::before {
+  height: 10px;
+  opacity: 0;
+}
+.link-more:hover .link-more__text::before,
+.link-more:focus-visible .link-more__text::before {
+  opacity: 1;
+  animation: link-line-up 0.3s ease forwards;
+}
+.link-more__text::after {
+  opacity: 0;
+  transition: opacity 0.3s;
+  transition-delay: 0s;
+}
+.link-more:hover .link-more__text::after,
+.link-more:focus-visible .link-more__text::after {
+  opacity: 1;
+  transition-delay: 0.3s;
+}
+@keyframes link-line-up {
+  0%   { transform-origin: 50% 100%; transform: scale3d(1, 0.045, 1); }
+  50%  { transform-origin: 50% 100%; transform: scale3d(1, 1, 1); }
+  51%  { transform-origin: 50% 0%;   transform: scale3d(1, 1, 1); }
+  100% { transform-origin: 50% 0%;   transform: scale3d(1, 0.045, 1); }
+}
+.link-more:hover .link-more__icon { transform: scaleX(-1) translateX(-3px); }
+
+/* --- Карточки направлений --- */
+.about__cards {
+  grid-column: 3 / 5;
+  display: flex;
+  flex-direction: column;
+  gap: 34px;
+  padding-top: 1px; /* верх карточки y = 992 */
+}
+
+.direction-card {
+  position: sticky;           /* вторая карточка при скролле заезжает на первую */
+  top: var(--sticky-top);
+  display: block;
+  padding: 6px;
+  border-radius: var(--radius-m) var(--radius-m) var(--radius-xl) var(--radius-m);
+  background: var(--color-light);
+  transition: box-shadow var(--duration) var(--ease);
+}
+.direction-card--production { padding-bottom: 7px; }
+
+.direction-card__media {
+  position: relative;
+  display: block;
+  height: 302px;
+  overflow: hidden;
+  border-radius: var(--radius-s) var(--radius-s) var(--radius-l) var(--radius-s);
+}
+.direction-card--integration .direction-card__media { height: 307px; }
+.direction-card--integration .direction-card__caption { bottom: 26px; }
+
+.direction-card__img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 400ms var(--ease);
+}
+.direction-card--production  .direction-card__img { object-position: center 55%; } /* кроп из макета */
+.direction-card--integration .direction-card__img { object-position: center 50%; }
+
+/* «Пиксельный прожектор» (js/card-pixels.js) — между фото и подписью */
+.direction-card__pixels {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.direction-card__caption {
+  z-index: 1;
+  position: absolute;
+  left: 34px;   /* 6 + 28 */
+  bottom: 27px; /* 7 + 20 */
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+}
+
+.direction-card__title {
+  font-size: 27px;
+  font-weight: 500;
+  line-height: 45px;
+  letter-spacing: -0.03em; /* -0.81px */
+  text-transform: uppercase;
+  color: var(--color-white);
+}
+
+.direction-card__icon { margin-top: 8px; transition: transform var(--duration) var(--ease); }
+
+.direction-card--integration { box-shadow: 0 -16px 40px rgba(25, 25, 25, 0.08); }
+.direction-card:hover { box-shadow: 0 12px 32px rgba(30, 110, 243, 0.12); }
+.direction-card:hover .direction-card__img { transform: scale(1.03); }
+.direction-card:hover .direction-card__icon { transform: translateX(3px); }
+
+/* ==========================================================================
+   Цифры
+   ========================================================================== */
+/* Блок на всю ширину окна (отступ 8px от краёв, как в макете). */
+.stats {
+  position: relative;
+  z-index: 1;
+  margin-top: 132px;    /* 1792 - 1660 */
+  margin-bottom: 129px; /* 2241 - 2112 */
+  padding-left: var(--stats-inset);
+  padding-right: var(--stats-inset);
+}
+
+.stats__list {
+  /* % здесь — ширина списка (окно минус 2 × 8px). Восстанавливаем ширину окна,
+     ширину центрированного контейнера (max 1600) и поле сбоку от него —
+     внутренние границы блоков остаются на линиях сетки 401 / 798 / 1205,
+     а крайние блоки тянутся до краёв окна. */
+  --win: (100% + 2 * var(--stats-inset));
+  --box: min(var(--win), var(--page-max));
+  --side: ((var(--win) - var(--box)) / 2);
+  --grid: (var(--box) - var(--gutter-left) - var(--gutter-right));
+  display: grid;
+  grid-template-columns:
+    calc(var(--side) + var(--gutter-left) - var(--stats-inset) + var(--grid) * 343 / 1481)
+    calc(var(--grid) * 397 / 1481)
+    calc(var(--grid) * 407 / 1481)
+    minmax(0, 1fr);
+}
+
+.stats__item {
+  --pad-value: 38px;
+  --pad-text: 38px;
+  --dot-color: var(--color-white);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 320px;
+  padding: 34px 0 57px;
+  color: var(--color-white);
+}
+
+/* Квадратные маркеры 7×7 */
+.stats__item::before,
+.stats__item::after {
+  content: "";
+  position: absolute;
+  right: 58px;
+  width: 7px;
+  height: 7px;
+  border-radius: var(--radius-xs);
+  background: var(--dot-color);
+}
+.stats__item::before { top: 48px; }
+.stats__item::after { bottom: 63px; }
+
+.stats__item--blue {
+  --pad-value: 33px;
+  --pad-text: 34px;
+  background: var(--color-blue);
+  border-radius: var(--radius-m) 0 var(--radius-xl) var(--radius-m);
+}
+.stats__item--graphite {
+  --pad-text: 44px;
+  background: var(--color-graphite-dark);
+  border-radius: var(--radius-xl) 0 0 0;
+}
+.stats__item--gray {
+  background: var(--color-graphite);
+  border-radius: 0 0 0 var(--radius-xl);
+}
+.stats__item--light {
+  --pad-value: 39px;
+  --pad-text: 35px;
+  --dot-color: var(--color-blue);
+  background: var(--color-light);
+  border-radius: var(--radius-xl) var(--radius-m) var(--radius-m) 0;
+  color: var(--color-ink);
+}
+
+.stats__value {
+  padding-left: var(--pad-value);
+  font-size: 62px;
+  font-weight: 400;
+  line-height: 79px;
+  letter-spacing: -0.05em; /* -3.1px */
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+/* цифры одной ширины только пока идёт «набегание» — строка не дёргается */
+.stats__value.is-counting { font-variant-numeric: tabular-nums; }
+
+.stats__text {
+  padding-left: var(--pad-text);
+  padding-right: 24px;
+  font-size: 16px;
+  line-height: 23px;
+  letter-spacing: -0.01em;
+}
+.stats__item--light .stats__text { color: var(--color-black); }
+
+/* Шкала-«линейка» поперёк блоков */
+.stats__ticks {
+  position: absolute;
+  top: 150px;
+  left: 0;
+  right: 0;
+  height: 20px;
+  background: url("../assets/img/icons/ticks.svg") left top / auto 20px repeat-x;
+  pointer-events: none;
+}
+
+/* ==========================================================================
+   Адаптив
+   ========================================================================== */
+
+/* ---------- < 1200: меню в бургер ---------- */
+@media (max-width: 1199px) {
+  /* матрица: экран не «залипает», знак поднимается, пока первый экран уходит вверх */
+  .hero-track { height: auto; }
+  .hero--matrix { position: relative; }
+
+  .header__inner { grid-template-columns: minmax(0, 1fr) 87px 87px 158px 87px; }
+
+  .header__burger { display: flex; }
+
+  .nav {
+    position: fixed;
+    inset: 0;
+    z-index: 50;
+    height: auto;
+    padding: 120px var(--gutter-right) 40px var(--gutter-left);
+    border-radius: 0;
+    background: var(--color-white);
+    overflow-y: auto;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-8px);
+    transition: opacity var(--duration) var(--ease), transform var(--duration) var(--ease), visibility 0s linear var(--duration);
+  }
+  .nav.is-open {
+    opacity: 1;
+    visibility: visible;
+    transform: none;
+    transition: opacity var(--duration) var(--ease), transform var(--duration) var(--ease);
+  }
+  .nav__list {
+    flex-direction: column;
+    gap: 0;
+  }
+  .nav__item:nth-child(6) { margin-left: 0; }
+  .nav__link {
+    padding: 14px 0;
+    border-bottom: 1px solid var(--color-line-dark);
+    font-size: 24px;
+    line-height: 32px;
+  }
+
+  .mega,
+  .mega-overlay { display: none; } /* выпадающее меню — только десктоп */
+
+  /* оверлей меню — не ячейка шапки: без градиента и «прилипшего» состояния */
+  .header .nav,
+  .header--stuck .nav {
+    height: auto;
+    background-color: var(--color-white);
+    -webkit-backdrop-filter: none;
+            backdrop-filter: none;
+  }
+  .header .nav::before { display: none; }
+
+  .page.is-menu-open .header__cell--logo { position: relative; z-index: 60; background: none; }
+
+  /* первый экран: карточка новости уходит под кнопку */
+  .hero {
+    height: auto;
+    min-height: calc(100svh + var(--page-inset));
+  }
+  .hero__body { padding-top: 40px; padding-bottom: 40px; }
+
+  .news-card {
+    position: relative;
+    left: auto;
+    bottom: auto;
+    width: 100%;
+    max-width: 340px;
+    height: auto;
+    min-height: 0;
+    margin-top: 48px;
+    padding-bottom: 28px;
+  }
+  .news-card__link { max-width: none; }
+
+}
+
+/* ---------- < 1024: планшет ---------- */
+@media (max-width: 1023px) {
+  .about {
+    grid-template-columns: 1fr;
+    row-gap: 56px;
+    padding-top: 96px;
+  }
+  .about__head,
+  .about__cards { grid-column: 1 / -1; }
+  .about__head { position: relative; top: auto; }
+
+  .direction-card__media,
+  .direction-card--integration .direction-card__media { height: auto; aspect-ratio: 729 / 302; }
+
+  .stats { margin-top: 96px; margin-bottom: 80px; }
+  .stats { --stats-inset: var(--page-inset); }
+  .stats__list { grid-template-columns: 1fr 1fr; }
+  .stats__ticks { display: none; }
+}
+
+/* ---------- < 768: мобильная ---------- */
+@media (max-width: 767px) {
+
+  .header__inner {
+    grid-template-columns: minmax(0, 1fr) 56px 56px;
+    padding-left: var(--gutter-left);
+  }
+  /* высоты ячеек — через --header-cell-height в variables.css */
+  .header__cell--phone,                       /* TODO: телефон — в меню, когда будет номер */
+  .header__cell--portal { display: none; }  /* «Портал» есть в меню (.nav__item--mobile) */
+  .nav__item--mobile { display: block; }
+  .header__burger { padding-top: 16px; }
+  .header__logo { margin: 14px 0 0 16px; }
+  .header__icon-btn { margin-top: 3px; }
+
+  .nav { padding-top: 104px; }
+
+  .hero__body { padding-top: 40px; padding-bottom: 28px; }
+  .hero__title { --title-size: 44px; margin-left: -2px; }
+  .hero__text { margin-top: 28px; margin-left: 0; font-size: 16px; line-height: 22px; }
+  .cta { margin-top: 36px; }
+
+  .about { padding-top: 64px; row-gap: 40px; }
+  .about__head { margin-left: 0; }
+  .about__label { position: static; margin-bottom: 12px; }
+  .about__title {
+    font-size: 28px;
+    line-height: 28px;
+  }
+  .about__title .reveal-line:first-child { padding-left: 0.03em; }
+  .link-more { margin-top: 24px; margin-left: 0; }
+
+  .about__cards { gap: 16px; }
+  .direction-card__media,
+  .direction-card--integration .direction-card__media { aspect-ratio: 358 / 220; }
+  .direction-card__caption,
+  .direction-card--integration .direction-card__caption { left: 22px; bottom: 16px; gap: 10px; }
+  .direction-card__icon { width: 20px; height: auto; }
+  .direction-card__title { font-size: 20px; line-height: 32px; }
+
+  .stats { margin-top: 64px; margin-bottom: 48px; }
+  .stats__list { grid-template-columns: 1fr; }
+  .stats__item {
+    --pad-value: 24px;
+    --pad-text: 24px;
+    height: auto;
+    min-height: 200px;
+    gap: 40px;
+    padding: 24px 0 28px;
+  }
+  .stats__item::before,
+  .stats__item::after { right: 24px; }
+  .stats__item::before { top: 36px; }
+  .stats__item::after { bottom: 36px; }
+  .stats__value { font-size: 48px; line-height: 60px; }
+
+}
+
+/* ---------- Без анимаций ---------- */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+  }
+}

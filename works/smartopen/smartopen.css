@@ -1,0 +1,138 @@
+/* ============================================================
+   Smart Open — styles only this case needs. Everything shared
+   (header, intro, text blocks, reveals, dark block + running rows,
+   result, next case, footer) lives in ../_case/case.css.
+   Desktop: 1600 design → N * var(--k). Mobile: 375 → N * var(--m).
+   ============================================================ */
+
+/* ===================== Hero: white interior + logo ===================== */
+.so-hero { background: #f1f1f1; }
+.so-hero::after { display: none; }
+.so-hero > img:first-child { width: 100%; height: 100%; object-fit: cover; }
+.c-reveal > img.so-hero__logo,
+.c-reveal.is-in > img.so-hero__logo {
+  position: absolute; left: 45.52%; top: 41.38%; width: 11.94%; height: auto;
+  opacity: 0; transform: translate3d(0, calc(24 * var(--k)), 0) scale(.9);
+  filter: blur(6px);
+  transition: opacity 1.2s var(--ease) .5s, transform 1.6s var(--ease) .5s, filter 1.2s var(--ease) .5s;
+}
+.c-reveal.is-in > img.so-hero__logo { opacity: 1; transform: none; filter: blur(0); }
+
+/* ===================== Site in a white frame (layout shared with ОБИТ) ===================== */
+.o-screen { margin-top: calc(121 * var(--k)); }
+.o-screen__stage { position: relative; aspect-ratio: 1483 / 824; }
+.o-screen__bg { position: absolute; inset: 0; overflow: hidden; border-radius: var(--r); background: #0d0d0f; }
+.o-screen__bg img { width: 100%; height: 100%; object-fit: cover; }
+.o-tablet.c-tablet {
+  left: 19.89%; top: 19.78%; width: 60.22%;
+  box-shadow: 0 calc(40 * var(--k)) calc(90 * var(--k)) rgba(0, 0, 0, .55);
+}
+
+/* ===================== Merch + phone ===================== */
+.so-pair {
+  margin-top: calc(121 * var(--k));
+  display: grid; grid-template-columns: 737fr 735fr; column-gap: calc(11 * var(--k));
+}
+.so-pair > div { position: relative; overflow: hidden; border-radius: var(--r); aspect-ratio: 737 / 861; }
+.so-pair__phone { aspect-ratio: 735 / 861; background: #0b0b0c; }
+.so-pair__phone img { width: 100%; height: 100%; object-fit: cover; }
+.so-pair__shirt { background: #faf9f9; perspective: 1200px; }
+.c-reveal > img.so-shirt,
+.c-reveal.is-in > img.so-shirt {
+  position: absolute; left: 8.82%; top: 12.66%; width: 76.39%; height: auto;
+  transform: translate3d(var(--mx, 0px), calc(70 * var(--k)), 0) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg)) rotate(-4deg);
+  opacity: 0;
+  transition: transform 1.8s var(--ease) .25s, opacity 1s var(--ease) .25s;
+}
+.c-reveal.is-in > img.so-shirt {
+  opacity: 1;
+  transform: translate3d(var(--mx, 0px), 0, 0) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg));
+  animation: so-float 7s ease-in-out 2.2s infinite;
+}
+.so-pair__shirt.is-in:hover > img.so-shirt { transition: opacity 1s var(--ease); }
+@keyframes so-float { 0%, 100% { translate: 0 0; } 50% { translate: 0 calc(-14 * var(--k)); } }
+.so-pair__shirt::after {   /* soft shadow under the floating shirt */
+  content: ""; position: absolute; left: 25%; right: 25%; bottom: 6.5%; height: 3%;
+  background: radial-gradient(closest-side, rgba(0, 0, 0, .12), rgba(0, 0, 0, 0));
+  opacity: 0; transition: opacity 1.4s var(--ease) .8s;
+}
+.so-pair__shirt.is-in::after { opacity: 1; animation: so-shadow 7s ease-in-out 2.2s infinite; }
+@keyframes so-shadow { 0%, 100% { transform: scaleX(1); opacity: 1; } 50% { transform: scaleX(.86); opacity: .7; } }
+
+/* ===================== Laptop ===================== */
+.so-laptop { margin: calc(121 * var(--k)) var(--pad) 0; padding: 0; overflow: hidden; border-radius: var(--r); aspect-ratio: 1483 / 927; background: #050505; }
+.so-laptop img { width: 100%; height: 100%; object-fit: cover; }
+
+/* ===================== Night block with running pages ===================== */
+.so-dark.c-dark { margin-top: calc(197 * var(--k)); padding: calc(144 * var(--k)) 0 calc(132 * var(--k)); background: #121317; }
+.js-fade .so-dark.c-dark { background: transparent; }
+.so-marquee { row-gap: calc(91 * var(--k)); }
+.so-dark .c-card { box-shadow: 0 calc(24 * var(--k)) calc(50 * var(--k)) rgba(0, 0, 0, .35); }
+
+/* ===================== Mobile pages on the brand gradient ===================== */
+.so-grad { margin-top: calc(152 * var(--k)); }
+.so-grad__stage {
+  position: relative; overflow: hidden; border-radius: var(--r); aspect-ratio: 1483 / 757;
+  background: linear-gradient(90deg, #32378d, #e83f8d, #32378d);
+  background-size: 200% 100%;
+  animation: so-grad 14s ease-in-out infinite alternate;
+}
+@keyframes so-grad { from { background-position: 0% 0; } to { background-position: 100% 0; } }
+.c-reveal > img.so-grad__phones,
+.c-reveal.is-in > img.so-grad__phones {
+  position: absolute; left: 18.88%; top: 14.66%; width: 61.7%; height: auto;
+  filter: drop-shadow(0 calc(20 * var(--k)) calc(30 * var(--k)) rgba(20, 10, 60, .35));
+  opacity: 0; transform: translate3d(0, calc(110 * var(--k)), 0) scale(.94);
+  transition: transform 1.9s var(--ease) .25s, opacity 1.1s var(--ease) .25s;
+}
+.c-reveal.is-in > img.so-grad__phones { opacity: 1; transform: none; }
+
+/* ===================== Car ===================== */
+.so-car { margin: calc(146 * var(--k)) var(--pad) 0; padding: 0; overflow: hidden; border-radius: var(--r); aspect-ratio: 1484 / 824; background: #0b0910; }
+.so-car img { width: 100%; height: 100%; object-fit: cover; }
+
+.case--so .c-result { margin-top: calc(106 * var(--k)); }
+.case--so .c-next { margin-top: calc(90 * var(--k)); }
+.o-next .c-next__text { color: #fff; }
+
+/* ===================== Mobile (375 design, built like ОБИТ) ===================== */
+@media (max-width: 760px) {
+
+  .o-screen { margin-top: calc(56 * var(--m)); padding: 0; }
+  .o-screen__stage { aspect-ratio: 375 / 319; }
+  .o-screen__bg { border-radius: 0; }
+  .o-tablet.c-tablet { left: 0; width: 100%; top: calc(56 / 319 * 100%); padding: calc(5 * var(--m)); border-radius: calc(14 * var(--m)); }
+
+  .so-pair { margin-top: calc(48 * var(--m)); padding: 0; grid-template-columns: 1fr; row-gap: calc(7 * var(--m)); }
+  .so-pair > div { border-radius: 0; aspect-ratio: 375 / 400; }
+  .so-pair__phone { aspect-ratio: 375 / 439; }
+  .c-reveal > img.so-shirt, .c-reveal.is-in > img.so-shirt { left: 17%; top: 8%; width: 66%; }
+
+  .so-laptop { margin: calc(48 * var(--m)) 0 0; border-radius: 0; aspect-ratio: 375 / 260; }
+
+  .so-dark.c-dark { margin-top: calc(56 * var(--m)); padding: calc(56 * var(--m)) 0; }
+  .so-marquee { row-gap: calc(14 * var(--m)); }
+  .so-dark .c-track { gap: calc(10 * var(--m)); }
+  .so-dark .c-card { width: calc(230 * var(--m)); box-shadow: none; }
+
+  .so-grad { margin-top: calc(56 * var(--m)); padding: 0; }
+  .so-grad__stage { aspect-ratio: 375 / 260; border-radius: 0; }
+  .c-reveal > img.so-grad__phones, .c-reveal.is-in > img.so-grad__phones { left: 3%; top: 9%; width: 94%; }
+
+  .so-car { margin: calc(48 * var(--m)) 0 0; border-radius: 0; aspect-ratio: 375 / 240; }
+
+  .case--so .c-result { margin-top: calc(46 * var(--m)); }
+  .case--so .c-next { margin-top: calc(68 * var(--m)); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .so-hero__logo, .so-shirt, .so-grad__phones { opacity: 1 !important; transform: none !important; filter: none !important; transition: none !important; animation: none !important; }
+  .so-grad__stage, .so-pair__shirt::after { animation: none !important; }
+}
+
+/* ===================== Last case: «Все работы» → home page grid ===================== */
+.so-all__sub { display: block; margin-top: calc(6 * var(--k)); font-size: max(14px, calc(18 * var(--k))); font-weight: 600; opacity: .85; }
+@media (max-width: 760px) {
+  .so-all .c-next__media img { object-position: 22% 50%; }
+  .so-all__sub { margin-top: 0; font-size: 15px; }
+}

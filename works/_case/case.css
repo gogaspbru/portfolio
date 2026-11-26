@@ -91,6 +91,11 @@ h1, h2, h3, p, dl, dd { margin: 0; }
 /* parallax images ride on --py (set by JS), on top of the reveal zoom */
 .c-reveal > img[data-speed] { transform: translate3d(0, var(--py, 0px), 0) scale(1.18); }
 .c-reveal.is-in > img[data-speed] { transform: translate3d(0, var(--py, 0px), 0) scale(1.12); }
+/* gooey cursor layer (case.js, [data-goo]) rides on the same parallax and zoom as its photo */
+.c-goo { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; overflow: visible; }
+.c-reveal > .c-goo { transform: translate3d(0, var(--py, 0px), 0) scale(1.18); transition: transform 1.8s var(--ease) var(--d, 0s); }
+.c-reveal.is-in > .c-goo { transform: translate3d(0, var(--py, 0px), 0) scale(1.12); }
+[data-goo] { position: relative; }
 
 /* objects that float up into place (laptop) */
 .c-rise img { opacity: 0; transform: translateY(80px) scale(.96); transition: opacity 1.1s var(--ease), transform 1.6s var(--ease); }
@@ -261,8 +266,13 @@ h1, h2, h3, p, dl, dd { margin: 0; }
   transition: transform 1.6s var(--ease) .15s, opacity 1s var(--ease) .15s;
 }
 .c-tablet.is-in { transform: none; opacity: 1; }
-.c-tablet__screen { width: 100%; height: 100%; overflow: hidden; border-radius: calc(15 * var(--k)); background: #1b1512; }
+/* no inner rounding and a white backing: a rounded clip over the recording left thin
+   dark arcs in the corners of the white frame (seen on «Культура дома») */
+.c-tablet__screen { width: 100%; height: 100%; overflow: hidden; border-radius: 0; background: #fff; }
 .c-tablet__screen .c-video { width: 100%; height: 100%; object-fit: cover; }
+/* the «Культура дома» recording has black rounded corners baked into its edges (~4px of 1000):
+   enlarge it slightly so the white frame crops them off */
+.c-tablet--trim .c-video { scale: 1.025; }
 
 /* ===================== Store ===================== */
 .c-store { margin-top: calc(139 * var(--k)); }
@@ -378,7 +388,7 @@ h1, h2, h3, p, dl, dd { margin: 0; }
   :root { --m: calc(100vw / 375); --pad: calc(19 * var(--m)); }
 
   .header__inner { flex-wrap: wrap; }
-  .contacts { gap: 22px; }
+  .contacts { gap: 14px; }
   .contacts__item { font-size: 12px; }
   .contacts__item--phone { display: inline-flex; align-items: center; margin-right: 13px; }
   .contacts__phone-text { display: none; }
@@ -427,7 +437,6 @@ h1, h2, h3, p, dl, dd { margin: 0; }
   .c-duo__velvet { left: 0; width: 100%; top: 0; bottom: auto; height: calc(322 / 605 * 100%); border-radius: 0; }
   .c-duo__slate  { right: 0; width: 100%; top: auto; bottom: 0; height: calc(283 / 605 * 100%); border-radius: 0; }
   .c-tablet { left: 0; width: 100%; top: calc(209 / 605 * 100%); padding: calc(5 * var(--m)); border-radius: calc(14 * var(--m)); }
-  .c-tablet__screen { border-radius: calc(10 * var(--m)); }
 
   .c-store { margin: calc(10 * var(--m)) 0 0; aspect-ratio: 375 / 265; border-radius: 0; }
 
@@ -502,12 +511,12 @@ h1, h2, h3, p, dl, dd { margin: 0; }
 }
 .footer__bottom { padding-bottom: clamp(6px, 0.9vw, 12px); align-self: stretch; }
 .footer__copy { margin: 0 0 clamp(26px, 4vw, 54px); color: #8b8a83; font-size: 15px; }
-.contact { display: flex; align-items: flex-end; justify-content: space-between; gap: clamp(20px, 2.6vw, 44px); flex-wrap: wrap; }
+.contact { display: flex; align-items: center; justify-content: space-between; gap: clamp(20px, 2.6vw, 44px); flex-wrap: wrap; }
 .contact__title {
   margin: 0; font-size: clamp(62px, 11.7vw, 172px);
   font-weight: 700; line-height: 0.9; letter-spacing: -0.03em; color: #f3f2ef;
 }
-.contact__socials { display: flex; gap: clamp(12px, 1.4vw, 22px); }
+.contact__socials { display: flex; gap: clamp(12px, 1.4vw, 22px); transform: translateY(20px); }   /* desktop: icons a touch below the heading centre (as on the home page) */
 .social {
   position: relative; display: flex; align-items: center; justify-content: center;
   width: clamp(64px, 5vw, 92px); height: clamp(64px, 5vw, 92px);
@@ -538,13 +547,103 @@ h1, h2, h3, p, dl, dd { margin: 0; }
 @media (max-width: 900px) { .statement__text { max-width: 100%; } }
 @media (max-width: 640px) {
   .footer__copy { font-size: 13px; }
-  .statement__text { line-height: 0.78; }
+  .statement__text { line-height: 1.05; }
   .contact { flex-direction: column; align-items: stretch; gap: clamp(22px, 6vw, 32px); }
-  .contact__title { font-size: clamp(39px, 14.5vw, 73px); }
-  .contact__socials { width: 100%; justify-content: space-between; }
+  .contact__title { font-size: clamp(39px, 14.5vw, 73px); margin-top: 30px; }
+  .contact__socials { width: 100%; justify-content: space-between; transform: none; }
+  /* as on the home page: statement + «Свяжитесь» + circles centred, copyright pinned to the bottom */
+  .site-footer__inner { justify-content: center; }
+  .statement { padding-top: clamp(28px, 8vw, 56px); padding-bottom: clamp(30px, 8vw, 52px); }
+  .footer__copy { position: absolute; left: var(--pad); right: var(--pad); bottom: clamp(18px, 5vw, 30px); margin: 0; }
   .social { width: clamp(60px, 17vw, 74px); height: clamp(60px, 17vw, 74px); }
+}
+/* touch: bigger header tap targets; phone landscape: lift the footer (same as the home page) */
+@media (pointer: coarse) {
+  .contacts__item { min-height: 44px; padding-block: 8px; display: inline-flex; align-items: center; }
+  .contacts__item--icon, .contacts__item--phone { padding-inline: 8px; }
+}
+@media (orientation: landscape) and (max-height: 500px) {
+  .site-footer__inner { padding-bottom: clamp(16px, 6vh, 34px); }
+  .contact__socials { transform: none; }
 }
 @media (prefers-reduced-motion: reduce) {
   .social__spark { display: none; }
   .reveal-line__inner, [data-reveal].reveal-simple { transform: none; opacity: 1; transition: none; }
 }
+
+/* ===================== Thin custom scrollbar, as on the home page (desktop only, case.js) ===================== */
+html.scrollbar-on { scrollbar-width: none; }                     /* Firefox */
+html.scrollbar-on::-webkit-scrollbar { width: 0; height: 0; }    /* WebKit */
+.scrollbar__thumb {
+  position: fixed; top: 0; right: 7px; width: 4px; border-radius: 4px;
+  background: #fff; opacity: .5;
+  mix-blend-mode: difference;   /* visible on light and dark sections */
+  z-index: 2500; pointer-events: none;
+  transition: opacity .3s ease;
+  will-change: transform, height;
+}
+
+/* ===================== Custom cursor, as on the home page (desktop only, case.js) ===================== */
+.cursor-dot,
+.cursor-ring {
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 3000;
+  pointer-events: none;
+  border-radius: 50%;
+  opacity: 0;
+  mix-blend-mode: difference;   /* stays visible on light and dark backgrounds */
+  will-change: transform;
+}
+.cursor-ready .cursor-dot { opacity: .65; }   /* brighter centre */
+.cursor-ready .cursor-ring { opacity: .16; }  /* lighter halo */
+
+.cursor-dot {
+  width: 7px;
+  height: 7px;
+  margin: -3.5px 0 0 -3.5px;
+  background: #fff;
+}
+.cursor-ring {
+  width: 40px;
+  height: 40px;
+  margin: -20px 0 0 -20px;
+  border: 1.5px solid #fff;
+  transition: width .28s ease, height .28s ease, margin .28s ease,
+              background-color .28s ease, opacity .3s ease;
+}
+/* grow the trailing ring over interactive elements */
+.cursor-hover .cursor-ring {
+  width: 64px;
+  height: 64px;
+  margin: -32px 0 0 -32px;
+  background: rgba(255, 255, 255, .14);
+}
+
+/* hide the native cursor only when the custom one is active on a fine pointer */
+@media (hover: hover) and (pointer: fine) {
+  html.cursor-on,
+  html.cursor-on * { cursor: none; }
+}
+
+/* ===================== «Живой скриншот» (case.js: .live-shot) =====================
+   Fills its parent (e.g. .c-tablet__screen). The long screenshot moves only via transform. */
+.live-shot {
+  position: relative; width: 100%; height: 100%; overflow: hidden;
+  background: var(--ls-bg, #fff);          /* site header colour while the picture loads: no white/black flash */
+  touch-action: pan-x pan-y;               /* JS decides when a vertical swipe scrolls the picture */
+}
+.live-shot[data-manual] { cursor: ns-resize; }
+.live-shot__track { position: absolute; left: 0; top: 0; width: 100%; will-change: transform; transform: translate3d(0, 0, 0); }
+.live-shot__track img { display: block; width: 100%; height: auto; user-select: none; -webkit-user-drag: none; }
+/* video inserts: hidden until the video really plays (the screenshot below shows the same frame) */
+.live-shot__vid { position: absolute; overflow: hidden; visibility: hidden; pointer-events: none; }
+.live-shot__vid.is-on { visibility: visible; }
+.live-shot__track .live-shot__vid video,
+.live-shot__track .live-shot__vid .live-shot__over { position: absolute; left: 0; top: 0; width: 100%; height: 100%; display: block; object-fit: fill; }
+
+/* iPhone (Low Power Mode): never show the system play button over our muted background videos */
+video::-webkit-media-controls-start-playback-button { display: none !important; -webkit-appearance: none; }
+video::-webkit-media-controls { display: none !important; }
+video::-webkit-media-controls-panel { display: none !important; }

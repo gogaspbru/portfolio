@@ -1,0 +1,218 @@
+/* ============================================================
+   ОБИТ — styles only this case needs. Everything shared
+   (header, intro, text blocks, reveals, dark block + running rows,
+   result, next case, footer) lives in ../_case/case.css.
+   Desktop: 1600 design → N * var(--k). Mobile: 375 → N * var(--m).
+   ============================================================ */
+
+.o-br-d { display: inline; }
+
+/* ===================== Hero ===================== */
+.o-hero { background: #d9d9d7; }
+.o-hero img { width: 100%; height: 100%; object-fit: cover; }
+.o-hero::after { display: none; }
+
+/* ===================== Site in a white frame over the honeycomb ===================== */
+.o-screen { margin-top: calc(121 * var(--k)); }
+.o-screen__stage { position: relative; aspect-ratio: 1483 / 824; }
+.o-screen__bg { position: absolute; inset: 0; overflow: hidden; border-radius: var(--r); background: #0b1c22; }
+.o-screen__bg img { width: 100%; height: 100%; object-fit: cover; }
+.o-tablet.c-tablet {
+  left: 19.89%; top: 19.78%; width: 60.22%;
+  box-shadow: 0 calc(40 * var(--k)) calc(90 * var(--k)) rgba(0, 0, 0, .5);
+}
+
+.o-did { margin-top: calc(86 * var(--k)); }
+
+/* ===================== Two cards ===================== */
+.o-pair {
+  margin-top: calc(100 * var(--k));
+  display: grid; grid-template-columns: 1fr 1fr; column-gap: calc(13 * var(--k));
+}
+.o-pair > div { position: relative; overflow: hidden; border-radius: var(--r); aspect-ratio: 735 / 649; }
+.o-pair__green { background: #5fa792; }
+.o-pair__green img { width: 100%; height: 100%; object-fit: cover; }
+.o-pair__orange { background: #ec6446; display: grid; place-items: center; }
+.o-pair__photo {
+  width: 51.97%; aspect-ratio: 1; overflow: hidden; border-radius: 3px;
+  transform: translate3d(0, calc(30 * var(--k)), 0) scale(.92); opacity: 0;
+  transition: transform 1.6s var(--ease) .35s, opacity 1.1s var(--ease) .35s;
+}
+.o-pair__orange.is-in .o-pair__photo { transform: none; opacity: 1; }
+.o-pair__photo img { width: 100%; height: 100%; object-fit: cover; transition: transform 1.2s var(--ease); }
+.o-pair__orange:hover .o-pair__photo img { transform: scale(1.06); }
+.o-pair__orange > .o-pair__photo { transform-origin: 50% 60%; }
+
+/* ===================== Brand icons: a strip that flies right → left (case.js, data-scrollx) ===================== */
+.o-icons { margin-top: calc(213 * var(--k)); overflow-x: clip; }
+.o-icons .s-rail { position: relative; }
+.o-icons__track {
+  width: calc(2840 * var(--k)); margin-left: calc(72 * var(--k));
+  transform: translate3d(var(--sx, 0px), 0, 0); will-change: transform;
+}
+.o-icons__track img { display: block; width: 100%; height: auto; }
+
+/* ===================== Night block ===================== */
+.o-dark.c-dark { margin-top: calc(195 * var(--k)); padding: 0 0 calc(229 * var(--k)); background: #0a1920; }
+.js-fade .o-dark.c-dark { background: transparent; }
+.o-laptop { padding: 0; margin-left: var(--pad); margin-right: var(--pad); }
+.o-laptop img { width: 100%; height: auto; }
+.o-marquee { margin-top: calc(168 * var(--k)); row-gap: calc(91 * var(--k)); }
+.o-dark .c-card { box-shadow: 0 calc(24 * var(--k)) calc(50 * var(--k)) rgba(0, 0, 0, .35); }
+
+/* ===================== Shop window + keyboard ===================== */
+.o-duo {
+  margin-top: calc(183 * var(--k));
+  display: grid; grid-template-columns: 737fr 735fr; column-gap: calc(11 * var(--k)); align-items: start;
+}
+.o-duo > div { position: relative; overflow: hidden; border-radius: var(--r); }
+.o-duo__store { aspect-ratio: 737 / 487; background: #6d8a85; }
+.o-duo__keys  { aspect-ratio: 735 / 861; background: #050607; }
+.o-duo img { width: 100%; height: 100%; object-fit: cover; }
+
+/* ===================== Mobile pages (transparent PNG) ===================== */
+.o-phones { margin: calc(165 * var(--k)) 0 0 calc(17 * var(--k)); width: calc(1465 * var(--k)); }
+.o-phones img { width: 100%; height: auto; }
+
+/* ===================== Section titles: «Личный кабинет», «Цифровой терапевт» ===================== */
+.o-sec { margin-top: calc(189 * var(--k)); }
+.o-sec--t { margin-top: calc(133 * var(--k)); }
+.o-sec__title {
+  font-size: max(36px, calc(84 * var(--k)));
+  font-weight: 600; line-height: .85; letter-spacing: -.04em;
+}
+.o-sec__title.is-in { opacity: 1; transform: none; }
+.o-sec__title.is-in .c-mask__in { transform: none; }
+.o-sec__lead {
+  margin-top: calc(24 * var(--k)); max-width: calc(829 * var(--k));
+  font-size: max(16px, calc(20 * var(--k))); line-height: 1.3;
+}
+.o-sec__lead--wide { max-width: calc(1110 * var(--k)); }
+
+/* ===================== Personal account on the green ===================== */
+.o-lk { margin-top: calc(59 * var(--k)); }
+.o-lk__stage { position: relative; aspect-ratio: 1483 / 779; background: #5fa792; overflow: hidden; border-radius: var(--r); }
+.o-lk__stage.c-reveal > img.o-lk__img {
+  position: absolute; left: 12.2%; top: 2.7%; width: 78.08%; height: auto;
+  transform: translate3d(0, calc(60 * var(--k)), 0) rotate(-2deg) scale(.94);
+  transition: transform 1.8s var(--ease) .2s;
+}
+.o-lk__stage.c-reveal.is-in > img.o-lk__img { transform: none; }
+.o-lk__stage::after {   /* soft light that follows the pointer (inline script below) */
+  content: ""; position: absolute; inset: 0; pointer-events: none;
+  background: radial-gradient(circle at var(--gx, 50%) var(--gy, 40%), rgba(255, 255, 255, .22), rgba(255, 255, 255, 0) 42%);
+  opacity: var(--go, 0); transition: opacity .6s ease;
+}
+
+/* ===================== «Цифровой терапевт»: screens float on the grey panel ===================== */
+.o-therapy { margin-top: calc(66 * var(--k)); }
+.o-therapy__panel {
+  position: relative; aspect-ratio: 1483 / 767;
+  background: #f6f6f6; border: 1px solid #e8e8e8; border-radius: var(--r);
+}
+.o-tcard {
+  position: absolute; margin: 0; background: #fff; border-radius: calc(10 * var(--k));
+  box-shadow: 0 calc(18 * var(--k)) calc(40 * var(--k)) rgba(10, 25, 32, .12);
+  /* entry: cards gather from the centre; then they breathe; the pointer tilts them (inline script) */
+  opacity: 0;
+  transform: translate3d(calc(var(--fx, 0) * 1px), calc(var(--fy, 0) * 1px), 0) translate3d(var(--ex, 0%), var(--ey, 30%), 0) scale(.82);
+  transition: transform 1.6s var(--ease) calc(.12s * var(--i)), opacity 1s var(--ease) calc(.12s * var(--i));
+}
+.o-tcard img { width: 100%; height: 100%; object-fit: cover; border-radius: calc(5 * var(--k)); display: block; }
+.o-tcard--main { left: 31.62%; top: 9.78%; width: 37.09%; aspect-ratio: 550 / 622; padding: calc(9 * var(--k)); z-index: 2; --ey: 12%; }
+.o-tcard--1, .o-tcard--2, .o-tcard--3, .o-tcard--4 { width: 17.42%; aspect-ratio: 258.3 / 259.5; padding: calc(8.3 * var(--k)); }
+.o-tcard--1 { left: 4.32%;  top: 10.69%; --ex: 90%;  --ey: 40%; }
+.o-tcard--2 { left: 4.32%;  top: 57.04%; --ex: 90%;  --ey: -40%; }
+.o-tcard--3 { left: 78.44%; top: 12.54%; --ex: -90%; --ey: 40%; }
+.o-tcard--4 { left: 78.35%; top: 56.58%; --ex: -90%; --ey: -40%; }
+.o-therapy__panel.is-on .o-tcard {
+  opacity: 1;
+  transform: translate3d(calc(var(--fx, 0) * 1px), calc(var(--fy, 0) * 1px), 0);
+}
+.o-therapy__panel.is-on .o-tcard:not(.o-tcard--main) { animation: o-bob 6s ease-in-out calc(1.8s + var(--i) * .7s) infinite; }
+@keyframes o-bob { 0%, 100% { translate: 0 0; } 50% { translate: 0 calc(-10 * var(--k)); } }
+.o-tcard--main::after {   /* a slow pulse, like a heartbeat on the monitor */
+  content: ""; position: absolute; inset: calc(-1 * var(--k)); border-radius: inherit; pointer-events: none;
+  box-shadow: 0 0 0 0 rgba(236, 100, 70, .35);
+}
+.o-therapy__panel.is-on .o-tcard--main::after { animation: o-pulse 2.6s ease-out 2s infinite; }
+@keyframes o-pulse { 0% { box-shadow: 0 0 0 0 rgba(236, 100, 70, .32); } 70%, 100% { box-shadow: 0 0 0 calc(26 * var(--k)) rgba(236, 100, 70, 0); } }
+
+/* ===================== City ===================== */
+.o-city { margin-top: calc(160 * var(--k)); padding: 0; margin-left: var(--pad); margin-right: var(--pad); overflow: hidden; border-radius: var(--r); aspect-ratio: 1484 / 824; }
+.o-city img { width: 100%; height: 100%; object-fit: cover; }
+
+.case--obit .c-result { margin-top: calc(86 * var(--k)); }
+.case--obit .c-next { margin-top: calc(90 * var(--k)); }
+.o-next .c-next__text { color: #fff; }
+
+/* ===================== Mobile (375 design, built like Lindera) ===================== */
+@media (max-width: 760px) {
+  .o-br-d { display: none; }
+
+  .o-screen { margin-top: calc(56 * var(--m)); padding: 0; }
+  .o-screen__stage { aspect-ratio: 375 / 319; }
+  .o-screen__bg { border-radius: 0; }
+  .o-tablet.c-tablet { left: 0; width: 100%; top: calc(56 / 319 * 100%); padding: calc(5 * var(--m)); border-radius: calc(14 * var(--m)); }
+
+  .o-did { margin-top: calc(41 * var(--m)); }
+
+  .o-pair { margin-top: calc(34 * var(--m)); padding: 0; grid-template-columns: 1fr; row-gap: calc(7 * var(--m)); }
+  .o-pair > div { border-radius: 0; aspect-ratio: 375 / 331; }
+
+  .o-icons { margin-top: calc(56 * var(--m)); }
+  .o-icons__track { width: calc(1207 * var(--m)); margin-left: calc(19 * var(--m)); }
+
+  .o-dark.c-dark { margin-top: calc(56 * var(--m)); padding: 0 0 calc(56 * var(--m)); }
+  .o-laptop { margin: 0; overflow: hidden; }
+  .o-laptop img { width: calc(560 * var(--m)); max-width: none; margin-left: calc(-92 * var(--m)); }
+  .o-marquee { margin-top: calc(36 * var(--m)); row-gap: calc(14 * var(--m)); }
+  .o-dark .c-track { gap: calc(10 * var(--m)); }
+  .o-dark .c-card { width: calc(230 * var(--m)); box-shadow: none; }
+
+  .o-duo { margin-top: calc(48 * var(--m)); padding: 0; grid-template-columns: 1fr; row-gap: calc(7 * var(--m)); }
+  .o-duo > div { border-radius: 0; }
+  .o-duo__store { aspect-ratio: 375 / 248; }
+  .o-duo__keys { aspect-ratio: 375 / 330; }
+
+  .o-phones { margin: calc(40 * var(--m)) 0 0; width: 100%; overflow: hidden; }
+  .o-phones img { width: 160%; max-width: none; margin-left: -30%; }
+
+  .o-sec { margin-top: calc(50 * var(--m)); }
+  .o-sec--t { margin-top: calc(56 * var(--m)); }
+  .o-sec__title { font-size: calc(35.3 * var(--m)); line-height: .9; }
+  .o-sec__lead { margin-top: calc(14 * var(--m)); font-size: 17px; line-height: 21px; max-width: none; }
+  .o-sec__lead br { display: none; }
+
+  .o-lk { margin-top: calc(26 * var(--m)); padding: 0; }
+  .o-lk__stage { aspect-ratio: 375 / 250; border-radius: 0; }
+  .o-lk__stage.c-reveal > img.o-lk__img { left: 2%; top: 4%; width: 96%; }
+
+  .o-therapy { margin-top: calc(26 * var(--m)); padding: 0; }
+  .o-therapy__panel {
+    aspect-ratio: auto; border-radius: 0; border-left: 0; border-right: 0;
+    display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: calc(10 * var(--m));
+    padding: calc(22 * var(--m)) calc(28 * var(--m));
+  }
+  .o-tcard { position: relative; left: auto !important; top: auto !important; border-radius: 6px; min-width: 0; box-sizing: border-box; }
+  .o-tcard img { min-width: 0; max-width: 100%; }
+  .o-tcard img { border-radius: 3px; }
+  .o-tcard--main { grid-column: 1 / -1; justify-self: center; width: 74%; padding: calc(5 * var(--m)); margin-bottom: calc(6 * var(--m)); }
+  .o-tcard--1, .o-tcard--2, .o-tcard--3, .o-tcard--4 { width: 100%; padding: calc(3 * var(--m)); }
+  .o-tcard--1, .o-tcard--2 { --ex: 0%; --ey: 40%; }
+  .o-tcard--3, .o-tcard--4 { --ex: 0%; --ey: 40%; }
+
+  .o-city { margin: calc(50 * var(--m)) 0 0; aspect-ratio: 375 / 240; border-radius: 0; }
+
+  .case--obit .c-result { margin-top: calc(46 * var(--m)); }
+  .case--obit .c-next { margin-top: calc(68 * var(--m)); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .o-icons__track { transform: none !important; }
+  .o-sec__title .c-mask__in { transition: none !important; transform: none !important; }
+  .o-tcard, .o-pair__photo, .o-lk__stage.c-reveal > img.o-lk__img { opacity: 1 !important; transform: none !important; transition: none !important; animation: none !important; }
+  .o-tcard--main::after { animation: none !important; }
+}
+/* once the pointer is over the panel, cards follow it without the long entry easing */
+.o-therapy__panel.is-live .o-tcard { transition: opacity 1s var(--ease); }
