@@ -42,7 +42,7 @@
   --card-radius: 8px;        /* rounded corners of the card */
 
   --maxw: none;              /* full-bleed: content spans the whole viewport width */
-  --pad: clamp(20px, 2.2vw, 34px);   /* small side margins */
+  --pad: calc(58 * min(100vw, 1920px) / 1600);   /* same side margins as the case pages */
 
   --col-gap: clamp(18px, 2vw, 32px);
   --row-gap: clamp(18px, 2vw, 32px);
@@ -195,6 +195,11 @@ a { color: inherit; text-decoration: none; }
   transition: opacity .7s ease, transform .85s cubic-bezier(.22, 1, .36, 1);
 }
 [data-reveal].reveal-simple.is-in { opacity: 1; transform: none; }
+/* Mobile side margins: same formula as the case pages (375 design) */
+@media (max-width: 760px) {
+  :root { --pad: calc(19 * 100vw / 375); }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .reveal-line__inner { transform: none; transition: none; }
   [data-reveal].reveal-simple { opacity: 1; transform: none; transition: none; }
