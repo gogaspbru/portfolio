@@ -68,6 +68,17 @@
     });
   }
 
+  /* ---------- tap = permission to play ----------
+     iPhone in Low Power Mode (and some other browsers) refuse play() until the user touches the page.
+     Every tap/click anywhere retries the videos that should be playing right now. */
+  var gestureFns = [];
+  window.__caseGesture = false;
+  function onGesture(fn) { gestureFns.push(fn); }
+  function runGesture() { window.__caseGesture = true; gestureFns.forEach(function (fn) { try { fn(); } catch (e) {} }); window.__caseGesture = false; }
+  document.addEventListener("touchend", runGesture, { capture: true, passive: true });
+  document.addEventListener("click", runGesture, true);
+  window.__caseOnGesture = onGesture;
+
   /* ---------- videos: play on screen, pause off screen ---------- */
   Array.prototype.forEach.call(document.querySelectorAll("[data-video]"), function (box) {
     var v = box.querySelector("video");
@@ -81,11 +92,15 @@
     v.addEventListener("error", markFallback);
     if (REDUCE) { v.removeAttribute("autoplay"); v.pause(); return; }   // keep the poster still for reduced-motion users
     if (!("IntersectionObserver" in window)) { v.play().catch(function () {}); return; }
+    var want = false;
+    function tryPlay() { var p = v.play(); if (p && p.catch) p.catch(function () {}); }
+    onGesture(function () { if (want && v.paused) tryPlay(); });
     var vo = new IntersectionObserver(function (entries) {
       entries.forEach(function (e) {
-        if (e.isIntersecting) {
+        want = e.isIntersecting;
+        if (want) {
           if (v.preload === "none") { v.preload = "auto"; }
-          var p = v.play(); if (p && p.catch) p.catch(function () {});
+          tryPlay();
         } else {
           v.pause();
         }
@@ -252,11 +267,11 @@
         if (over && !(over.complete && over.naturalWidth)) return;
         wrap.classList.add("is-on");
       }
-      video.addEventListener("playing", function () { it.playing = true; reveal(); });
+      video.addEventListener("playing", function () { it.playing = true; LS_STATE.refused = false; reveal(); });
       video.addEventListener("error", function () { it.failed = true; wrap.classList.remove("is-on"); }, true);
       if (over) over.addEventListener("load", reveal);
       it.start = function () {
-        if (it.failed || LS_STATE.refused) return;
+        if (it.failed || (LS_STATE.refused && !window.__caseGesture)) return;
         if (!it.loaded) {
           it.loaded = true;
           if (over) over.src = it.overSrc;
@@ -268,8 +283,8 @@
         var pr = video.play();
         if (pr && pr.catch) pr.catch(function (e) {
           if (e && e.name === "AbortError") return;            // a pause() came first: not a refusal
-          it.failed = true; wrap.classList.remove("is-on");    // refused (low-power mode etc.): keep the screenshot
-          if (e && e.name === "NotAllowedError") LS_STATE.refused = true;   // and don't download the other videos for nothing
+          if (e && e.name === "NotAllowedError") { LS_STATE.refused = true; return; }   // low-power mode: wait for a tap, keep the screenshot
+          it.failed = true; wrap.classList.remove("is-on");
         });
       };
       it.stop = function () { if (!video.paused) video.pause(); };
@@ -292,6 +307,7 @@
       vids.forEach(function (it) { if (on.indexOf(it) >= 0) { if (it.video.paused) it.start(); } else it.stop(); });
     }
     document.addEventListener("visibilitychange", updateVideos);
+    if (window.__caseOnGesture) window.__caseOnGesture(updateVideos);   // a tap lets the refused videos start
 
     var y = 0, maxY = 0, shown = -1, trackH = 0, visible = false;
     function measure() {

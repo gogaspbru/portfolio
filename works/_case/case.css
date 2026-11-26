@@ -642,3 +642,8 @@ html.scrollbar-on::-webkit-scrollbar { width: 0; height: 0; }    /* WebKit */
 .live-shot__vid.is-on { visibility: visible; }
 .live-shot__track .live-shot__vid video,
 .live-shot__track .live-shot__vid .live-shot__over { position: absolute; left: 0; top: 0; width: 100%; height: 100%; display: block; object-fit: fill; }
+
+/* iPhone (Low Power Mode): never show the system play button over our muted background videos */
+video::-webkit-media-controls-start-playback-button { display: none !important; -webkit-appearance: none; }
+video::-webkit-media-controls { display: none !important; }
+video::-webkit-media-controls-panel { display: none !important; }
