@@ -388,7 +388,7 @@ h1, h2, h3, p, dl, dd { margin: 0; }
   :root { --m: calc(100vw / 375); --pad: calc(19 * var(--m)); }
 
   .header__inner { flex-wrap: wrap; }
-  .contacts { gap: 22px; }
+  .contacts { gap: 14px; }
   .contacts__item { font-size: 12px; }
   .contacts__item--phone { display: inline-flex; align-items: center; margin-right: 13px; }
   .contacts__phone-text { display: none; }
@@ -511,12 +511,12 @@ h1, h2, h3, p, dl, dd { margin: 0; }
 }
 .footer__bottom { padding-bottom: clamp(6px, 0.9vw, 12px); align-self: stretch; }
 .footer__copy { margin: 0 0 clamp(26px, 4vw, 54px); color: #8b8a83; font-size: 15px; }
-.contact { display: flex; align-items: flex-end; justify-content: space-between; gap: clamp(20px, 2.6vw, 44px); flex-wrap: wrap; }
+.contact { display: flex; align-items: center; justify-content: space-between; gap: clamp(20px, 2.6vw, 44px); flex-wrap: wrap; }
 .contact__title {
   margin: 0; font-size: clamp(62px, 11.7vw, 172px);
   font-weight: 700; line-height: 0.9; letter-spacing: -0.03em; color: #f3f2ef;
 }
-.contact__socials { display: flex; gap: clamp(12px, 1.4vw, 22px); }
+.contact__socials { display: flex; gap: clamp(12px, 1.4vw, 22px); transform: translateY(20px); }   /* desktop: icons a touch below the heading centre (as on the home page) */
 .social {
   position: relative; display: flex; align-items: center; justify-content: center;
   width: clamp(64px, 5vw, 92px); height: clamp(64px, 5vw, 92px);
@@ -547,11 +547,24 @@ h1, h2, h3, p, dl, dd { margin: 0; }
 @media (max-width: 900px) { .statement__text { max-width: 100%; } }
 @media (max-width: 640px) {
   .footer__copy { font-size: 13px; }
-  .statement__text { line-height: 1; }
+  .statement__text { line-height: 1.05; }
   .contact { flex-direction: column; align-items: stretch; gap: clamp(22px, 6vw, 32px); }
-  .contact__title { font-size: clamp(39px, 14.5vw, 73px); }
-  .contact__socials { width: 100%; justify-content: space-between; }
+  .contact__title { font-size: clamp(39px, 14.5vw, 73px); margin-top: 30px; }
+  .contact__socials { width: 100%; justify-content: space-between; transform: none; }
+  /* as on the home page: statement + «Свяжитесь» + circles centred, copyright pinned to the bottom */
+  .site-footer__inner { justify-content: center; }
+  .statement { padding-top: clamp(28px, 8vw, 56px); padding-bottom: clamp(30px, 8vw, 52px); }
+  .footer__copy { position: absolute; left: var(--pad); right: var(--pad); bottom: clamp(18px, 5vw, 30px); margin: 0; }
   .social { width: clamp(60px, 17vw, 74px); height: clamp(60px, 17vw, 74px); }
+}
+/* touch: bigger header tap targets; phone landscape: lift the footer (same as the home page) */
+@media (pointer: coarse) {
+  .contacts__item { min-height: 44px; padding-block: 8px; display: inline-flex; align-items: center; }
+  .contacts__item--icon, .contacts__item--phone { padding-inline: 8px; }
+}
+@media (orientation: landscape) and (max-height: 500px) {
+  .site-footer__inner { padding-bottom: clamp(16px, 6vh, 34px); }
+  .contact__socials { transform: none; }
 }
 @media (prefers-reduced-motion: reduce) {
   .social__spark { display: none; }

@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Тринити — серверы и инфраструктура для ИИ (вариант: линия)</title>
+  <meta name="description" content="Производим серверы в России и строим на них инфраструктуру для ИИ — от системной платы до машинного зала.">
+
+  <!-- Onest — Google Fonts. Conthrax подключается локально в css/variables.css -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="./css/main.css">
+  <script>
+    /* Включаем построчную анимацию заголовков до первой отрисовки (без мигания текста).
+       Страховка: если основной JS не запустился, через 2.5 с показываем всё. */
+    (function () {
+      if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      var root = document.documentElement;
+      root.classList.add('reveal-ready');
+      setTimeout(function () { if (!window.__revealInit) root.classList.remove('reveal-ready'); }, 2500);
+    })();
+  </script>
+</head>
+<body class="page">
+
+  <!-- ===================== ПЕРВЫЙ ЭКРАН: «ЛИНИЯ» (js/line-scene.js) =====================
+       Экран «залипает» внутри .line-scene; при прокрутке диагональ поворачивается к горизонтали,
+       параллелограмм улетает, затем линия раскрывается и заливает экран синим. -->
+  <section class="line-scene" id="top" data-line-scene aria-labelledby="hero-title">
+    <div class="line-scene__stage">
+    <!-- ===================== HEADER ===================== -->
+    <header class="header">
+      <div class="header__inner container">
+        <div class="header__cell header__cell--logo">
+          <a class="header__logo" href="/" aria-label="Тринити — на главную">
+            <img src="./assets/img/icons/logo-trinity.svg" width="149" height="25" alt="Тринити">
+          </a>
+        </div>
+
+        <nav class="header__cell header__cell--nav nav" id="site-nav" aria-label="Основное меню">
+          <ul class="nav__list">
+            <li class="nav__item" data-mega="products"><a class="nav__link" href="#products" aria-haspopup="true" aria-expanded="false" aria-controls="mega">Продукты</a></li>
+            <li class="nav__item" data-mega="ai"><a class="nav__link" href="#ai" aria-haspopup="true" aria-expanded="false" aria-controls="mega">ИИ</a></li>
+            <li class="nav__item" data-mega="integration"><a class="nav__link" href="#integration" aria-haspopup="true" aria-expanded="false" aria-controls="mega">Интеграция</a></li>
+            <li class="nav__item" data-mega="partners"><a class="nav__link" href="#partners" aria-haspopup="true" aria-expanded="false" aria-controls="mega">Партнёрам</a></li>
+            <li class="nav__item" data-mega="company"><a class="nav__link" href="#company" aria-haspopup="true" aria-expanded="false" aria-controls="mega">Компания</a></li>
+            <li class="nav__item" data-mega="configurators"><a class="nav__link" href="#configurators" aria-haspopup="true" aria-expanded="false" aria-controls="mega">Конфигураторы</a></li>
+            <!-- на мобильных кнопки «Портал» в шапке нет — дублируем в меню -->
+            <li class="nav__item nav__item--mobile"><a class="nav__link" href="#portal">Портал</a></li>
+          </ul>
+        </nav>
+
+        <div class="header__cell header__cell--icon header__cell--phone">
+          <!-- TODO: номер телефона в макете не указан -->
+          <a class="header__icon-btn" href="#contacts" aria-label="Позвонить">
+            <img src="./assets/img/icons/phone.svg" width="18" height="18" alt="">
+          </a>
+        </div>
+
+        <div class="header__cell header__cell--icon header__cell--search">
+          <button class="header__icon-btn" type="button" aria-label="Поиск по сайту">
+            <img src="./assets/img/icons/search.svg" width="18" height="18" alt="">
+          </button>
+        </div>
+
+        <div class="header__cell header__cell--portal">
+          <!-- TODO: адрес портала -->
+          <a class="header__portal" href="#portal">
+            <img class="header__portal-icon" src="./assets/img/icons/corner-graphite.svg" width="24" height="24" alt="">
+            <span>Портал</span>
+          </a>
+        </div>
+
+        <button class="header__burger" type="button"
+                aria-label="Открыть меню" aria-expanded="false" aria-controls="site-nav">
+          <span class="header__burger-line"></span>
+          <span class="header__burger-line"></span>
+          <span class="header__burger-line"></span>
+        </button>
+      </div>
+      <!-- ===================== ВЫПАДАЮЩЕЕ МЕНЮ (desktop ≥ 1200, js/mega-menu.js) =====================
+           Figma: «ВЫПАДАЙКА ПРОДУКТЫ» (Frame 23) и «Все остальные выпадайки» (Frame 24).
+           Ссылки-заглушки (#) — заменить на реальные разделы. -->
+      <div class="mega container" id="mega">
+        <div class="mega__panel mega__panel--products" data-mega-panel="products" hidden>
+          <div class="mega__col mega__col--indent">
+            <p class="mega__heading"><span class="mega__slash">/</span>Серверы M8</p>
+            <ul class="mega__list">
+              <li><a class="mega__link" href="#"><span class="mega__title">ER225HR-M82U</span><span class="mega__sub">до 24 NVMe, ИИ/ML, HPC</span></a></li>
+              <li><a class="mega__link" href="#"><span class="mega__title">ER225HSR-M8</span><span class="mega__sub">2U · NVMe + SAS/SATA,<br>хранилища</span></a></li>
+              <li><a class="mega__link" href="#"><span class="mega__title">ER220HDR-M8</span><span class="mega__sub">2U · хранение, виртуализация</span></a></li>
+              <li><a class="mega__link" href="#"><span class="mega__title">ER215HR-M8</span><span class="mega__sub">1U · компактные ЦОД</span></a></li>
+              <li><a class="mega__link" href="#"><span class="mega__title">ER225HTR-M8</span><span class="mega__sub">2U · телеком, разъёмы спереди</span></a></li>
+            </ul>
+          </div>
+          <div class="mega__col mega__col--indent">
+            <p class="mega__heading"><span class="mega__slash">/</span>Серверы M7</p>
+            <ul class="mega__list">
+              <li><a class="mega__link" href="#"><span class="mega__title">ER225HR-M7</span><span class="mega__sub">2U · NVMe, общего назначения</span></a></li>
+              <li><a class="mega__link" href="#"><span class="mega__title">ER225HSR-M7</span><span class="mega__sub">2U · до 28 дисков, файловые<br>хранилища</span></a></li>
+              <li><a class="mega__link" href="#"><span class="mega__title">ER215HR-M7</span><span class="mega__sub">1U · задачи среднего уровня</span></a></li>
+            </ul>
+          </div>
+          <div class="mega__col">
+            <p class="mega__heading"><span class="mega__slash">/</span>GPU</p>
+            <ul class="mega__list">
+              <li><a class="mega__link" href="#"><span class="mega__title">Сервер Тринити GPU <span class="mega__badge">ИИ</span></span><span class="mega__sub">4U · Gen 4/5, высокая плотность</span></a></li>
+              <li><a class="mega__link" href="#"><span class="mega__title">GPU-конфигурации на 2U</span><span class="mega__sub">2U · до 28 дисков, файловые<br>хранилища</span></a></li>
+            </ul>
+          </div>
+          <div class="mega__col">
+            <p class="mega__heading"><span class="mega__slash">/</span>По задаче</p>
+            <ul class="mega__list">
+              <li><a class="mega__link" href="#"><span class="mega__title">Для КИИ и госсектора</span><span class="mega__sub">Реестр Минпромторга</span></a></li>
+              <li><a class="mega__link" href="#"><span class="mega__title">Для информационных<br>систем и ЦОД</span><span class="mega__sub">Виртуализация, СУБД, аналитика</span></a></li>
+              <li><a class="mega__link" href="#"><span class="mega__title">Для СХД, ИБ<br>и распределённых сервисов</span><span class="mega__sub">Хранилища, защита данных,<br>телеком</span></a></li>
+            </ul>
+          </div>
+          <aside class="mega__promo">
+            <img class="mega__promo-img" src="./assets/img/server-er225hr-m8.jpg" width="234" height="110" loading="lazy" alt="Сервер ER225HR-M8">
+            <p class="mega__promo-caption">Флагман для ИИ и Big Data</p>
+            <p class="mega__promo-title">ER225HR-M8</p>
+            <p class="mega__promo-sub">2U · до 24 NVMe · ИИ/ML, HPC</p>
+            <a class="mega__promo-btn" href="#configurators">Сконфигурировать</a>
+          </aside>
+        </div>
+        <div class="mega__panel mega__panel--stub" data-mega-panel="ai" hidden>
+          <p class="mega__stub">Структура подраздела</p>
+        </div>
+        <div class="mega__panel mega__panel--stub" data-mega-panel="integration" hidden>
+          <p class="mega__stub">Структура подраздела</p>
+        </div>
+        <div class="mega__panel mega__panel--stub" data-mega-panel="partners" hidden>
+          <p class="mega__stub">Структура подраздела</p>
+        </div>
+        <div class="mega__panel mega__panel--stub" data-mega-panel="company" hidden>
+          <p class="mega__stub">Структура подраздела</p>
+        </div>
+        <div class="mega__panel mega__panel--stub" data-mega-panel="configurators" hidden>
+          <p class="mega__stub">Структура подраздела</p>
+        </div>
+      </div>
+      <div class="mega-overlay" aria-hidden="true"></div>
+    </header>
+
+      <div class="line-scene__content container">
+        <h1 class="line-scene__title" id="hero-title" data-reveal="load">
+          <span class="line-scene__title-line reveal-line"><span class="reveal-line__inner">создаём</span></span>
+          <span class="line-scene__title-line line-scene__title-line--accent reveal-line"><span class="reveal-line__inner">пространство</span></span>
+          <span class="line-scene__title-line reveal-line"><span class="reveal-line__inner">для прорывных</span></span>
+          <span class="line-scene__title-line reveal-line"><span class="reveal-line__inner">технологий</span></span>
+        </h1>
+        <p class="line-scene__text">
+          Производим серверы в России и строим на них<br class="br-desktop">
+          инфраструктуру для ИИ — от системной платы<br class="br-desktop"> до машинного зала.
+        </p>
+      </div>
+
+      <!-- Параллелограмм с видео: внешний слой JS обрезает по линии (часть над линией скрывается),
+           внутренний — форма параллелограмма. Видео подставляет js/hero-video.js (десктоп). -->
+      <span class="line-scene__plane" aria-hidden="true">
+        <span class="line-scene__plane-shape">
+          <video class="line-scene__video hero__video"
+                 muted loop playsinline
+                 poster="./assets/video/poster.jpg"
+                 preload="none"
+                 data-src="assets/video/trinity-glass-waves-1080p.mp4"></video>
+        </span>
+      </span>
+      <span class="line-scene__line" aria-hidden="true"></span>
+    </div>
+  </section>
+
+  <!-- ===================== НА СИНЕМ: пока — секция «О Тринити» с карточками (черновая раскладка) ===================== -->
+  <section class="blue-section" aria-label="О Тринити">
+    <!-- ===================== О ТРИНИТИ ===================== -->
+    <section class="about container" id="about" aria-labelledby="about-title">
+      <div class="about__head">
+        <p class="about__label">О ТРИНИТИ</p>
+        <!-- Построчное «выплывание» снизу (js/reveal.js): каждая строка — маска + внутренний span -->
+        <h2 class="about__title" id="about-title" data-reveal>
+          <span class="reveal-line"><span class="reveal-line__inner">Нам доверяют</span></span>
+          <span class="reveal-line"><span class="reveal-line__inner">инфраструктуру,</span></span>
+          <span class="reveal-line"><span class="reveal-line__inner">которая не имеет</span></span>
+          <span class="reveal-line"><span class="reveal-line__inner">права остановиться</span></span>
+        </h2>
+        <a class="link-more" href="#company">
+          <img class="link-more__icon" src="./assets/img/icons/corner-blue.svg" width="24" height="24" alt="">
+          <span class="link-more__text">Узнайте больше</span>
+        </a>
+      </div>
+
+      <!-- Карточки «стопкой»: при скролле вторая заезжает на первую (position: sticky) -->
+      <div class="about__cards">
+        <a class="direction-card direction-card--production" href="#production" data-pixels="255,255,255">
+          <span class="direction-card__media">
+            <img class="direction-card__img" src="./assets/img/card-production.jpg"
+                 width="1600" height="1003" loading="lazy"
+                 alt="Серверное оборудование Тринити: передняя панель с сетевыми портами">
+          </span>
+          <span class="direction-card__caption">
+            <img class="direction-card__icon" src="./assets/img/icons/slash-blue.svg" width="27" height="24" alt="">
+            <span class="direction-card__title">производство</span>
+          </span>
+        </a>
+
+        <a class="direction-card direction-card--integration" href="#integration" data-pixels="206,224,109">
+          <span class="direction-card__media">
+            <img class="direction-card__img" src="./assets/img/card-integration.jpg"
+                 width="1600" height="1011" loading="lazy"
+                 alt="Специалист на синем фоне со светящимся логотипом Тринити">
+          </span>
+          <span class="direction-card__caption">
+            <img class="direction-card__icon" src="./assets/img/icons/slash-white.svg" width="27" height="24" alt="">
+            <span class="direction-card__title">интеграция</span>
+          </span>
+        </a>
+      </div>
+    </section>
+  </section>
+
+  <main class="main">
+    <div class="grid-lines grid-lines--dark" aria-hidden="true"><span></span><span></span><span></span><span></span></div>
+
+    <!-- ===================== ЦИФРЫ ===================== -->
+    <section class="stats" aria-label="Тринити в цифрах">
+      <ul class="stats__list">
+        <li class="stats__item stats__item--blue">
+          <p class="stats__value" data-count="30" data-suffix="+">30+</p>
+          <p class="stats__text">лет на рынке<br class="br-desktop"> серверных решений</p>
+        </li>
+        <li class="stats__item stats__item--graphite">
+          <p class="stats__value" data-count="80000">80&nbsp;000</p>
+          <p class="stats__text">серверов в год — мощность<br class="br-desktop"> собственного производства</p>
+        </li>
+        <li class="stats__item stats__item--gray">
+          <p class="stats__value" data-count="300" data-suffix="+">300+</p>
+          <p class="stats__text">сертифицированных инженеров<br class="br-desktop"> и экспертов</p>
+        </li>
+        <li class="stats__item stats__item--light">
+          <p class="stats__value">КИИ</p>
+          <p class="stats__text">В реестре Минпромторга,<br class="br-desktop"> для госсектора и КИИ</p>
+        </li>
+      </ul>
+      <div class="stats__ticks" aria-hidden="true"></div>
+    </section>
+  </main>
+
+
+  <!-- Обычные скрипты (не модули) — страница работает и при открытии файла с диска.
+       Порядок важен: модули → main.js. -->
+  <script defer src="./js/reveal.js"></script>
+  <script defer src="./js/hero-video.js"></script>
+  <script defer src="./js/line-scene.js"></script>
+  <script defer src="./js/header.js"></script>
+  <script defer src="./js/mega-menu.js"></script>
+  <script defer src="./js/menu.js"></script>
+  <script defer src="./js/count-up.js"></script>
+  <script defer src="./js/card-pixels.js"></script>
+  <script defer src="./js/smooth-scroll.js"></script>
+  <script defer src="./js/main.js"></script>
+</body>
+</html>
