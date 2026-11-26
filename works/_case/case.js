@@ -190,9 +190,22 @@
      data-pause / data-pause-bottom / data-pause-top / data-return (seconds: 1.5 / 2 / 1 / 2.5). No data-stops + zero pauses = never stops.
      Auto-scroll: 1 s pause at the top → down with eased starts/stops, 1.5 s at each stop →
      2 s at the bottom → eased return to the top in 2.5 s → again. Runs only while on screen,
-     wheel/swipe scroll it by hand, auto-scroll resumes 3 s after the last input. */
+     wheel/swipe scroll it by hand, auto-scroll resumes 3 s after the last input.
+     Phones (≤768px): data-src-mobile="img/a-m.webp" — a narrower copy, picked by matchMedia so phones never fetch the big one.
+     Video inserts over the picture: data-videos='[{"src":"video/x","x":0,"y":0,"w":100,"h":6,"radius":0,"overlay":"img/x-over.webp"}]'
+       src — path without extension (x.webm VP9 first, x.mp4 H.264 second); x/y/w/h — % of the screenshot width/height;
+       radius — % of the screenshot width; overlay — transparent layer with the text/plates that sit over the video;
+       optional poster. With data-src-mobile, phones get "-m" files (video/x-m.*, img/x-over-m.webp) unless srcMobile/overlayMobile say otherwise.
+       The video is hidden until it really plays (its first frame = the screenshot, so there is no jump); if play() is
+       refused (iPhone low-power mode) the screenshot simply stays. Only inserts inside the frame play: max 2 at once, 1 on phones
+       (the one nearest the middle); data-max-videos overrides. */
+  var LS_STATE = { refused: false };
+  var LS_MOBILE = window.matchMedia ? window.matchMedia("(max-width: 768px)") : { matches: false };
+  function lsList(v) { return (v || "").split(",").map(function (s) { return s.trim(); }).filter(Boolean); }
+  function lsMobileName(path) { return path.replace(/(\.[a-z0-9]+)?$/i, "-m$1"); }   // img/a.webp → img/a-m.webp, video/a → video/a-m
   Array.prototype.forEach.call(document.querySelectorAll(".live-shot"), function (box) {
-    var srcs = (box.getAttribute("data-src") || "").split(",").map(function (s) { return s.trim(); }).filter(Boolean);
+    var hasMobile = box.hasAttribute("data-src-mobile");
+    var srcs = lsList(hasMobile && LS_MOBILE.matches ? box.getAttribute("data-src-mobile") : box.getAttribute("data-src"));
     if (!srcs.length) return;
     var SPEED = parseFloat(box.getAttribute("data-speed")) || 60;          // px per second (CSS px)
     var STOPS = (box.getAttribute("data-stops") || "").split(",").map(parseFloat)
@@ -214,11 +227,79 @@
     });
     box.appendChild(track);
 
-    var y = 0, maxY = 0, shown = -1;
-    function measure() { maxY = Math.max(0, track.offsetHeight - box.clientHeight); y = Math.min(y, maxY); paint(); }
+    /* ---- video inserts ---- */
+    var vids = [];
+    try { vids = JSON.parse(box.getAttribute("data-videos") || "[]"); } catch (err) { vids = []; }
+    var mob = hasMobile && LS_MOBILE.matches;
+    vids = REDUCE ? [] : vids.map(function (v) {
+      var wrap = document.createElement("div");
+      wrap.className = "live-shot__vid";
+      wrap.style.left = (+v.x || 0) + "%"; wrap.style.top = (+v.y || 0) + "%";
+      wrap.style.width = (+v.w || 0) + "%"; wrap.style.height = (+v.h || 0) + "%";
+      var video = document.createElement("video");
+      video.muted = true; video.defaultMuted = true; video.loop = true; video.playsInline = true; video.preload = "none";
+      ["muted", "loop", "playsinline", "webkit-playsinline", "disablepictureinpicture", "disableremoteplayback"].forEach(function (a) { video.setAttribute(a, ""); });
+      video.setAttribute("preload", "none"); video.setAttribute("aria-hidden", "true"); video.tabIndex = -1;
+      if (v.poster) video.poster = mob ? (v.posterMobile || lsMobileName(v.poster)) : v.poster;
+      wrap.appendChild(video);
+      var over = null;
+      if (v.overlay) { over = document.createElement("img"); over.className = "live-shot__over"; over.alt = ""; over.draggable = false; wrap.appendChild(over); }
+      track.appendChild(wrap);
+      var it = { v: v, wrap: wrap, video: video, over: over, loaded: false, failed: false, playing: false, want: false, base: mob ? (v.srcMobile || lsMobileName(v.src)) : v.src,
+                 overSrc: over ? (mob ? (v.overlayMobile || lsMobileName(v.overlay)) : v.overlay) : "" };
+      function reveal() {                    // show only when the video plays AND the text layer is ready
+        if (it.failed || !it.playing) return;
+        if (over && !(over.complete && over.naturalWidth)) return;
+        wrap.classList.add("is-on");
+      }
+      video.addEventListener("playing", function () { it.playing = true; reveal(); });
+      video.addEventListener("error", function () { it.failed = true; wrap.classList.remove("is-on"); }, true);
+      if (over) over.addEventListener("load", reveal);
+      it.start = function () {
+        if (it.failed || LS_STATE.refused) return;
+        if (!it.loaded) {
+          it.loaded = true;
+          if (over) over.src = it.overSrc;
+          [["webm", "video/webm"], ["mp4", "video/mp4"]].forEach(function (f) {
+            var so = document.createElement("source"); so.src = it.base + "." + f[0]; so.type = f[1]; video.appendChild(so);
+          });
+          video.load();
+        }
+        var pr = video.play();
+        if (pr && pr.catch) pr.catch(function (e) {
+          if (e && e.name === "AbortError") return;            // a pause() came first: not a refusal
+          it.failed = true; wrap.classList.remove("is-on");    // refused (low-power mode etc.): keep the screenshot
+          if (e && e.name === "NotAllowedError") LS_STATE.refused = true;   // and don't download the other videos for nothing
+        });
+      };
+      it.stop = function () { if (!video.paused) video.pause(); };
+      return it;
+    });
+    function maxVideos() { var n = parseInt(box.getAttribute("data-max-videos"), 10); return n > 0 ? n : (LS_MOBILE.matches ? 1 : 2); }
+    function updateVideos() {
+      if (!vids.length) return;
+      var H = box.clientHeight, TH = trackH, on = [];
+      if (visible && !document.hidden && TH > 0) {
+        vids.forEach(function (it) {
+          if (it.failed) return;
+          var top = it.v.y / 100 * TH - shown, h = it.v.h / 100 * TH;
+          var seen = Math.min(top + h, H) - Math.max(top, 0);
+          if (seen >= Math.min(h, H) * 0.25) on.push({ it: it, d: Math.abs(top + h / 2 - H / 2) });
+        });
+        on.sort(function (a, b) { return a.d - b.d; });
+        on = on.slice(0, maxVideos()).map(function (o) { return o.it; });
+      }
+      vids.forEach(function (it) { if (on.indexOf(it) >= 0) { if (it.video.paused) it.start(); } else it.stop(); });
+    }
+    document.addEventListener("visibilitychange", updateVideos);
+
+    var y = 0, maxY = 0, shown = -1, trackH = 0, visible = false;
+    function measure() {
+      trackH = track.offsetHeight;
+      vids.forEach(function (it) { if (+it.v.radius) it.wrap.style.borderRadius = (it.v.radius / 100 * track.offsetWidth) + "px"; }); maxY = Math.max(0, trackH - box.clientHeight); y = Math.min(y, maxY); shown = -1; paint(); }
     function paint() {
       var r = Math.round(y);                 // whole pixels keep the text crisp
-      if (r !== shown) { shown = r; track.style.transform = "translate3d(0," + (-r) + "px,0)"; }
+      if (r !== shown) { shown = r; track.style.transform = "translate3d(0," + (-r) + "px,0)"; updateVideos(); }
     }
     if ("ResizeObserver" in window) new ResizeObserver(measure).observe(box);
     else window.addEventListener("resize", measure);
@@ -256,7 +337,7 @@
     function startFromHere() { if (y <= 1) wait(TOP_PAUSE, goDown); else goDown(); }
 
     /* ---- the loop ---- */
-    var visible = false, hover = false, manualUntil = 0, raf = 0, last = 0;
+    var hover = false, manualUntil = 0, raf = 0, last = 0;
     var auto = !REDUCE;
     function running() { return auto && visible && !hover && performance.now() >= manualUntil; }
     function frame(now) {
@@ -279,12 +360,13 @@
     if ("IntersectionObserver" in window) {
       new IntersectionObserver(function (es) {
         visible = es[0].isIntersecting;
+        updateVideos();
         if (visible) {
           imgs.forEach(function (img) { var s = img.getAttribute("data-lazy"); if (s) { img.removeAttribute("data-lazy"); img.src = s; } });
           replan(); kick();
         }
       }, { threshold: 0.15 }).observe(box);
-    } else { visible = true; imgs.forEach(function (img) { var s = img.getAttribute("data-lazy"); if (s) img.src = s; }); }
+    } else { visible = true; imgs.forEach(function (img) { var s = img.getAttribute("data-lazy"); if (s) img.src = s; }); updateVideos(); }
 
     // the pointer over the block does not stop it (only the wheel/swipe take over); opt back in with data-hover-pause
     if (box.hasAttribute("data-hover-pause") && window.matchMedia && window.matchMedia("(hover: hover) and (pointer: fine)").matches) {
