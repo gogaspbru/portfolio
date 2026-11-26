@@ -547,7 +547,7 @@ h1, h2, h3, p, dl, dd { margin: 0; }
 @media (max-width: 900px) { .statement__text { max-width: 100%; } }
 @media (max-width: 640px) {
   .footer__copy { font-size: 13px; }
-  .statement__text { line-height: 0.78; }
+  .statement__text { line-height: 1; }
   .contact { flex-direction: column; align-items: stretch; gap: clamp(22px, 6vw, 32px); }
   .contact__title { font-size: clamp(39px, 14.5vw, 73px); }
   .contact__socials { width: 100%; justify-content: space-between; }

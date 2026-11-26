@@ -191,10 +191,11 @@
   .o-therapy { margin-top: calc(26 * var(--m)); padding: 0; }
   .o-therapy__panel {
     aspect-ratio: auto; border-radius: 0; border-left: 0; border-right: 0;
-    display: grid; grid-template-columns: repeat(4, 1fr); gap: calc(8 * var(--m));
-    padding: calc(22 * var(--m)) calc(14 * var(--m));
+    display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: calc(10 * var(--m));
+    padding: calc(22 * var(--m)) calc(28 * var(--m));
   }
-  .o-tcard { position: relative; left: auto !important; top: auto !important; border-radius: 6px; }
+  .o-tcard { position: relative; left: auto !important; top: auto !important; border-radius: 6px; min-width: 0; box-sizing: border-box; }
+  .o-tcard img { min-width: 0; max-width: 100%; }
   .o-tcard img { border-radius: 3px; }
   .o-tcard--main { grid-column: 1 / -1; justify-self: center; width: 74%; padding: calc(5 * var(--m)); margin-bottom: calc(6 * var(--m)); }
   .o-tcard--1, .o-tcard--2, .o-tcard--3, .o-tcard--4 { width: 100%; padding: calc(3 * var(--m)); }
