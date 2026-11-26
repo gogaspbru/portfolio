@@ -166,7 +166,7 @@
         cardObserver.unobserve(e.target);
         if (cardsArmed) revealCard(e.target, batch++); else cardQueue.push(e.target);
       });
-    }, { threshold: 0.2, rootMargin: "0px 0px -8% 0px" });
+    }, { threshold: 0, rootMargin: "0px" });   // reveal as soon as a card peeks in, so the row under the fold shows there is more
   }
 
   function esc(s) {
