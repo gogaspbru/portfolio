@@ -184,6 +184,139 @@
     }
   }
 
+  /* ---------- «живой скриншот»: a long site screenshot scrolling inside a device frame ----------
+     <div class="live-shot" data-src="img/a.webp[,img/b.webp]" data-speed="60" data-stops="0.2,0.45,0.7"></div>
+     Optional: data-bg="#fff" (colour shown while the picture loads, default white).
+     Auto-scroll: 1 s pause at the top → down with eased starts/stops, 1.5 s at each stop →
+     2 s at the bottom → eased return to the top in 2.5 s → again. Runs only while on screen,
+     pauses on hover; wheel/swipe scroll it by hand, auto-scroll resumes 3 s after the last input. */
+  Array.prototype.forEach.call(document.querySelectorAll(".live-shot"), function (box) {
+    var srcs = (box.getAttribute("data-src") || "").split(",").map(function (s) { return s.trim(); }).filter(Boolean);
+    if (!srcs.length) return;
+    var SPEED = parseFloat(box.getAttribute("data-speed")) || 60;          // px per second (CSS px)
+    var STOPS = (box.getAttribute("data-stops") || "").split(",").map(parseFloat)
+      .filter(function (v) { return v > 0 && v < 1; }).sort(function (a, b) { return a - b; });
+    var RAMP = 0.8, STOP_PAUSE = 1.5, BOTTOM_PAUSE = 2, RETURN_TIME = 2.5, TOP_PAUSE = 1, IDLE = 3;
+    if (box.getAttribute("data-bg")) box.style.setProperty("--ls-bg", box.getAttribute("data-bg"));
+
+    var track = document.createElement("div");
+    track.className = "live-shot__track";
+    var imgs = srcs.map(function (src, i) {
+      var img = document.createElement("img");
+      img.alt = ""; img.decoding = "async"; img.draggable = false;
+      if (i === 0) img.src = src; else img.setAttribute("data-lazy", src);   // later parts load once on screen
+      img.addEventListener("load", measure);
+      track.appendChild(img);
+      return img;
+    });
+    box.appendChild(track);
+
+    var y = 0, maxY = 0, shown = -1;
+    function measure() { maxY = Math.max(0, track.offsetHeight - box.clientHeight); y = Math.min(y, maxY); paint(); }
+    function paint() {
+      var r = Math.round(y);                 // whole pixels keep the text crisp
+      if (r !== shown) { shown = r; track.style.transform = "translate3d(0," + (-r) + "px,0)"; }
+    }
+    if ("ResizeObserver" in window) new ResizeObserver(measure).observe(box);
+    else window.addEventListener("resize", measure);
+
+    /* ---- timeline: one segment at a time (wait or move) ---- */
+    var seg = null, clock = 0;               // clock = seconds of auto time actually run
+    function S(u) { return u * u * u - u * u * u * u / 2; }   // ∫ smoothstep: eased ramp distance (S(1) = .5)
+    function move(to, next) {                // eased start + cruise at SPEED + eased stop
+      var from = y, D = Math.abs(to - from), dir = to < from ? -1 : 1;
+      if (D < 1) return next();
+      var vp = Math.min(SPEED, D / RAMP), T = D / vp + RAMP;
+      seg = { t0: clock, T: T, at: function (t) {
+        var d = t < RAMP ? vp * RAMP * S(t / RAMP)
+              : t > T - RAMP ? D - vp * RAMP * S((T - t) / RAMP)
+              : vp * RAMP / 2 + vp * (t - RAMP);
+        return from + dir * d;
+      }, then: next, to: to };
+    }
+    function glide(to, time, next) {         // fixed-time ease-in-out (the return to the top)
+      var from = y;
+      seg = { t0: clock, T: time, at: function (t) { return from + (to - from) * (1 - Math.cos(Math.PI * t / time)) / 2; }, then: next, to: to };
+    }
+    function wait(sec, next) { seg = { t0: clock, T: sec, at: null, then: next }; }
+
+    function nextStopAfter(pos) {            // first stop (in px) below the current position, else the bottom
+      for (var i = 0; i < STOPS.length; i++) { var s = STOPS[i] * maxY; if (s > pos + 2) return s; }
+      return maxY;
+    }
+    function goDown() {
+      if (maxY <= 0) return wait(0.5, goDown);
+      var to = nextStopAfter(y);
+      move(to, to >= maxY - 1 ? function () { wait(BOTTOM_PAUSE, goTop); } : function () { wait(STOP_PAUSE, goDown); });
+    }
+    function goTop() { glide(0, RETURN_TIME, function () { wait(TOP_PAUSE, goDown); }); }
+    function startFromHere() { if (y <= 1) wait(TOP_PAUSE, goDown); else goDown(); }
+
+    /* ---- the loop ---- */
+    var visible = false, hover = false, manualUntil = 0, raf = 0, last = 0;
+    var auto = !REDUCE;
+    function running() { return auto && visible && !hover && performance.now() >= manualUntil; }
+    function frame(now) {
+      raf = 0;
+      if (!running()) { last = 0; return; }
+      var dt = last ? Math.min((now - last) / 1000, 0.1) : 0;
+      last = now; clock += dt;
+      if (!seg) startFromHere();
+      var t = clock - seg.t0;
+      if (seg.at) y = Math.max(0, Math.min(maxY, seg.at(Math.min(t, seg.T))));
+      paint();
+      if (t >= seg.T) { var n = seg.then; seg = null; n(); }
+      raf = requestAnimationFrame(frame);
+    }
+    function kick() { if (!raf && running()) { last = 0; raf = requestAnimationFrame(frame); } }
+    function replan() {                      // after a pause mid-move, set off again with an eased start
+      if (seg && seg.at) { var to = seg.to, then = seg.then; seg = null; if (to === 0) glide(0, Math.max(RAMP * 2, RETURN_TIME * y / Math.max(maxY, 1)), then); else move(to, then); }
+    }
+
+    if ("IntersectionObserver" in window) {
+      new IntersectionObserver(function (es) {
+        visible = es[0].isIntersecting;
+        if (visible) {
+          imgs.forEach(function (img) { var s = img.getAttribute("data-lazy"); if (s) { img.removeAttribute("data-lazy"); img.src = s; } });
+          replan(); kick();
+        }
+      }, { threshold: 0.15 }).observe(box);
+    } else { visible = true; imgs.forEach(function (img) { var s = img.getAttribute("data-lazy"); if (s) img.src = s; }); }
+
+    if (window.matchMedia && window.matchMedia("(hover: hover) and (pointer: fine)").matches) {   // mouse only: a tap must not leave it paused
+      box.addEventListener("mouseenter", function () { hover = true; });
+      box.addEventListener("mouseleave", function () { hover = false; replan(); kick(); });
+    }
+
+    /* ---- manual scroll: wheel + swipe, only inside the picture ---- */
+    var idleTimer = 0;
+    function manual(dy) {                    // returns true if the picture actually moved
+      var ny = Math.max(0, Math.min(maxY, y + dy));
+      if (ny === y) return false;
+      y = ny; paint();
+      seg = null;                            // auto-scroll resumes from here
+      manualUntil = performance.now() + IDLE * 1000;
+      clearTimeout(idleTimer);
+      idleTimer = setTimeout(kick, IDLE * 1000 + 30);
+      return true;
+    }
+    box.addEventListener("wheel", function (e) {
+      var dy = e.deltaMode === 1 ? e.deltaY * 16 : e.deltaMode === 2 ? e.deltaY * box.clientHeight : e.deltaY;
+      if (manual(dy)) e.preventDefault();    // at the very top/bottom the page scrolls as usual
+    }, { passive: false });
+    var tx = 0, ty = 0, axis = "";
+    box.addEventListener("touchstart", function (e) { var p = e.touches[0]; tx = p.clientX; ty = p.clientY; axis = ""; }, { passive: true });
+    box.addEventListener("touchmove", function (e) {
+      var p = e.touches[0], dx = tx - p.clientX, dy = ty - p.clientY;
+      if (!axis) { if (Math.abs(dx) < 6 && Math.abs(dy) < 6) return; axis = Math.abs(dy) > Math.abs(dx) ? "y" : "x"; }
+      if (axis !== "y") return;
+      if (manual(dy)) { e.preventDefault(); tx = p.clientX; ty = p.clientY; }   // at an edge: let the page scroll
+    }, { passive: false });
+
+    measure();
+  });
+
+
   if (REDUCE) return;
 
   /* ---------- footer circles: magnetic pull + electric outline (mouse only) ---------- */
@@ -584,7 +717,7 @@
       requestAnimationFrame(raf);
     }
     window.addEventListener("wheel", function (e) {
-      if (e.ctrlKey) return;        // leave pinch-zoom to the browser
+      if (e.ctrlKey || e.defaultPrevented) return;   // pinch-zoom; or a .live-shot already used this wheel
       e.preventDefault();
       var unit = e.deltaMode === 1 ? 16 : (e.deltaMode === 2 ? window.innerHeight : 1);
       target = clamp(target + e.deltaY * unit);
@@ -596,6 +729,7 @@
     }, { passive: true });
     window.addEventListener("resize", function () { target = clamp(target); current = clamp(current); });
   })();
+
 
   doc.classList.add("js-ready");
 })();
