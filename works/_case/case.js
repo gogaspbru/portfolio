@@ -402,6 +402,7 @@
       idleTimer = setTimeout(kick, IDLE * 1000 + 30);
       return true;
     }
+    if (box.hasAttribute("data-manual")) {   // by hand only on request: by default the wheel/swipe scroll the page, the picture runs by itself
     box.addEventListener("wheel", function (e) {
       var dy = e.deltaMode === 1 ? e.deltaY * 16 : e.deltaMode === 2 ? e.deltaY * box.clientHeight : e.deltaY;
       if (manual(dy)) e.preventDefault();    // at the very top/bottom the page scrolls as usual
@@ -414,6 +415,7 @@
       if (axis !== "y") return;
       if (manual(dy)) { e.preventDefault(); tx = p.clientX; ty = p.clientY; }   // at an edge: let the page scroll
     }, { passive: false });
+    }
 
     measure();
   });
