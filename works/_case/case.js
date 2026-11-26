@@ -189,7 +189,7 @@
      Optional: data-bg="#fff" (colour shown while the picture loads, default white).
      Auto-scroll: 1 s pause at the top → down with eased starts/stops, 1.5 s at each stop →
      2 s at the bottom → eased return to the top in 2.5 s → again. Runs only while on screen,
-     pauses on hover; wheel/swipe scroll it by hand, auto-scroll resumes 3 s after the last input. */
+     wheel/swipe scroll it by hand, auto-scroll resumes 3 s after the last input. */
   Array.prototype.forEach.call(document.querySelectorAll(".live-shot"), function (box) {
     var srcs = (box.getAttribute("data-src") || "").split(",").map(function (s) { return s.trim(); }).filter(Boolean);
     if (!srcs.length) return;
@@ -283,7 +283,8 @@
       }, { threshold: 0.15 }).observe(box);
     } else { visible = true; imgs.forEach(function (img) { var s = img.getAttribute("data-lazy"); if (s) img.src = s; }); }
 
-    if (window.matchMedia && window.matchMedia("(hover: hover) and (pointer: fine)").matches) {   // mouse only: a tap must not leave it paused
+    // the pointer over the block does not stop it (only the wheel/swipe take over); opt back in with data-hover-pause
+    if (box.hasAttribute("data-hover-pause") && window.matchMedia && window.matchMedia("(hover: hover) and (pointer: fine)").matches) {
       box.addEventListener("mouseenter", function () { hover = true; });
       box.addEventListener("mouseleave", function () { hover = false; replan(); kick(); });
     }
