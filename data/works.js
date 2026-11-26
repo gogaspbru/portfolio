@@ -41,7 +41,7 @@ window.__WORKS__ = [
     "type": "video",
     "title": "Smart Open",
     "preview": "assets/works/06_smart_open.webp",
-    "link": "https://smartopen.pro/",
+    "link": "works/smartopen/",
     "video": "assets/works/06_smart_open.webm"
   },
   {
